@@ -6,11 +6,11 @@ using Unity.Cinemachine;
 public class PathManager : MonoBehaviour
 {
     [Header("Camera Settings")]
-    public CinemachineCamera playerCam; // 1번 카메라 (PlayerCam 연결)
-    public CinemachineCamera mapCam;    // 2번 카메라 (MapCam 연결)
+    public CinemachineCamera playerCam;
+    public CinemachineCamera mapCam;
+    public float mapCamZpos = -6000f;
 
-    // ... (기존 변수들: playerTransform, lineWidth, Materials 등등 그대로 유지) ...
-    [Header("Settings")]
+    [Header("Settings")]
     public Transform playerTransform;
     public float lineWidth = 0.1f;
 
@@ -20,6 +20,7 @@ public class PathManager : MonoBehaviour
     public Material completedMaterial;
 
     [Header("Path Nodes")]
+    // Generator가 채워줄 리스트
     public List<PathNode> pathNodes = new List<PathNode>();
 
     private int currentIndex = 0;
@@ -29,35 +30,60 @@ public class PathManager : MonoBehaviour
 
     void Start()
     {
-        // ... (기존 Start 내용 그대로) ...
-        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 0;
+        lineRenderer.material = completedMaterial;
 
+        if (pathNodes.Count <= 0)
+        {
+            PathNode[] pathNodesInChildren = GetComponentsInChildren<PathNode>();
+            foreach (PathNode node in pathNodesInChildren) 
+            {
+                pathNodes.Add(node);
+            }
+        }
+
+        // 만약 미리 배치된 노드가 있다면 시작 시 초기화
+        if (pathNodes.Count > 0)
+        {
+            InitializePath();
+        }
+    }
+
+    // ★ [수정됨] 외부(LevelGenerator)에서 맵 생성 후 호출할 함수
+    public void InitializePath()
+    {
+        currentIndex = 0;
+        isFinished = false;
+        isLineStarted = false;
+        lineRenderer.positionCount = 0;
+
+        // 노드 초기화
         for (int i = 0; i < pathNodes.Count; i++)
         {
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
         }
+
         UpdateNodeStates();
 
-        // ★ 시작할 땐 플레이어 카메라가 우선순위 높게 설정
-        if (playerCam != null && mapCam != null)
+        // 카메라 초기화
+        if (playerCam != null && mapCam != null)
         {
             playerCam.Priority = 10;
             mapCam.Priority = 0;
         }
+
+        Debug.Log($"게임 초기화 완료! 노드 개수: {pathNodes.Count}");
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SwitchToMapCamera();
-        }
+        if (Input.GetKeyDown(KeyCode.O)) SwitchToMapCamera();
 
-        // ... (기존 Update 내용 그대로) ...
+        // 라인 그리기 로직 (플레이어 위치 추적)
         if (isLineStarted && !isFinished && playerTransform != null)
         {
             int lastIndex = lineRenderer.positionCount - 1;
@@ -68,35 +94,35 @@ public class PathManager : MonoBehaviour
         }
     }
 
-    // ... (UpdateNodeStates, OnNodeCollected 등 기존 함수들 그대로 유지) ...
-    void UpdateNodeStates()
+    void UpdateNodeStates()
     {
-        // ... (내용 동일) ...
-        for (int i = 0; i < pathNodes.Count; i++)
+        for (int i = 0; i < pathNodes.Count; i++)
         {
             if (i < currentIndex)
             {
+                // 이미 지나간 노드
                 pathNodes[i].GetComponent<Renderer>().material = completedMaterial;
                 pathNodes[i].GetComponent<Collider>().isTrigger = true;
             }
             else if (i == currentIndex)
             {
+                // 현재 목표 노드 (활성화)
                 pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
             }
             else
             {
+                // 미래의 노드 (비활성화/벽)
                 pathNodes[i].SetState(false, activeMaterial, defaultMaterial);
-                pathNodes[i].GetComponent<Collider>().isTrigger = true;
+                pathNodes[i].GetComponent<Collider>().isTrigger = false; // 못 지나가게 벽으로 설정
             }
         }
     }
 
     public void OnNodeCollected(PathNode node)
     {
-        // ... (내용 동일) ...
-        if (node.myIndex != currentIndex) return;
+        if (node.myIndex != currentIndex) return;
 
-        // ... (점 찍는 로직 동일) ...
+        // 라인 그리기 추가 로직
         if (currentIndex == 0)
         {
             isLineStarted = true;
@@ -117,6 +143,7 @@ public class PathManager : MonoBehaviour
         }
         else
         {
+            // 다음 점을 위해 라인 포지션 하나 추가 (플레이어 추적용)
             lineRenderer.positionCount++;
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerTransform.position);
             UpdateNodeStates();
@@ -127,11 +154,16 @@ public class PathManager : MonoBehaviour
     {
         isFinished = true;
 
+        // 마지막 노드 연결 마무리
         if (pathNodes.Count > 0)
         {
-            lineRenderer.positionCount++;
+            // 현재 플레이어 추적중인 마지막 점을 마지막 노드 위치로 고정
             int lastIndex = lineRenderer.positionCount - 1;
-            lineRenderer.SetPosition(lastIndex, pathNodes[0].transform.position);
+            lineRenderer.SetPosition(lastIndex, pathNodes[pathNodes.Count - 1].transform.position);
+
+            // 만약 시작점으로 돌아가야 한다면 아래 주석 해제
+            // lineRenderer.positionCount++;
+            // lineRenderer.SetPosition(lineRenderer.positionCount - 1, pathNodes[0].transform.position);
         }
 
         Debug.Log("한붓그리기 완성!");
@@ -141,17 +173,16 @@ public class PathManager : MonoBehaviour
             node.GetComponent<Renderer>().material = completedMaterial;
         }
 
-        // ★ 게임 클리어 시 카메라 전환!
-        SwitchToMapCamera();
+        SwitchToMapCamera();
     }
 
-    // ★ 카메라 전환 함수 추가
-    public void SwitchToMapCamera()
+    public void SwitchToMapCamera()
     {
         if (playerCam != null && mapCam != null)
         {
-            // MapCam의 우선순위를 높여서 자연스럽게 전환되게 함
-            playerCam.Priority = 0;
+            playerCam.Priority = 0;
+            mapCam.transform.position = new Vector3(transform.position.x, transform.position.y, mapCamZpos);
+            mapCam.transform.rotation = transform.rotation;
             mapCam.Priority = 10;
         }
     }
