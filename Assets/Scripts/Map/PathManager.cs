@@ -1,6 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.Rendering.Universal; // 필수 네임스페이스
+
+public enum CompletedShape
+{
+    Happy = 0,
+    Hope = 1,
+    Angry = 2,
+    Sad = 3
+}
 
 [RequireComponent(typeof(LineRenderer))]
 public class PathManager : MonoBehaviour
@@ -8,6 +17,8 @@ public class PathManager : MonoBehaviour
     [Header("Camera Settings")]
     public CinemachineCamera playerCam;
     public CinemachineCamera mapCam;
+    public GameObject skyboxCam;
+    public Camera mainCam;
     public float mapCamZpos = -6000f;
 
     [Header("Settings")]
@@ -22,6 +33,15 @@ public class PathManager : MonoBehaviour
     [Header("Path Nodes")]
     // Generator가 채워줄 리스트
     public List<PathNode> pathNodes = new List<PathNode>();
+    public CompletedShape completedShape;
+
+    [Header("Debug")]
+    public CinemachineCamera heartMapCam;
+    public CinemachineCamera cloverMapCam;
+    public CinemachineCamera lightningMapCam;
+    public CinemachineCamera tearMapCam;
+    public Debug_ShapeActiveManager activeManager;
+
 
     private int currentIndex = 0;
     private LineRenderer lineRenderer;
@@ -81,8 +101,6 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O)) SwitchToMapCamera();
-
         // 라인 그리기 로직 (플레이어 위치 추적)
         if (isLineStarted && !isFinished && playerTransform != null)
         {
@@ -150,7 +168,7 @@ public class PathManager : MonoBehaviour
         }
     }
 
-    void FinishPath()
+    public void FinishPath()
     {
         isFinished = true;
 
@@ -173,7 +191,19 @@ public class PathManager : MonoBehaviour
             node.GetComponent<Renderer>().material = completedMaterial;
         }
 
-        SwitchToMapCamera();
+        // ★ [수정] null 체크를 추가하여 에러 방지
+        if (activeManager != null)
+        {
+            // 매니저에게 "나만 남기고 나머지는 정리해줘"라고 요청
+            // (이 안에서 SwitchToMapCamera가 호출되므로 여기서 또 부를 필요 없음)
+            activeManager.ActivateOnly(this);
+        }
+        else
+        {
+            // 매니저가 없으면 혼자서라도 카메라 전환
+            SwitchToMapCamera();
+            Debug.LogWarning("ActiveManager가 연결되지 않았습니다!");
+        }
     }
 
     public void SwitchToMapCamera()
@@ -181,9 +211,16 @@ public class PathManager : MonoBehaviour
         if (playerCam != null && mapCam != null)
         {
             playerCam.Priority = 0;
-            mapCam.transform.position = new Vector3(transform.position.x, transform.position.y, mapCamZpos);
-            mapCam.transform.rotation = transform.rotation;
             mapCam.Priority = 10;
+        }
+    }
+
+    public void SwitchToPlayerCamera()
+    {
+        if (playerCam != null && mapCam != null)
+        {
+            playerCam.Priority = 10;
+            mapCam.Priority = 0;
         }
     }
 }
