@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
-using UnityEngine.Rendering.Universal; // 필수 네임스페이스
+using UnityEngine.Rendering.Universal;
 
 public enum CompletedShape
 {
@@ -31,8 +31,11 @@ public class PathManager : MonoBehaviour
     public Material completedMaterial;
 
     [Header("Path Nodes")]
-    // Generator가 채워줄 리스트
     public List<PathNode> pathNodes = new List<PathNode>();
+
+    // ★ [추가됨] 리스트를 다 돌고 나서 마지막으로 닫아줄 점 (보통 시작점인 pathNodes[0]을 넣으면 됨)
+    public PathNode finalNode;
+
     public CompletedShape completedShape;
 
     [Header("Debug")]
@@ -42,11 +45,13 @@ public class PathManager : MonoBehaviour
     public CinemachineCamera tearMapCam;
     public Debug_ShapeActiveManager activeManager;
 
-
     private int currentIndex = 0;
     private LineRenderer lineRenderer;
     private bool isFinished = false;
     private bool isLineStarted = false;
+
+    // ★ [추가됨] 모든 노드를 다 돌고 마지막 점 연결을 기다리는 상태인지 확인
+    private bool isWaitingForFinal = false;
 
     void Start()
     {
@@ -59,37 +64,37 @@ public class PathManager : MonoBehaviour
         if (pathNodes.Count <= 0)
         {
             PathNode[] pathNodesInChildren = GetComponentsInChildren<PathNode>();
-            foreach (PathNode node in pathNodesInChildren) 
+            foreach (PathNode node in pathNodesInChildren)
             {
                 pathNodes.Add(node);
             }
         }
 
-        // 만약 미리 배치된 노드가 있다면 시작 시 초기화
         if (pathNodes.Count > 0)
         {
             InitializePath();
         }
     }
 
-    // ★ [수정됨] 외부(LevelGenerator)에서 맵 생성 후 호출할 함수
     public void InitializePath()
     {
         currentIndex = 0;
         isFinished = false;
         isLineStarted = false;
+        isWaitingForFinal = false; // 초기화
         lineRenderer.positionCount = 0;
 
-        // 노드 초기화
         for (int i = 0; i < pathNodes.Count; i++)
         {
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
         }
 
+        // 만약 finalNode가 설정되어 있다면 그것도 매니저 연결 (보통 리스트 안에 있어서 중복되겠지만 안전하게)
+        if (finalNode != null) finalNode.manager = this;
+
         UpdateNodeStates();
 
-        // 카메라 초기화
         if (playerCam != null && mapCam != null)
         {
             playerCam.Priority = 10;
@@ -101,7 +106,6 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
-        // 라인 그리기 로직 (플레이어 위치 추적)
         if (isLineStarted && !isFinished && playerTransform != null)
         {
             int lastIndex = lineRenderer.positionCount - 1;
@@ -112,8 +116,10 @@ public class PathManager : MonoBehaviour
         }
     }
 
+    // ★ [수정됨] 상태 업데이트 로직 (마지막 연결 대기 상태 처리 추가)
     void UpdateNodeStates()
     {
+        // 1. 일반 리스트 노드 처리
         for (int i = 0; i < pathNodes.Count; i++)
         {
             if (i < currentIndex)
@@ -122,25 +128,52 @@ public class PathManager : MonoBehaviour
                 pathNodes[i].GetComponent<Renderer>().material = completedMaterial;
                 pathNodes[i].GetComponent<Collider>().isTrigger = true;
             }
-            else if (i == currentIndex)
+            else if (i == currentIndex && !isWaitingForFinal)
             {
                 // 현재 목표 노드 (활성화)
                 pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
             }
             else
             {
-                // 미래의 노드 (비활성화/벽)
+                // 아직 순서가 아닌 노드 (벽)
                 pathNodes[i].SetState(false, activeMaterial, defaultMaterial);
-                pathNodes[i].GetComponent<Collider>().isTrigger = false; // 못 지나가게 벽으로 설정
+                pathNodes[i].GetComponent<Collider>().isTrigger = false;
             }
+        }
+
+        // 2. ★ [추가됨] 모든 리스트를 다 돌고, 마지막 finalNode를 열어줄 차례인지 확인
+        if (isWaitingForFinal && finalNode != null)
+        {
+            // finalNode를 활성화 (목표 지점으로 표시)
+            finalNode.gameObject.SetActive(true);
+            finalNode.SetState(true, activeMaterial, defaultMaterial);
+            finalNode.GetComponent<Collider>().isTrigger = true; // 닿을 수 있게 트리거 켬
+        }
+        else if (finalNode != null && currentIndex < pathNodes.Count)
+        {
+            // 아직 리스트 도는 중이라면 finalNode가 리스트 순서에 포함된 게 아니면 꺼둬야 함
+            // (보통 finalNode가 pathNodes[0]인 경우가 많으므로, 위 loop에서 처리되었을 수 있음.
+            //  여기서는 특별히 덮어쓰지 않고 둠)
         }
     }
 
     public void OnNodeCollected(PathNode node)
     {
+        // ★ 1. 마지막 연결 대기 상태일 때 처리
+        if (isWaitingForFinal)
+        {
+            // 닿은 노드가 우리가 기다리던 '최종 노드'가 맞는지 확인
+            if (node == finalNode)
+            {
+                FinishPath(); // 진짜 끝!
+            }
+            return; // 다른 노드면 무시
+        }
+
+        // ★ 2. 일반 진행 상태 (순서 체크)
         if (node.myIndex != currentIndex) return;
 
-        // 라인 그리기 추가 로직
+        // --- 라인 그리기 로직 ---
         if (currentIndex == 0)
         {
             isLineStarted = true;
@@ -149,19 +182,41 @@ public class PathManager : MonoBehaviour
         }
         else
         {
+            // 이전 점 확정
             int lastIndex = lineRenderer.positionCount - 1;
             lineRenderer.SetPosition(lastIndex, node.transform.position);
         }
 
         currentIndex++;
 
+        // --- 다음 단계 결정 ---
         if (currentIndex >= pathNodes.Count)
         {
-            FinishPath();
+            // 리스트는 다 돌았음.
+
+            // ★ 만약 FinalNode가 설정되어 있다면, 바로 끝내지 않고 '마지막 연결 대기' 상태로 진입
+            if (finalNode != null)
+            {
+                isWaitingForFinal = true;
+
+                // 플레이어를 따라다닐 마지막 라인 하나 추가
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerTransform.position);
+
+                // 노드 상태 업데이트 (finalNode 활성화)
+                UpdateNodeStates();
+
+                Debug.Log("모든 경유지 통과! 마지막 점을 연결하세요.");
+            }
+            else
+            {
+                // FinalNode가 없으면 기존처럼 바로 종료
+                FinishPath();
+            }
         }
         else
         {
-            // 다음 점을 위해 라인 포지션 하나 추가 (플레이어 추적용)
+            // 아직 리스트가 남았음 -> 다음 점 추적 라인 생성
             lineRenderer.positionCount++;
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerTransform.position);
             UpdateNodeStates();
@@ -172,37 +227,37 @@ public class PathManager : MonoBehaviour
     {
         isFinished = true;
 
-        // 마지막 노드 연결 마무리
-        if (pathNodes.Count > 0)
+        // ★ 마지막 라인을 최종 목적지(FinalNode 혹은 마지막 리스트 노드)에 딱 붙이기
+        if (lineRenderer.positionCount > 0)
         {
-            // 현재 플레이어 추적중인 마지막 점을 마지막 노드 위치로 고정
             int lastIndex = lineRenderer.positionCount - 1;
-            lineRenderer.SetPosition(lastIndex, pathNodes[pathNodes.Count - 1].transform.position);
+            // Final 모드였다면 FinalNode 위치로, 아니면 리스트 마지막 위치로
+            Vector3 targetPos = (isWaitingForFinal && finalNode != null)
+                                ? finalNode.transform.position
+                                : pathNodes[pathNodes.Count - 1].transform.position;
 
-            // 만약 시작점으로 돌아가야 한다면 아래 주석 해제
-            // lineRenderer.positionCount++;
-            // lineRenderer.SetPosition(lineRenderer.positionCount - 1, pathNodes[0].transform.position);
+            lineRenderer.SetPosition(lastIndex, targetPos);
         }
 
-        Debug.Log("한붓그리기 완성!");
+        Debug.Log("완벽한 한붓그리기 완성!");
 
+        // 모든 노드(FinalNode 포함) 완료 색상으로
         foreach (var node in pathNodes)
         {
             node.GetComponent<Renderer>().material = completedMaterial;
         }
+        if (finalNode != null)
+        {
+            finalNode.GetComponent<Renderer>().material = completedMaterial;
+        }
 
-        // ★ [수정] null 체크를 추가하여 에러 방지
         if (activeManager != null)
         {
-            // 매니저에게 "나만 남기고 나머지는 정리해줘"라고 요청
-            // (이 안에서 SwitchToMapCamera가 호출되므로 여기서 또 부를 필요 없음)
             activeManager.ActivateOnly(this);
         }
         else
         {
-            // 매니저가 없으면 혼자서라도 카메라 전환
             SwitchToMapCamera();
-            Debug.LogWarning("ActiveManager가 연결되지 않았습니다!");
         }
     }
 

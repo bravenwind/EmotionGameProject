@@ -350,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -1133,6 +1134,7 @@ MonoBehaviour:
   activeMaterial: {fileID: 2100000, guid: 7e4d00dd898669248bcd2aab70fb72fc, type: 2}
   completedMaterial: {fileID: 2100000, guid: dc099aba02d66cf40a5cc5311fe5c536, type: 2}
   pathNodes: []
+  finalNode: {fileID: 179345035}
   completedShape: 2
   heartMapCam: {fileID: 1809373123}
   cloverMapCam: {fileID: 1328950732}
@@ -1431,6 +1433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -1588,6 +1591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -2360,6 +2364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -2517,6 +2522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -2674,6 +2680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -2939,6 +2946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -3257,6 +3265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -3460,6 +3469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -3759,6 +3769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -3916,6 +3927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -4227,6 +4239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -4310,6 +4323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -4467,6 +4481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -4671,6 +4686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -5043,6 +5059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -5173,6 +5190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -5391,6 +5409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -5656,6 +5675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -5967,6 +5987,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -6050,6 +6071,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -6423,6 +6445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -6626,6 +6649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -6835,6 +6859,7 @@ MonoBehaviour:
   - {fileID: 928105848}
   - {fileID: 1480868843}
   - {fileID: 213139881}
+  finalNode: {fileID: 0}
   completedShape: 0
   heartMapCam: {fileID: 0}
   cloverMapCam: {fileID: 0}
@@ -6993,6 +7018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -7196,6 +7222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -7279,6 +7306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -7359,67 +7387,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356007669}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &358317881
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5097819326064901608, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_Name
-      value: Sad
-      objectReference: {fileID: 0}
-    - target: {fileID: 5097819326064901608, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 280.78128
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 91.272896
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -453.9447
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
 --- !u!1 &360960542
 GameObject:
   m_ObjectHideFlags: 0
@@ -7543,6 +7510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -7626,6 +7594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -7829,6 +7798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -7912,6 +7882,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -8323,6 +8294,7 @@ MonoBehaviour:
   activeMaterial: {fileID: 2100000, guid: d0225e8f300dd684786f2761713a96de, type: 2}
   completedMaterial: {fileID: 2100000, guid: 5e4eb398b07889a40985839e20e7d1a0, type: 2}
   pathNodes: []
+  finalNode: {fileID: 932418776}
   completedShape: 0
   heartMapCam: {fileID: 1809373123}
   cloverMapCam: {fileID: 1328950732}
@@ -8513,6 +8485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -8716,6 +8689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -8845,73 +8819,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
   isCurrentTarget: 0
   manager: {fileID: 0}
   myIndex: 0
---- !u!1001 &402756055
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5097819326064901608, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_Name
-      value: Happy
-      objectReference: {fileID: 0}
-    - target: {fileID: 5097819326064901608, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 280.78128
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 91.272896
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -453.9447
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
 --- !u!1 &404003957
 GameObject:
   m_ObjectHideFlags: 0
@@ -8989,6 +8903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -9375,6 +9290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -9640,6 +9556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -9843,6 +9760,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -10177,6 +10095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -10369,6 +10288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -10788,6 +10708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -10871,6 +10792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -11136,6 +11058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -11447,6 +11370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -11530,6 +11454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -11687,6 +11612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -11890,6 +11816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -12127,6 +12054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -12256,6 +12184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -12414,6 +12343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -12571,6 +12501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -13098,6 +13029,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -13227,6 +13159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -13310,6 +13243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -13575,6 +13509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -13778,6 +13713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -13908,6 +13844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -14321,6 +14258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -14404,6 +14342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -14607,6 +14546,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -14690,6 +14630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -14894,6 +14835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -15112,6 +15054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -15315,6 +15258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -15920,6 +15864,7 @@ MonoBehaviour:
   - {fileID: 441864283}
   - {fileID: 1595531037}
   - {fileID: 1133518367}
+  finalNode: {fileID: 1460420577}
   completedShape: 1
   heartMapCam: {fileID: 1809373123}
   cloverMapCam: {fileID: 1328950732}
@@ -16110,6 +16055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -16313,6 +16259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -16632,6 +16579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -16789,6 +16737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -17162,6 +17111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -17319,6 +17269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -17584,6 +17535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -17741,6 +17693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -17944,6 +17897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -18027,6 +17981,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -18231,6 +18186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -18341,6 +18297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -18545,6 +18502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -18902,6 +18860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -19213,6 +19172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -19296,6 +19256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -19561,6 +19522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -19718,6 +19680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -19875,6 +19838,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -20032,6 +19996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -20451,6 +20416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -20534,6 +20500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -20658,6 +20625,7 @@ MonoBehaviour:
   activeMaterial: {fileID: 2100000, guid: 73eb6e567a2cb9d45af7d6eb0ad25406, type: 2}
   completedMaterial: {fileID: 2100000, guid: 7d50aafd5f67ba248a371f2f33b01ce7, type: 2}
   pathNodes: []
+  finalNode: {fileID: 0}
   completedShape: 1
   heartMapCam: {fileID: 1809373123}
   cloverMapCam: {fileID: 1181022034}
@@ -21375,6 +21343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -21640,6 +21609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -21905,6 +21875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22108,6 +22079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22191,6 +22163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22395,6 +22368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22505,6 +22479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22662,6 +22637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22865,6 +22841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -22995,6 +22972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -23368,6 +23346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -23525,6 +23504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -23789,6 +23769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -23980,6 +23961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -24137,6 +24119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -24369,6 +24352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -24572,6 +24556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -24701,6 +24686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -24831,6 +24817,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -24987,6 +24974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -25116,6 +25104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -25199,6 +25188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -25356,6 +25346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -25560,6 +25551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -25670,6 +25662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -25750,67 +25743,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228892809}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1242525651
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5097819326064901608, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_Name
-      value: Angry
-      objectReference: {fileID: 0}
-    - target: {fileID: 5097819326064901608, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 280.78128
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 91.272896
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -453.9447
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8276562621307767873, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d54af3bb5fc54ed4bbb70d88ca7ea99f, type: 3}
 --- !u!1 &1247198832
 GameObject:
   m_ObjectHideFlags: 0
@@ -25996,6 +25928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -26343,6 +26276,7 @@ MonoBehaviour:
   activeMaterial: {fileID: 2100000, guid: c9295593e81f0fb4482a56d56ecf92f7, type: 2}
   completedMaterial: {fileID: 2100000, guid: bba0002d7d7016c46ae3b3268051ec0d, type: 2}
   pathNodes: []
+  finalNode: {fileID: 991856532}
   completedShape: 3
   heartMapCam: {fileID: 1809373123}
   cloverMapCam: {fileID: 1328950732}
@@ -26730,6 +26664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -26995,6 +26930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -27198,6 +27134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -27472,6 +27409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -27555,6 +27493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -27866,6 +27805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -27949,6 +27889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -28214,6 +28155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -28640,6 +28582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -28905,6 +28848,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -29062,6 +29006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -29219,6 +29164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -29422,6 +29368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -29505,6 +29452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -29662,6 +29610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -29927,6 +29876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -30238,6 +30188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -30537,6 +30488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -30740,6 +30692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -31039,6 +30992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -31196,6 +31150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -32216,11 +32171,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 1680340026}
-  acceleration: 30
+  acceleration: 20
   dampingOnIdle: 0.5
   dampingOnBrake: 3
+  dashForce: 20
+  dashCooldown: 0
   playerAnimator: {fileID: 1432840375}
   speedParamName: Speed
+  dashAnimBoost: 5
+  animRestoreSpeed: 2
+  globalVolume: {fileID: 832575518}
+  maxBlurIntensity: 1
 --- !u!54 &1432840373
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -32455,6 +32416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -32828,6 +32790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33031,6 +32994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33114,6 +33078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33317,6 +33282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33447,6 +33413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33711,6 +33678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33794,6 +33762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -33951,6 +33920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -34262,6 +34232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -34345,6 +34316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -34502,6 +34474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -34706,6 +34679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -34816,6 +34790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -35189,6 +35164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -35346,6 +35322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -35550,6 +35527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -35660,6 +35638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -35817,6 +35796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -36514,6 +36494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -36826,6 +36807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -36936,6 +36918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -37309,6 +37292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -37438,6 +37422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -37629,6 +37614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -37894,6 +37880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -38108,6 +38095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -38265,6 +38253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -38422,6 +38411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -38687,6 +38677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -38998,6 +38989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -39264,6 +39256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -39467,6 +39460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -39550,6 +39544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -40044,6 +40039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -40147,6 +40143,7 @@ MonoBehaviour:
   - {fileID: 434188892}
   - {fileID: 1402716897}
   - {fileID: 1909204791}
+  finalNode: {fileID: 0}
   completedShape: 0
   heartMapCam: {fileID: 0}
   cloverMapCam: {fileID: 0}
@@ -40377,6 +40374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -40904,6 +40902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -41278,6 +41277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -41543,6 +41543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -41747,6 +41748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -41857,6 +41859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -42014,6 +42017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -42344,6 +42348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -42516,6 +42521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -42673,6 +42679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -43201,6 +43208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -43465,6 +43473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -43548,6 +43557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -43860,6 +43870,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -43970,6 +43981,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -44127,6 +44139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -44405,6 +44418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -44562,6 +44576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -45010,6 +45025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -45383,6 +45399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -45540,6 +45557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -45697,6 +45715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -46231,6 +46250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -46360,6 +46380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -46490,6 +46511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -46646,6 +46668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -46729,6 +46752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -46886,6 +46910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -47367,6 +47392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -47740,6 +47766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -47897,6 +47924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -48054,6 +48082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -48211,6 +48240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   destroyDistance: 0.3
+  originalPosition: {x: 0, y: 0, z: 0}
   absorbTimer: 0
   absorbSpeed: 30
   absorbing: 0
@@ -48300,9 +48330,6 @@ SceneRoots:
   - {fileID: 1432840369}
   - {fileID: 316259540}
   - {fileID: 2069811394}
-  - {fileID: 402756055}
-  - {fileID: 358317881}
-  - {fileID: 1242525651}
   - {fileID: 1680340026}
   - {fileID: 1828432690}
   - {fileID: 440205192}

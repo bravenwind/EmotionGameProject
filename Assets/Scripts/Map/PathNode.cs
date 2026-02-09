@@ -4,6 +4,7 @@ public class PathNode : MonoBehaviour
 {
     public Transform target;          // Player
     public float destroyDistance = 0.3f;
+    public Vector3 originalPosition = Vector3.zero;
 
     public float absorbTimer = 0.0f;
     public float absorbSpeed = 30f;   // [변경] 빨려 들어가는 최고 속도
@@ -27,6 +28,14 @@ public class PathNode : MonoBehaviour
 
         myCollider = GetComponent<Collider>();
         myRenderer = GetComponent<Renderer>();
+
+        originalPosition = transform.position;
+    }
+
+    private void OnEnable()
+    {
+        rb.linearVelocity = Vector3.zero;
+        transform.position = originalPosition;
     }
 
     // 매니저가 호출하는 함수: 내 상태를 설정함
