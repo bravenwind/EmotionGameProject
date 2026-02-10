@@ -5,6 +5,7 @@ public class PathNode : MonoBehaviour
     public Transform target;          // Player
     public float destroyDistance = 0.3f;
     public Vector3 originalPosition = Vector3.zero;
+    public Emotion emotion;
 
     public float absorbTimer = 0.0f;
     public float absorbSpeed = 30f;   // [변경] 빨려 들어가는 최고 속도

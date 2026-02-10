@@ -13,22 +13,17 @@ public class MouseLook : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked; // 마우스 숨김 및 고정
 
-        // 시작할 때 현재 플레이어의 회전값을 기준으로 잡음 (갑자기 튀는 현상 방지)
-        if (playerBody != null)
-        {
-            Vector3 currentRotation = playerBody.localRotation.eulerAngles;
-            yRotation = currentRotation.y;
-            xRotation = currentRotation.x;
-        }
+        //// 시작할 때 현재 플레이어의 회전값을 기준으로 잡음 (갑자기 튀는 현상 방지)
+        //if (playerBody != null)
+        //{
+        //    Vector3 currentRotation = playerBody.localRotation.eulerAngles;
+        //    yRotation = currentRotation.y;
+        //    xRotation = currentRotation.x;
+        //}
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) 
-        {
-            Application.Quit();
-        }
-
         // 1. 마우스 입력 받기
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -54,7 +49,7 @@ public class MouseLook : MonoBehaviour
 
             // 카메라는 플레이어 몸통을 따라가기만 하면 되므로 
             // 카메라 자체의 로컬 회전은 0으로 초기화해줍니다. (혹시 모를 꼬임 방지)
-            transform.localRotation = Quaternion.identity;
+            //transform.localRotation = Quaternion.identity;
         }
     }
 }

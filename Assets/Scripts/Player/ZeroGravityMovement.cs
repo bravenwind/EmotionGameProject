@@ -2,54 +2,74 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Unity.Cinemachine;
+using UnityEngine.UI;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ZeroGravityMovement : MonoBehaviour
 {
-    [Header("기본 설정 (Settings)")]
-    [SerializeField]
-    private Transform cameraTransform;
+    [Header("기본 이동 설정 (Movement)")]
+    [SerializeField] private Transform cameraTransform;
     public float acceleration = 15f;
+    public float normalMaxSpeed = 10f; // 평상시 최대 속도
     public float dampingOnIdle = 0.5f;
     public float dampingOnBrake = 3.0f;
 
-    [Header("대쉬 설정 (Dash Settings)")]
-    public float dashForce = 20f;       // 대쉬 힘 (순간 가속)
-    public float dashCooldown = 1.5f;   // 대쉬 재사용 대기시간
-    private float lastDashTime = -100f; // 마지막 대쉬 시점 저장
+    [Header("스프린트 (Sustain Dash)")]
+    public bool infiniteStamina = false;
+
+    public float sprintAcceleration = 25f; // 달리기 가속도
+    public float sprintMaxSpeed = 25f;     // 달리기 최대 속도
+    public float staminaMax = 100f;        // 최대 스태미나
+    public float staminaDrainRate = 20f;   // 초당 소모량
+    public float staminaRegenRate = 10f;   // 초당 회복량
+
+    public float tiredSeconds = 2.0f;
+    public float tiredTimer = 0.0f;
+    public bool tired = false;
+
+    public Image staminaImage;
+
+    [Range(0, 100)]
+    public float currentStamina;           // 현재 스태미나 (Inspector 확인용)
+    private bool isSprinting;
+
+    [Header("순간 대쉬 (Impulse Dash)")]
+    public KeyCode impulseDashKey = KeyCode.LeftControl; // 키 변경 (Shift는 스프린트용)
+    public float dashForce = 20f;
+    public float dashCooldown = 1.5f;
+    private float lastDashTime = -100f;
 
     [Header("애니메이션 (Animation)")]
-    [SerializeField]
-    private Animator playerAnimator;
-    [SerializeField]
-    private string speedParamName = "Speed";
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private string speedParamName = "Speed";
     private int speedHash;
 
     // 애니메이션 속도 제어
-    private float currentDashAnimMultiplier = 1f;
-    public float dashAnimBoost = 2.5f; // 대쉬 시 애니메이션 배속
-    public float animRestoreSpeed = 2f; // 원래 속도로 돌아오는 속도
+    private float currentAnimSpeedMult = 1f;
+    public float animRestoreSpeed = 2f;
 
-    [Header("이펙트 - 포스트 프로세싱 (VFX)")]
+    [Header("이펙트 - 포스트 프로세싱")]
     public Volume globalVolume;
     private MotionBlur motionBlur;
     public float maxBlurIntensity = 1f;
 
-    // ---------------- [추가된 기능 시작] ----------------
-    [Header("이펙트 - 카메라 FOV (Camera Effect)")]
-    public float fovBoostAmount = 10f; // 대쉬할 때 늘어날 FOV 양 (예: 60 -> 70)
-    public float fovRestoreSpeed = 5f; // 원래 FOV로 복구되는 속도
-    private Camera mainCamera;
+    [Header("이펙트 - 카메라 FOV")]
+    public CinemachineCamera characterCamera;
+    public float sprintFovBoost = 10f;     // 스프린트 시 늘어날 FOV
+    public float impulseFovBoost = 5f;     // 순간 대쉬 시 추가될 FOV
+    public float fovChangeSpeed = 5f;      // FOV가 변하는 속도 (Lerp)
+
     private float defaultFov;
-    private float currentTargetFov;
+    private float targetFov;               // 목표 FOV
 
     [Header("이펙트 - 잔상 (Ghost Trail)")]
-    public SkinnedMeshRenderer characterMesh; // 캐릭터의 메쉬 (Inspector에서 연결 필수)
-    public Material ghostMaterial;            // 잔상에 쓰일 반투명 머티리얼 (Inspector에서 연결 필수)
-    public float ghostDuration = 0.5f;        // 잔상이 생성되는 총 시간
-    public float ghostSpawnInterval = 0.05f;  // 잔상 생성 간격
-    public float ghostLifeTime = 0.5f;        // 생성된 잔상이 사라지는데 걸리는 시간
-    // ---------------- [추가된 기능 끝] ----------------
+    public SkinnedMeshRenderer characterMesh;
+    public Material ghostMaterial;
+    public float ghostDuration = 0.5f;
+    public float ghostSpawnInterval = 0.05f;
+    public float ghostLifeTime = 0.5f;
 
     private Rigidbody rb;
 
@@ -60,123 +80,203 @@ public class ZeroGravityMovement : MonoBehaviour
         rb.freezeRotation = true;
         speedHash = Animator.StringToHash(speedParamName);
 
-        // Motion Blur 가져오기
-        if (globalVolume != null && globalVolume.profile.TryGet<MotionBlur>(out var blur))
-        {
-            motionBlur = blur;
-        }
+        currentStamina = staminaMax; // 스태미나 초기화
 
-        // [FOV 초기화]
-        mainCamera = Camera.main;
-        if (mainCamera != null)
+        if (globalVolume != null && globalVolume.profile.TryGet<MotionBlur>(out var blur))
+            motionBlur = blur;
+
+        if (characterCamera != null)
         {
-            defaultFov = mainCamera.fieldOfView;
-            currentTargetFov = defaultFov;
+            defaultFov = characterCamera.Lens.FieldOfView;
+            targetFov = defaultFov;
         }
         else
         {
-            Debug.LogError("Main Camera를 찾을 수 없습니다. 태그를 확인하세요.");
+            Debug.LogError("Cinemachine Camera를 찾을 수 없습니다.");
         }
     }
 
     void Update()
     {
-        // --- 입력 감지 ---
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-        {
-            TryDash();
-        }
-
-        HandleVisualEffects();
-    }
-
-    void HandleVisualEffects()
-    {
         float dt = Time.deltaTime;
 
-        // 1. 애니메이션 속도 복구
-        currentDashAnimMultiplier = Mathf.Lerp(currentDashAnimMultiplier, 1f, dt * animRestoreSpeed);
-        if (playerAnimator != null)
+        // 1. 입력 감지
+        HandleInput();
+
+        // 2. 스태미나 관리
+        if (tired)
         {
-            playerAnimator.speed = currentDashAnimMultiplier;
-            float currentSpeed = rb.linearVelocity.magnitude;
-            playerAnimator.SetFloat(speedHash, currentSpeed, 0.1f, dt);
+            tiredTimer += dt;
+            if (tiredTimer > tiredSeconds)
+            {
+                tired = false;
+                tiredTimer = 0.0f;
+            }
+        }
+        else
+        {
+            HandleStamina(dt);
         }
 
-        // 2. 모션 블러 강도 제어
-        if (motionBlur != null)
-        {
-            float blurTarget = (currentDashAnimMultiplier - 1f) / (dashAnimBoost - 1f) * maxBlurIntensity;
-            if (motionBlur.intensity.value != blurTarget) // 최적화: 값 변화 있을때만 할당
-                motionBlur.intensity.value = Mathf.Clamp(blurTarget, 0, maxBlurIntensity);
-        }
-
-        // 3. [추가됨] FOV 제어 로직
-        if (mainCamera != null)
-        {
-            // 목표 FOV는 시간이 지남에 따라 원래 값(defaultFov)으로 돌아가려 함
-            currentTargetFov = Mathf.Lerp(currentTargetFov, defaultFov, dt * fovRestoreSpeed);
-            // 실제 카메라 FOV 적용
-            mainCamera.fieldOfView = currentTargetFov;
-        }
+        // 3. 시각 효과 (FOV, Blur, Anim)
+        HandleVisualEffects(dt);
     }
 
     void FixedUpdate()
     {
-        // --- 물리 이동 로직 ---
+        MovePhysics();
+    }
+
+    // --- 로직 분리 ---
+
+    void HandleInput()
+    {
+        // 순간 대쉬 (Ctrl 키로 변경 - Shift와 겹침 방지)
+        if (Input.GetKeyDown(impulseDashKey))
+        {
+            TryImpulseDash();
+        }
+
+        // 스프린트 상태 체크 (Shift 누름 + 스태미나 있음 + 앞뒤 이동 중)
+        bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S);
+        bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        isSprinting = shiftPressed && (currentStamina > 0) && isMoving;
+    }
+
+    void HandleStamina(float dt)
+    {
+        if (isSprinting)
+        {
+            if (!infiniteStamina)
+            {
+                currentStamina -= staminaDrainRate * dt;
+                if (currentStamina < 0)
+                {
+                    tired = true;
+                }
+            }
+        }
+        else
+        {
+            // 스태미나 회복
+            currentStamina += staminaRegenRate * dt;
+        }
+
+        // 0 ~ Max 사이로 클램프
+        currentStamina = Mathf.Clamp(currentStamina, 0, staminaMax);
+        staminaImage.fillAmount = currentStamina / staminaMax;
+    }
+
+    void MovePhysics()
+    {
+        // 1. 브레이크 (Space)
         if (Input.GetKey(KeyCode.Space))
         {
             rb.linearDamping = dampingOnBrake;
+            return; // 브레이크 중엔 가속 안함
         }
         else
         {
             rb.linearDamping = dampingOnIdle;
         }
 
+        // 2. 가속력 적용 (W 키)
         if (Input.GetKey(KeyCode.W))
         {
-            rb.AddForce(cameraTransform.forward * acceleration, ForceMode.Acceleration);
+            // 스프린트 여부에 따라 다른 가속도 적용
+            float currentAccel = isSprinting ? sprintAcceleration : acceleration;
+            rb.AddForce(cameraTransform.forward * currentAccel, ForceMode.Acceleration);
+        }
+
+        // 3. [핵심] 최대 속도 제한 로직
+        // 현재 상태에 따른 속도 제한값 결정
+        float currentSpeedLimit = isSprinting ? sprintMaxSpeed : normalMaxSpeed;
+
+        // 현재 속도가 제한을 넘으면 잘라냄 (Clamping)
+        if (rb.linearVelocity.magnitude > currentSpeedLimit)
+        {
+            rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, currentSpeedLimit);
         }
     }
 
-    private void TryDash()
+    private void TryImpulseDash()
     {
         if (Time.time >= lastDashTime + dashCooldown)
         {
-            // 1. 물리 힘 적용
+            // 순간적으로 힘을 줌
             rb.AddForce(cameraTransform.forward * dashForce, ForceMode.Impulse);
             lastDashTime = Time.time;
 
-            // 2. 애니메이션 부스트 설정
-            currentDashAnimMultiplier = dashAnimBoost;
+            // 시각 효과 트리거
+            StartCoroutine(ImpulseFovEffect()); // 순간적인 FOV 변화
 
-            // 3. [추가됨] FOV 부스트 (순간적으로 목표 FOV를 높임)
-            currentTargetFov = defaultFov + fovBoostAmount;
-
-            // 4. [추가됨] 잔상 효과 코루틴 시작
+            // 잔상 효과
             if (characterMesh != null && ghostMaterial != null)
-            {
                 StartCoroutine(ShowGhostTrail());
-            }
 
-            Debug.Log("Dash!");
-        }
-        else
-        {
-            Debug.Log("Dash on Cooldown...");
+            Debug.Log("Impulse Dash!");
         }
     }
 
-    // --- [추가됨] 잔상(Ghost Trail) 관련 코루틴 ---
+    void HandleVisualEffects(float dt)
+    {
+        // --- 1. FOV 제어 ---
+        if (characterCamera != null)
+        {
+            // 기본 목표: 스프린트 중이면 넓게, 아니면 원래대로
+            float baseTarget = isSprinting ? (defaultFov + sprintFovBoost) : defaultFov;
+
+            // Impulse 효과 등으로 인해 설정된 targetFov와 부드럽게 섞기
+            // (Impulse 코루틴이 targetFov를 잠시 건드릴 수 있음, 여기서는 베이스로 복귀하려는 힘)
+            targetFov = Mathf.Lerp(targetFov, baseTarget, dt * fovChangeSpeed);
+
+            characterCamera.Lens.FieldOfView = Mathf.Lerp(characterCamera.Lens.FieldOfView, targetFov, dt * fovChangeSpeed);
+        }
+
+        // --- 2. 애니메이션 ---
+        if (playerAnimator != null)
+        {
+            // 실제 속도 기반 파라미터 전달
+            float currentSpeed = rb.linearVelocity.magnitude;
+            playerAnimator.SetFloat(speedHash, currentSpeed, 0.1f, dt);
+
+            // (선택) 스프린트 중일 때 재생 속도를 좀 더 빠르게?
+            float targetAnimMult = isSprinting ? 1.5f : 1f;
+            playerAnimator.speed = Mathf.Lerp(playerAnimator.speed, targetAnimMult, dt * 5f);
+        }
+
+        // --- 3. 모션 블러 ---
+        if (motionBlur != null)
+        {
+            // 속도가 빠를수록 블러 강해짐 (최대 속도 기준 비율)
+            float speedRatio = rb.linearVelocity.magnitude / sprintMaxSpeed;
+            float targetBlur = Mathf.Clamp01(speedRatio) * maxBlurIntensity;
+
+            motionBlur.intensity.value = Mathf.Lerp(motionBlur.intensity.value, targetBlur, dt * 5f);
+        }
+    }
+
+    // 순간 대쉬 시 FOV가 팍 늘어났다가 돌아오는 효과 (기존 로직 변형)
+    IEnumerator ImpulseFovEffect()
+    {
+        // 목표 FOV를 순간적으로 더 크게 설정
+        float originalTarget = targetFov;
+        targetFov += impulseFovBoost;
+
+        yield return new WaitForSeconds(0.2f); // 0.2초 유지
+
+        // 다시 원래 흐름으로 복귀
+        targetFov = originalTarget;
+    }
+
+    // --- 잔상 코루틴 (기존 유지) ---
     IEnumerator ShowGhostTrail()
     {
         float timeElapsed = 0f;
-
         while (timeElapsed < ghostDuration)
         {
-            // 현재 캐릭터의 포즈를 베이크하여 잔상 생성
             CreateGhostMesh();
-
             timeElapsed += ghostSpawnInterval;
             yield return new WaitForSeconds(ghostSpawnInterval);
         }
@@ -184,25 +284,21 @@ public class ZeroGravityMovement : MonoBehaviour
 
     void CreateGhostMesh()
     {
-        // 1. 빈 게임오브젝트 생성
         GameObject ghostObj = new GameObject("GhostTrail");
         ghostObj.transform.position = characterMesh.transform.position;
         ghostObj.transform.rotation = characterMesh.transform.rotation;
-        ghostObj.transform.localScale = characterMesh.transform.localScale; // 스케일도 맞춤
+        ghostObj.transform.localScale = characterMesh.transform.localScale;
+        // ghostObj.layer = LayerMask.NameToLayer("Ignore Raycast"); // 필요시 레이어 설정
 
-        // 2. 메쉬 필터 & 렌더러 추가
         MeshFilter meshFilter = ghostObj.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = ghostObj.AddComponent<MeshRenderer>();
 
-        // 3. 현재 포즈(Skinned Mesh)를 스냅샷 찍어서 새 메쉬로 만듦
         Mesh snapshotMesh = new Mesh();
         characterMesh.BakeMesh(snapshotMesh);
         meshFilter.mesh = snapshotMesh;
-
-        // 4. 머티리얼 할당
         meshRenderer.material = ghostMaterial;
+        meshRenderer.shadowCastingMode = ShadowCastingMode.Off; // 그림자 끄기 (최적화)
 
-        // 5. 서서히 사라지게 하기
         StartCoroutine(FadeAndDestroyGhost(ghostObj, meshRenderer.material));
     }
 
@@ -210,24 +306,21 @@ public class ZeroGravityMovement : MonoBehaviour
     {
         float fadeTime = 0f;
         Color startColor = mat.HasProperty("_BaseColor") ? mat.GetColor("_BaseColor") : Color.white;
-        float startAlpha = startColor.a; // 머티리얼의 초기 알파값
+        float startAlpha = startColor.a;
 
         while (fadeTime < ghostLifeTime)
         {
             fadeTime += Time.deltaTime;
             float alpha = Mathf.Lerp(startAlpha, 0f, fadeTime / ghostLifeTime);
 
-            // URP Lit 셰이더 기준 알파값 변경
             if (mat.HasProperty("_BaseColor"))
             {
                 Color color = startColor;
                 color.a = alpha;
                 mat.SetColor("_BaseColor", color);
             }
-
             yield return null;
         }
-
         Destroy(ghostObj);
     }
 }

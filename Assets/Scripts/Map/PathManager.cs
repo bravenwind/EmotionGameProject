@@ -3,14 +3,6 @@ using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.Rendering.Universal;
 
-public enum CompletedShape
-{
-    Happy = 0,
-    Hope = 1,
-    Angry = 2,
-    Sad = 3
-}
-
 [RequireComponent(typeof(LineRenderer))]
 public class PathManager : MonoBehaviour
 {
@@ -20,9 +12,11 @@ public class PathManager : MonoBehaviour
     public GameObject skyboxCam;
     public Camera mainCam;
     public float mapCamZpos = -6000f;
+    public MouseLook mouseLook;
+    public Transform playerTransform;
 
     [Header("Settings")]
-    public Transform playerTransform;
+    public Transform playerLineTransform;
     public float lineWidth = 0.1f;
 
     [Header("Materials")]
@@ -36,13 +30,13 @@ public class PathManager : MonoBehaviour
     // ★ [추가됨] 리스트를 다 돌고 나서 마지막으로 닫아줄 점 (보통 시작점인 pathNodes[0]을 넣으면 됨)
     public PathNode finalNode;
 
-    public CompletedShape completedShape;
+    public Emotion completedEmotion;
 
     [Header("Debug")]
-    public CinemachineCamera heartMapCam;
-    public CinemachineCamera cloverMapCam;
-    public CinemachineCamera lightningMapCam;
-    public CinemachineCamera tearMapCam;
+    public CinemachineCamera happyMapCam;
+    public CinemachineCamera hopeMapCam;
+    public CinemachineCamera angryMapCam;
+    public CinemachineCamera sadMapCam;
     public Debug_ShapeActiveManager activeManager;
 
     private int currentIndex = 0;
@@ -88,6 +82,7 @@ public class PathManager : MonoBehaviour
         {
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
+            pathNodes[i].emotion = completedEmotion;
         }
 
         // 만약 finalNode가 설정되어 있다면 그것도 매니저 연결 (보통 리스트 안에 있어서 중복되겠지만 안전하게)
@@ -106,12 +101,12 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
-        if (isLineStarted && !isFinished && playerTransform != null)
+        if (isLineStarted && !isFinished && playerLineTransform != null)
         {
             int lastIndex = lineRenderer.positionCount - 1;
             if (lastIndex >= 0)
             {
-                lineRenderer.SetPosition(lastIndex, playerTransform.position);
+                lineRenderer.SetPosition(lastIndex, playerLineTransform.position);
             }
         }
     }
@@ -173,18 +168,21 @@ public class PathManager : MonoBehaviour
         // ★ 2. 일반 진행 상태 (순서 체크)
         if (node.myIndex != currentIndex) return;
 
-        // --- 라인 그리기 로직 ---
-        if (currentIndex == 0)
+        if (completedEmotion == DataManager.Instance.targetEmotion)
         {
-            isLineStarted = true;
-            lineRenderer.positionCount = 1;
-            lineRenderer.SetPosition(0, node.transform.position);
-        }
-        else
-        {
-            // 이전 점 확정
-            int lastIndex = lineRenderer.positionCount - 1;
-            lineRenderer.SetPosition(lastIndex, node.transform.position);
+            // --- 라인 그리기 로직 ---
+            if (currentIndex == 0)
+            {
+                isLineStarted = true;
+                lineRenderer.positionCount = 1;
+                lineRenderer.SetPosition(0, node.transform.position);
+            }
+            else
+            {
+                // 이전 점 확정
+                int lastIndex = lineRenderer.positionCount - 1;
+                lineRenderer.SetPosition(lastIndex, node.transform.position);
+            }
         }
 
         currentIndex++;
@@ -192,33 +190,39 @@ public class PathManager : MonoBehaviour
         // --- 다음 단계 결정 ---
         if (currentIndex >= pathNodes.Count)
         {
-            // 리스트는 다 돌았음.
-
-            // ★ 만약 FinalNode가 설정되어 있다면, 바로 끝내지 않고 '마지막 연결 대기' 상태로 진입
-            if (finalNode != null)
+            if (completedEmotion == DataManager.Instance.targetEmotion)
             {
-                isWaitingForFinal = true;
+                // 리스트는 다 돌았음.
+                // ★ 만약 FinalNode가 설정되어 있다면, 바로 끝내지 않고 '마지막 연결 대기' 상태로 진입
+                if (finalNode != null)
+                {
+                    isWaitingForFinal = true;
 
-                // 플레이어를 따라다닐 마지막 라인 하나 추가
-                lineRenderer.positionCount++;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerTransform.position);
+                    // 플레이어를 따라다닐 마지막 라인 하나 추가
+                    lineRenderer.positionCount++;
+                    lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerLineTransform.position);
 
-                // 노드 상태 업데이트 (finalNode 활성화)
-                UpdateNodeStates();
 
-                Debug.Log("모든 경유지 통과! 마지막 점을 연결하세요.");
-            }
-            else
-            {
-                // FinalNode가 없으면 기존처럼 바로 종료
-                FinishPath();
+                    // 노드 상태 업데이트 (finalNode 활성화)
+                    UpdateNodeStates();
+
+                    Debug.Log("모든 경유지 통과! 마지막 점을 연결하세요.");
+                }
+                else
+                {
+                    // FinalNode가 없으면 기존처럼 바로 종료
+                    FinishPath();
+                }
             }
         }
         else
         {
             // 아직 리스트가 남았음 -> 다음 점 추적 라인 생성
-            lineRenderer.positionCount++;
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerTransform.position);
+            if (completedEmotion == DataManager.Instance.targetEmotion)
+            {
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerLineTransform.position);
+            }
             UpdateNodeStates();
         }
     }
@@ -239,7 +243,7 @@ public class PathManager : MonoBehaviour
             lineRenderer.SetPosition(lastIndex, targetPos);
         }
 
-        Debug.Log("완벽한 한붓그리기 완성!");
+        Debug.Log("한붓그리기 완성!");
 
         // 모든 노드(FinalNode 포함) 완료 색상으로
         foreach (var node in pathNodes)
@@ -263,6 +267,8 @@ public class PathManager : MonoBehaviour
 
     public void SwitchToMapCamera()
     {
+        mouseLook.enabled = false;
+        playerTransform.rotation = mapCam.transform.rotation;
         if (playerCam != null && mapCam != null)
         {
             playerCam.Priority = 0;
@@ -272,6 +278,7 @@ public class PathManager : MonoBehaviour
 
     public void SwitchToPlayerCamera()
     {
+        mouseLook.enabled = true;
         if (playerCam != null && mapCam != null)
         {
             playerCam.Priority = 10;
