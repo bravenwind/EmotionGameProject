@@ -1,0 +1,203 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Collections;
+
+// 1. 상태를 정의하는 Enum (필요에 따라 추가/수정하세요)
+public enum TitleSceneUIState
+{
+    None,
+    Pause,
+    Settings,   // 설정 창
+    InGame,     // 게임 플레이 중 HUD
+    GameSuccess,    // 게임 오버 창
+    GameFail,
+    Menu,
+}
+
+public class TitleSceneUIManager : MonoBehaviour
+{
+    public static TitleSceneUIManager Instance { get; private set; }
+
+    // 2. 인스펙터에서 Enum과 오브젝트를 짝지을 수 있게 만든 클래스
+    [System.Serializable]
+    public class UIStateMapping
+    {
+        public TitleSceneUIState state;       // 어떤 상태일 때?
+        public GameObject uiObject; // 어떤 UI를 켤 것인가?
+    }
+
+    [Header("UI 등록 설정")]
+    // 이 리스트에 UI 오브젝트들을 등록하고 Enum을 지정하세요.
+    public List<UIStateMapping> uiList = new List<UIStateMapping>();
+
+    [Header("초기 상태")]
+    public TitleSceneUIState startState = TitleSceneUIState.InGame;
+
+    [Header("UI 설정")]
+    [Tooltip("화면을 가릴 검은색 이미지의 CanvasGroup 컴포넌트")]
+    public CanvasGroup fadeCanvasGroup;
+
+    [Tooltip("페이드 인 되는 시간 (초)")]
+    public enum FadeState
+    {
+        FadeIn,
+        FadeOut
+    }
+
+    public float fadeDuration = 1.0f;
+
+    // 현재 상태를 저장하는 변수
+    private TitleSceneUIState currentState;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SceneFade(FadeState.FadeIn));
+        // 게임 시작 시 초기 상태로 진입
+        SetState(startState);
+    }
+
+    private void Update()
+    {
+        // 매 프레임 현재 상태에 따른 로직 실행
+        UpdateState();
+    }
+
+    // ==========================================
+    // 핵심 기능 1: 상태 변경 (SetState)
+    // ==========================================
+    public void SetState(TitleSceneUIState newState)
+    {
+        currentState = newState;
+        Debug.Log($"상태 변경: {currentState}");
+
+        // 등록된 모든 UI를 순회하며 상태에 맞는 것만 켜고, 나머지는 끕니다.
+        foreach (var mapping in uiList)
+        {
+            if (mapping.uiObject != null)
+            {
+                // 현재 상태와 매핑된 상태가 같으면 true(켜짐), 아니면 false(꺼짐)
+                bool isActive = (mapping.state == newState);
+                mapping.uiObject.SetActive(isActive);
+            }
+        }
+
+        // 상태 진입 시 1회성 로직이 필요하다면 여기에 작성 (예: 점수 초기화 등)
+        OnEnterState(newState);
+    }
+
+    // ==========================================
+    // 핵심 기능 2: 상태별 프레임 로직 (UpdateState)
+    // ==========================================
+    private void UpdateState()
+    {
+        switch (currentState)
+        {
+            //case UIState.MainMenu:
+            //    // 메인 메뉴에서의 로직 (예: 아무 키나 누르면 게임 시작)
+            //    if (Input.GetKeyDown(KeyCode.Space))
+            //    {
+            //        Debug.Log("게임 시작!");
+            //        SetState(UIState.InGame);
+            //    }
+            //    break;
+
+            case TitleSceneUIState.InGame:
+                // 게임 중 로직 (예: ESC 누르면 일시정지/설정)
+                //if (Input.GetKeyDown(KeyCode.Escape))
+                //{
+                //    SetState(UIState.Settings);
+                //}
+                break;
+
+            case TitleSceneUIState.Settings:
+                // 설정 창 로직 (예: ESC 누르면 다시 게임으로)
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    SetState(TitleSceneUIState.InGame);
+                }
+                break;
+
+            case TitleSceneUIState.GameSuccess:
+                // 게임 오버 로직 (예: R키로 재시작)
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    SceneManager.LoadScene("LevelDesign");
+                }
+                break;
+            case TitleSceneUIState.Pause:
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+                {
+                    SetState(TitleSceneUIState.InGame);
+                }
+                break;
+        }
+    }
+
+    // (선택 사항) 상태 진입 시 추가 처리를 위한 함수
+    private void OnEnterState(TitleSceneUIState state)
+    {
+        switch (state)
+        {
+            case TitleSceneUIState.InGame:
+                Time.timeScale = 1f; // 게임 속도 정상화
+                GUI.enabled = true;
+                break;
+            case TitleSceneUIState.Settings:
+                Time.timeScale = 0f; // 게임 일시 정지
+                GUI.enabled = false;
+                break;
+            case TitleSceneUIState.Pause:
+                Time.timeScale = 0f;
+                break;
+            case TitleSceneUIState.GameFail:
+                break;
+        }
+    }
+
+    public IEnumerator SceneFade(FadeState fadeInOut)
+    {
+        if (fadeCanvasGroup == null) yield break;
+        fadeCanvasGroup.blocksRaycasts = true; // 입력 차단 시작
+
+        bool fadeIn = fadeInOut == FadeState.FadeIn;
+        bool fadeOut = fadeInOut == FadeState.FadeOut;
+
+        yield return StartCoroutine(Fade(fadeCanvasGroup, fadeInOut, fadeDuration));
+
+        if (fadeIn)
+        {
+            fadeCanvasGroup.alpha = 0f; // 확실하게 투명하게
+            fadeCanvasGroup.blocksRaycasts = false; // [중요!] 페이드인이 끝나면 반드시 입력을 다시 허용해야 합니다.
+        }
+        if (fadeOut)
+        {
+            SceneManager.LoadScene("Main");
+        }
+    }
+
+    public IEnumerator Fade(CanvasGroup fadeCanvasGroup, FadeState fadeInOut, float fadeDuration)
+    {
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            // Time.deltaTime 대신 unscaledDeltaTime 사용 (아래 2번 이유 참조)
+            timer += Time.unscaledDeltaTime;
+
+            if (fadeInOut == FadeState.FadeIn)
+            {
+                fadeCanvasGroup.alpha = 1 - Mathf.Clamp01(timer / fadeDuration);
+            }
+            if (fadeInOut == FadeState.FadeOut)
+            {
+                fadeCanvasGroup.alpha = Mathf.Clamp01(timer / fadeDuration);
+            }
+            yield return null;
+        }
+    }
+}
