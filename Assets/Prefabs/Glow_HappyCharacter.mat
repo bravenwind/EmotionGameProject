@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Glow_Green_Target
+  m_Name: Glow_HappyCharacter
   m_Shader: {fileID: -6465566751694194690, guid: 4f961800b27bd1044a507cee4fa856a2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9b57d40f1e75c0543bc623dbb794a38d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_1ee298716386442685709c590e93f839_Texture_1_Texture2D:
@@ -50,15 +50,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FresnelPower: 0.93
+    - _FresnelPower: 2
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _BaseColor: {r: 18.71698, g: 18.71698, b: 18.71698, a: 0}
-    - _FresnelColor: {r: 0, g: 766.99664, b: 0, a: 0}
+    - _BaseColor: {r: 24.988638, g: 24.988638, b: 24.988638, a: 1}
+    - _FresnelColor: {r: 2, g: 0, b: 0.8155594, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &3786161044369015369
+--- !u!114 &2184858540435046403
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
