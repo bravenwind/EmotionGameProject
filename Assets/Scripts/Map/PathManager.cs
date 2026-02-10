@@ -7,16 +7,12 @@ using UnityEngine.Rendering.Universal;
 public class PathManager : MonoBehaviour
 {
     [Header("Camera Settings")]
-    public CinemachineCamera playerCam;
     public CinemachineCamera mapCam;
     public GameObject skyboxCam;
     public Camera mainCam;
     public float mapCamZpos = -6000f;
-    public MouseLook mouseLook;
-    public Transform playerTransform;
 
     [Header("Settings")]
-    public Transform playerLineTransform;
     public float lineWidth = 0.1f;
 
     [Header("Materials")]
@@ -30,7 +26,7 @@ public class PathManager : MonoBehaviour
     // ★ [추가됨] 리스트를 다 돌고 나서 마지막으로 닫아줄 점 (보통 시작점인 pathNodes[0]을 넣으면 됨)
     public PathNode finalNode;
 
-    public Emotion completedEmotion;
+    public EmotionState completedEmotion;
 
     [Header("Debug")]
     public CinemachineCamera happyMapCam;
@@ -83,6 +79,10 @@ public class PathManager : MonoBehaviour
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
             pathNodes[i].emotion = completedEmotion;
+            if (completedEmotion == DataManager.Instance.targetEmotion)
+            {
+                pathNodes[i].transform.localScale *= 2.0f;
+            }
         }
 
         // 만약 finalNode가 설정되어 있다면 그것도 매니저 연결 (보통 리스트 안에 있어서 중복되겠지만 안전하게)
@@ -90,9 +90,9 @@ public class PathManager : MonoBehaviour
 
         UpdateNodeStates();
 
-        if (playerCam != null && mapCam != null)
+        if (DataManager.Instance.playerCam != null && mapCam != null)
         {
-            playerCam.Priority = 10;
+            DataManager.Instance.playerCam.Priority = 10;
             mapCam.Priority = 0;
         }
 
@@ -101,12 +101,12 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
-        if (isLineStarted && !isFinished && playerLineTransform != null)
+        if (isLineStarted && !isFinished && DataManager.Instance.playerLineTransform != null)
         {
             int lastIndex = lineRenderer.positionCount - 1;
             if (lastIndex >= 0)
             {
-                lineRenderer.SetPosition(lastIndex, playerLineTransform.position);
+                lineRenderer.SetPosition(lastIndex, DataManager.Instance.playerLineTransform.position);
             }
         }
     }
@@ -200,7 +200,7 @@ public class PathManager : MonoBehaviour
 
                     // 플레이어를 따라다닐 마지막 라인 하나 추가
                     lineRenderer.positionCount++;
-                    lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerLineTransform.position);
+                    lineRenderer.SetPosition(lineRenderer.positionCount - 1, DataManager.Instance.playerLineTransform.position);
 
 
                     // 노드 상태 업데이트 (finalNode 활성화)
@@ -220,8 +220,8 @@ public class PathManager : MonoBehaviour
             // 아직 리스트가 남았음 -> 다음 점 추적 라인 생성
             if (completedEmotion == DataManager.Instance.targetEmotion)
             {
-                lineRenderer.positionCount++;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, playerLineTransform.position);
+                lineRenderer.positionCount++;   
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, DataManager.Instance.playerLineTransform.position);
             }
             UpdateNodeStates();
         }
@@ -245,6 +245,8 @@ public class PathManager : MonoBehaviour
 
         Debug.Log("한붓그리기 완성!");
 
+        DataManager.Instance.missionDict[DataManager.Instance.mission2] = true;
+
         // 모든 노드(FinalNode 포함) 완료 색상으로
         foreach (var node in pathNodes)
         {
@@ -267,21 +269,21 @@ public class PathManager : MonoBehaviour
 
     public void SwitchToMapCamera()
     {
-        mouseLook.enabled = false;
-        playerTransform.rotation = mapCam.transform.rotation;
-        if (playerCam != null && mapCam != null)
+        DataManager.Instance.mouseLook.enabled = false;
+        DataManager.Instance.playerTransform.rotation = mapCam.transform.rotation;
+        if (DataManager.Instance.playerCam != null && mapCam != null)
         {
-            playerCam.Priority = 0;
+            DataManager.Instance.playerCam.Priority = 0;
             mapCam.Priority = 10;
         }
     }
 
     public void SwitchToPlayerCamera()
     {
-        mouseLook.enabled = true;
-        if (playerCam != null && mapCam != null)
+        DataManager.Instance.mouseLook.enabled = true;
+        if (DataManager.Instance.playerCam != null && mapCam != null)
         {
-            playerCam.Priority = 10;
+            DataManager.Instance.playerCam.Priority = 10;
             mapCam.Priority = 0;
         }
     }

@@ -26,6 +26,7 @@ public class DebugMenuController : MonoBehaviour
 
     void Start()
     {
+        playerScript = DataManager.Instance.playerTransform.GetComponent<ZeroGravityMovement>();
         // 2. 현재 플레이어 값을 가져와서 InputField에 텍스트로 넣어줌
         UpdateUIFromPlayerValues();
         pressESC.text = "ESC 눌러서 마우스 보이기";
@@ -34,9 +35,9 @@ public class DebugMenuController : MonoBehaviour
         // onEndEdit: 타이핑 중에는 실행 안 되고, 다 쓰고 엔터 칠 때 실행됨
         // 이동 관련
         walkSpeedInput.onValueChanged.AddListener(OnWalkAccelChanged);
-        walkMaxSpeedInput.onValueChanged.AddListener(OnWalkMaxSpeedChanged);
+        walkSpeedInput.onValueChanged.AddListener(OnWalkMaxSpeedChanged);
         sprintSpeedInput.onValueChanged.AddListener(OnSprintAccelChanged);
-        sprintMaxSpeedInput.onValueChanged.AddListener(OnSprintMaxSpeedChanged);
+        sprintSpeedInput.onValueChanged.AddListener(OnSprintMaxSpeedChanged);
 
         // 카메라 관련
         fovBoostInput.onValueChanged.AddListener(OnFovBoostAmountChanged);

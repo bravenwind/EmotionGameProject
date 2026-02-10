@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5925305548817693180
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 10
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -8,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Glow_HappyCharacter
-  m_Shader: {fileID: -6465566751694194690, guid: 4f961800b27bd1044a507cee4fa856a2, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2a89bb7b0dc10dd4c95f8f67123ccefe, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -28,11 +41,11 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9b57d40f1e75c0543bc623dbb794a38d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_1ee298716386442685709c590e93f839_Texture_1_Texture2D:
+    - _MetalicMap:
         m_Texture: {fileID: 2800000, guid: 2954ed0adc8910649954934fdec7621b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_59022379a3ff4909b788ce512fa54913_Texture_1_Texture2D:
+    - _NormalMap:
         m_Texture: {fileID: 2800000, guid: 8bc86a3e7873a784eb414bba9d9137ca, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -58,16 +71,3 @@ Material:
     - _FresnelColor: {r: 2, g: 0, b: 0.8155594, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2184858540435046403
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 10

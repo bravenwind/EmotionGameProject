@@ -11,6 +11,8 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Color hoverColor = Color.gray;
     public float scaleMultiplier = 1.1f;
     public float duration = 0.1f; // 효과가 적용되는 속도
+    public EmotionState hoveredEmotion;
+    public HoveredLevelManager hoveredLevelManager;
 
     private Color originalColor;
 
@@ -19,6 +21,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         targetImage = GetComponent<Image>();
         originalScale = transform.localScale;
         originalColor = targetImage.color;
+        hoveredLevelManager.OnExitHoverLevel();
     }
 
     // 마우스가 들어왔을 때
@@ -27,6 +30,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         StopAllCoroutines(); // 기존 동작 멈춤
         targetImage.color = hoverColor;
         transform.localScale = originalScale * scaleMultiplier;
+        hoveredLevelManager.OnEnterHoverLevel(hoveredEmotion);
 
         // 더 부드러운 연출을 원한다면 여기서 DoTween 같은 라이브러리를 쓰면 좋습니다.
     }
@@ -36,5 +40,6 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         targetImage.color = originalColor;
         transform.localScale = originalScale;
+        hoveredLevelManager.OnExitHoverLevel();
     }
 }

@@ -5,10 +5,10 @@ public class PathNode : MonoBehaviour
     public Transform target;          // Player
     public float destroyDistance = 0.3f;
     public Vector3 originalPosition = Vector3.zero;
-    public Emotion emotion;
+    public EmotionState emotion;
 
     public float absorbTimer = 0.0f;
-    public float absorbSpeed = 30f;   // [변경] 빨려 들어가는 최고 속도
+    public float absorbMaxSpeed = 100f;   // [변경] 빨려 들어가는 최고 속도
     private float completelyAbsorbedTime = 0.6f;
 
     private Rigidbody rb;
@@ -122,7 +122,7 @@ public class PathNode : MonoBehaviour
 
         // ✅ [핵심 수정 2] AddForce 대신 속도를 직접 제어합니다.
         // 기존 maxForce 대신 absorbSpeed 변수를 사용하여 속도를 보간합니다.
-        float currentSpeed = Mathf.Lerp(2f, absorbSpeed, t); // 최소 속도 2f에서 시작하여 빨라짐
+        float currentSpeed = Mathf.Lerp(2f, absorbMaxSpeed, t); // 최소 속도 2f에서 시작하여 빨라짐
 
         // 젤리의 속도를 "플레이어 방향 * 현재 속도"로 고정합니다.
         // 이렇게 하면 옆으로 새지 않고 무조건 플레이어에게 직선으로 날아갑니다.

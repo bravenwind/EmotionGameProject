@@ -1,18 +1,24 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using System.Threading;
 
 // 1. 상태를 정의하는 Enum (필요에 따라 추가/수정하세요)
 public enum GameSceneUIState
 {
-    Pause,
-    Settings,   // 설정 창
-    InGame,     // 게임 플레이 중 HUD
-    GameSuccess,    // 게임 오버 창
-    GameFail,
-    Menu,
-    Help
+    Prologue = 0,
+    InGame = 1,     // 게임 플레이 중 HUD
+    Settings = 2,
+    GameOver = 3,
+}
+
+public enum FadeState
+{
+    FadeIn = 0,
+    FadeOut = 1
 }
 
 public class GameSceneUIManager : MonoBehaviour
@@ -39,16 +45,44 @@ public class GameSceneUIManager : MonoBehaviour
     public CanvasGroup fadeCanvasGroup;
 
     [Tooltip("페이드 인 되는 시간 (초)")]
-    public enum FadeState
-    {
-        FadeIn,
-        FadeOut
-    }
 
     public float fadeDuration = 1.0f;
 
     // 현재 상태를 저장하는 변수
     private GameSceneUIState currentState;
+
+    [Header("프롤로그")]
+    [SerializeField] private Sprite prologue_Happy;
+    [SerializeField] private Sprite prologue_Hope;
+    [SerializeField] private Sprite prologue_Angry;
+    [SerializeField] private Sprite prologue_Sad;
+
+    [SerializeField] private float prologueScale_Happy;
+    [SerializeField] private float prologueScale_Hope;
+    [SerializeField] private float prologueScale_Angry;
+    [SerializeField] private float prologueScale_Sad;
+
+    [SerializeField] private Image prologueImage;
+
+    [Header("감정 아이콘")]
+    [SerializeField] private Sprite happyIcon;
+    [SerializeField] private Sprite hopeIcon;
+    [SerializeField] private Sprite angryIcon;
+    [SerializeField] private Sprite sadIcon;
+
+    [SerializeField] private float happyIconScale;
+    [SerializeField] private float hopeIconScale;
+    [SerializeField] private float angryIconScale;
+    [SerializeField] private float sadIconScale;
+
+    [SerializeField] private Image iconImage;
+
+    [Header("미션 텍스트")]
+    [SerializeField] private ResultStarsUI resultStarsUI;
+
+    [SerializeField] private TMP_Text mission1Text;
+    [SerializeField] private TMP_Text mission2Text;
+    [SerializeField] private TMP_Text mission3Text;
 
     private void Awake()
     {
@@ -57,8 +91,14 @@ public class GameSceneUIManager : MonoBehaviour
 
     private void Start()
     {
+        // 시작하자마자 검은 화면(Alpha 1)으로 세팅하고 시작해야 자연스럽습니다.
+        if (fadeCanvasGroup != null)
+        {
+            fadeCanvasGroup.alpha = 1f;
+            fadeCanvasGroup.gameObject.SetActive(true);
+        }
+
         StartCoroutine(SceneFade(FadeState.FadeIn));
-        // 게임 시작 시 초기 상태로 진입
         SetState(startState);
     }
 
@@ -109,10 +149,10 @@ public class GameSceneUIManager : MonoBehaviour
 
             case GameSceneUIState.InGame:
                 // 게임 중 로직 (예: ESC 누르면 일시정지/설정)
-                //if (Input.GetKeyDown(KeyCode.Escape))
-                //{
-                //    SetState(UIState.Settings);
-                //}
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    SetState(GameSceneUIState.Settings);
+                }
                 break;
 
             case GameSceneUIState.Settings:
@@ -123,39 +163,106 @@ public class GameSceneUIManager : MonoBehaviour
                 }
                 break;
 
-            case GameSceneUIState.GameSuccess:
+            case GameSceneUIState.GameOver:
                 // 게임 오버 로직 (예: R키로 재시작)
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    SceneManager.LoadScene("LevelDesign");
-                }
+                //if (Input.GetKeyDown(KeyCode.R))
+                //{
+                //    SceneManager.LoadScene("LevelDesign");
+                //}
                 break;
-            case GameSceneUIState.Pause:
+            case GameSceneUIState.Prologue:
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
                 {
                     SetState(GameSceneUIState.InGame);
+                    StartCoroutine(Fade(prologueImage.GetComponent<CanvasGroup>(), FadeState.FadeIn, fadeDuration));
                 }
                 break;
         }
     }
 
-    // (선택 사항) 상태 진입 시 추가 처리를 위한 함수
+    private void UpdateEmotionUI(Image targetImage, Sprite happy, float happyScale, Sprite hope, float hopeScale, Sprite angry, float angryScale, Sprite sad, float sadScale)
+    {
+        if (targetImage == null) return;
+
+        EmotionState currentEmotion = DataManager.Instance.targetEmotion;
+        Sprite selectedSprite = null;
+        float selectedScale = 1f;
+
+        switch (currentEmotion)
+        {
+            case EmotionState.Happy:
+                selectedSprite = happy;
+                selectedScale = happyScale;
+                break;
+            case EmotionState.Hope:
+                selectedSprite = hope;
+                selectedScale = hopeScale;
+                break;
+            case EmotionState.Angry:
+                selectedSprite = angry;
+                selectedScale = angryScale;
+                break;
+            case EmotionState.Sad:
+                selectedSprite = sad;
+                selectedScale = sadScale;
+                break;
+        }
+
+        targetImage.sprite = selectedSprite;
+        targetImage.rectTransform.localScale = Vector3.one * selectedScale;
+        targetImage.SetNativeSize();
+    }
+
     private void OnEnterState(GameSceneUIState state)
     {
         switch (state)
         {
             case GameSceneUIState.InGame:
-                Time.timeScale = 1f; // 게임 속도 정상화
+                Time.timeScale = 1f;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                // 공통 함수 사용 (아이콘 설정)
+                UpdateEmotionUI(iconImage, happyIcon, happyIconScale, hopeIcon, hopeIconScale, angryIcon, angryIconScale, sadIcon, sadIconScale);
                 GUI.enabled = true;
                 break;
+
             case GameSceneUIState.Settings:
-                Time.timeScale = 0f; // 게임 일시 정지
+                Time.timeScale = 0f;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 GUI.enabled = false;
                 break;
-            case GameSceneUIState.Pause:
+
+            case GameSceneUIState.Prologue:
                 Time.timeScale = 0f;
+                // 공통 함수 사용 (프롤로그 이미지 설정)
+                UpdateEmotionUI(prologueImage, prologue_Happy, prologueScale_Happy, prologue_Hope, prologueScale_Hope, prologue_Angry, prologueScale_Angry, prologue_Sad, prologueScale_Sad);
                 break;
-            case GameSceneUIState.GameFail:
+
+            case GameSceneUIState.GameOver:
+                Time.timeScale = 0f;
+                DataManager.Instance.mouseLook.enabled = false;
+
+                mission1Text.text = DataManager.Instance.mission1;
+                mission2Text.text = DataManager.Instance.mission2;
+                mission3Text.text = DataManager.Instance.mission3;
+
+                if (DataManager.Instance.limitTime - DataManager.Instance.currentTime <= DataManager.Instance.targetTime)
+                {
+                    DataManager.Instance.missionDict[DataManager.Instance.mission3] = true;
+                }
+
+                int successedCount = 0;
+
+                foreach (bool successed in DataManager.Instance.missionDict.Values)
+                {
+                    if (successed) 
+                    {
+                        successedCount++;
+                    }
+                }
+                
+                resultStarsUI.SetStarIndex(successedCount);
                 break;
         }
     }
@@ -177,27 +284,57 @@ public class GameSceneUIManager : MonoBehaviour
         }
         if (fadeOut)
         {
-            SceneManager.LoadScene("Main");
+            //SceneManager.LoadScene("Game");
         }
+    }
+
+    public void StartFade(FadeStateComponent fadeStateComponent)
+    {
+        FadeState fadeState = fadeStateComponent.fadeState;
+        StartCoroutine(SceneFade(fadeState));
     }
 
     public IEnumerator Fade(CanvasGroup fadeCanvasGroup, FadeState fadeInOut, float fadeDuration)
     {
-        float timer = 0f;
-        while (timer < fadeDuration)
-        {
-            // Time.deltaTime 대신 unscaledDeltaTime 사용 (아래 2번 이유 참조)
-            timer += Time.unscaledDeltaTime;
+        fadeCanvasGroup.gameObject.SetActive(true);
 
-            if (fadeInOut == FadeState.FadeIn)
+        // 시작/목표 알파값 정의
+        float startAlpha = (fadeInOut == FadeState.FadeIn) ? 1f : 0f;
+        float endAlpha = (fadeInOut == FadeState.FadeIn) ? 0f : 1f;
+
+        // 초기값 적용
+        fadeCanvasGroup.alpha = startAlpha;
+
+        // 0.5초 대기 (이 시간 동안 렉이 걸리든 말든 상관없음)
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        if (fadeDuration > 0f)
+        {
+            // [해결 핵심] 누적(+=) 방식 대신, 현재 시각을 기록합니다.
+            // 0.5초 대기가 끝난 '지금'이 바로 애니메이션 시작 시점입니다.
+            float startTime = Time.unscaledTime;
+
+            // 경과 시간이 duration보다 작은 동안 반복
+            while (Time.unscaledTime < startTime + fadeDuration)
             {
-                fadeCanvasGroup.alpha = 1 - Mathf.Clamp01(timer / fadeDuration);
+                // [해결 핵심] (현재 시간 - 시작 시간)으로 순수한 경과 시간을 구합니다.
+                // 이렇게 하면 이전 프레임의 델타타임이 아무리 커도 영향을 받지 않습니다.
+                float timer = Time.unscaledTime - startTime;
+
+                float progress = timer / fadeDuration;
+
+                fadeCanvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, progress);
+
+                yield return null;
             }
-            if (fadeInOut == FadeState.FadeOut)
-            {
-                fadeCanvasGroup.alpha = Mathf.Clamp01(timer / fadeDuration);
-            }
-            yield return null;
+        }
+
+        // 최종값 확정
+        fadeCanvasGroup.alpha = endAlpha;
+
+        if (fadeInOut == FadeState.FadeIn)
+        {
+            fadeCanvasGroup.gameObject.SetActive(false);
         }
     }
 }
