@@ -45,6 +45,7 @@ public class PathNode : MonoBehaviour
         // 1. 순서가 되면 Trigger를 켜서 통과 가능하게 함. 아니면 꺼서 물리 충돌(벽)로 만듦
         isCurrentTarget = isTarget;
         myCollider.isTrigger = isTarget;
+        emotion = manager.completedEmotion;
 
         // 2. 머터리얼 변경 (내 차례면 지정된 색, 아니면 기본 색)
         if (myRenderer != null)
@@ -131,6 +132,24 @@ public class PathNode : MonoBehaviour
 
     void OnAbsorbed()
     {
+        if (emotion == DataManager.Instance.targetEmotion)
+        {
+            DataManager.Instance.currentEmotionScore += DataManager.Instance.emotionPlusScorePerObject;
+        }
+        else
+        {
+            DataManager.Instance.currentEmotionScore -= DataManager.Instance.emotionMinusScorePerObject;
+        }
+
+        DataManager.Instance.currentEmotionScore = Mathf.Clamp(DataManager.Instance.currentEmotionScore, 0, DataManager.Instance.maxEmotionScore);
+
+        if (DataManager.Instance.currentEmotionScore >= DataManager.Instance.maxEmotionScore)
+        {
+            DataManager.Instance.missionDict[DataManager.Instance.mission1] = true;
+            DataManager.Instance.mission1Success = true;
+        }
+
+        GameSceneUIManager.Instance.UpdateEmotionScoreImage();
         gameObject.SetActive(false);
     }
 }

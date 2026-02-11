@@ -84,6 +84,9 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private TMP_Text mission2Text;
     [SerializeField] private TMP_Text mission3Text;
 
+    [Header("감정 점수 이미지")]
+    [SerializeField] private Image emotionScoreImage;
+
     private void Awake()
     {
         Instance = this;
@@ -250,6 +253,7 @@ public class GameSceneUIManager : MonoBehaviour
                 if (DataManager.Instance.limitTime - DataManager.Instance.currentTime <= DataManager.Instance.targetTime)
                 {
                     DataManager.Instance.missionDict[DataManager.Instance.mission3] = true;
+                    DataManager.Instance.mission3Success = true;
                 }
 
                 int successedCount = 0;
@@ -336,5 +340,10 @@ public class GameSceneUIManager : MonoBehaviour
         {
             fadeCanvasGroup.gameObject.SetActive(false);
         }
+    }
+
+    public void UpdateEmotionScoreImage()
+    {
+        emotionScoreImage.fillAmount = DataManager.Instance.currentEmotionScore / DataManager.Instance.maxEmotionScore;
     }
 }

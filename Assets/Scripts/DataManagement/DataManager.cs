@@ -51,10 +51,10 @@ public class DataManager : MonoBehaviour
     public bool mission3Success = false;
 
     [Header("감정 게이지")]
-    public float maxEmotionValue = 150;
-    public float currentEmotionValue = 0;
-    public float emotionPlusValuePerObject = 10;
-    public float emotionMinusValuePerObject = 5;
+    public float maxEmotionScore = 150;
+    public float currentEmotionScore = 0;
+    public float emotionPlusScorePerObject = 10;
+    public float emotionMinusScorePerObject = 5;
 
     private void Awake()
     {
@@ -74,6 +74,7 @@ public class DataManager : MonoBehaviour
         missionDict.Add(mission3, mission3Success);
 
         targetTime = (float)char.GetNumericValue(mission3[0]) * 60.0f;
+        ResetGameData();
     }
 
     public void GameOver()
@@ -82,5 +83,11 @@ public class DataManager : MonoBehaviour
         {
             GameSceneUIManager.Instance.SetState(GameSceneUIState.GameOver);
         }
+    }
+
+    public void ResetGameData()
+    {
+        currentEmotionScore = 0;
+        currentTime = limitTime;
     }
 }

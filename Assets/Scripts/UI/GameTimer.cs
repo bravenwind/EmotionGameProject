@@ -13,9 +13,7 @@ public class GameTimer : MonoBehaviour
 
     private void Start()
     {
-        // 4. 시간 설정
-        // 안전하게 변환: char를 string으로 만든 뒤 int.Parse 사용하거나 GetNumericValue 사용
-        DataManager.Instance.currentTime = DataManager.Instance.limitTime;
+
     }
 
     void Update()

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
+using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -8,6 +9,7 @@ public class PathManager : MonoBehaviour
 {
     [Header("Camera Settings")]
     public CinemachineCamera mapCam;
+    public CinemachineBrain brain;
     public GameObject skyboxCam;
     public Camera mainCam;
     public float mapCamZpos = -6000f;
@@ -246,6 +248,7 @@ public class PathManager : MonoBehaviour
         Debug.Log("한붓그리기 완성!");
 
         DataManager.Instance.missionDict[DataManager.Instance.mission2] = true;
+        DataManager.Instance.mission2Success = true;
 
         // 모든 노드(FinalNode 포함) 완료 색상으로
         foreach (var node in pathNodes)
@@ -276,6 +279,7 @@ public class PathManager : MonoBehaviour
             DataManager.Instance.playerCam.Priority = 0;
             mapCam.Priority = 10;
         }
+        StartCoroutine(WaitForBlendToFinish());
     }
 
     public void SwitchToPlayerCamera()
@@ -286,5 +290,25 @@ public class PathManager : MonoBehaviour
             DataManager.Instance.playerCam.Priority = 10;
             mapCam.Priority = 0;
         }
+    }
+
+    IEnumerator WaitForBlendToFinish()
+    {
+        // 중요: 블렌딩이 시작되기까지 1프레임 정도 딜레이가 있을 수 있음
+        yield return null;
+
+        // 블렌딩이 진행 중이라면 계속 대기
+        while (brain.IsBlending)
+        {
+            yield return null;
+        }
+
+        // 블렌딩이 끝난 후 실행할 함수
+        OnTransitionComplete();
+    }
+
+    public void OnTransitionComplete()
+    {
+        GameSceneUIManager.Instance.SetState(GameSceneUIState.GameOver);
     }
 }

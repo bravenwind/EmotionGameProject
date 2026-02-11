@@ -33,6 +33,7 @@ public class SceneChanger : MonoBehaviour
                 break;
         }
         StartCoroutine(SceneFade(FadeState.FadeOut, gameSceneName));
+        DataManager.Instance.ResetGameData();
     }
 
     public void ChangeToTitleScene()

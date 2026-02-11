@@ -406,6 +406,7 @@ RectTransform:
   - {fileID: 1097104132}
   - {fileID: 1873141018}
   - {fileID: 2007355710}
+  - {fileID: 1905347883}
   m_Father: {fileID: 438252638}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1198,6 +1199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCam: {fileID: 1795496002}
+  brain: {fileID: 1680340030}
   skyboxCam: {fileID: 440205188}
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
@@ -7290,6 +7292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCam: {fileID: 0}
+  brain: {fileID: 0}
   skyboxCam: {fileID: 0}
   mainCam: {fileID: 0}
   mapCamZpos: -6000
@@ -8414,6 +8417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCam: {fileID: 1809373123}
+  brain: {fileID: 1680340030}
   skyboxCam: {fileID: 440205188}
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
@@ -8956,7 +8960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &415255749
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9395,7 +9399,6 @@ RectTransform:
   - {fileID: 6826788}
   - {fileID: 1274541479}
   - {fileID: 415255749}
-  - {fileID: 1905347883}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10040,7 +10043,7 @@ MonoBehaviour:
   hopeCharacter: {fileID: 1586157142}
   angryCharacter: {fileID: 641415236}
   sadCharacter: {fileID: 961012233}
-  tempCharacter: {fileID: 0}
+  tempCharacter: {fileID: 1931781654}
 --- !u!1 &466561033
 GameObject:
   m_ObjectHideFlags: 0
@@ -15583,10 +15586,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetEmotion: 2
-  happyCharacter: {fileID: 0}
-  hopeCharacter: {fileID: 0}
-  angryCharacter: {fileID: 0}
-  sadCharacter: {fileID: 0}
+  happyCharacter: {fileID: 603488494}
+  hopeCharacter: {fileID: 1586157142}
+  angryCharacter: {fileID: 641415236}
+  sadCharacter: {fileID: 961012233}
   spawnPoint: {fileID: 0}
   selectedCharacter: {fileID: 0}
   playerCam: {fileID: 0}
@@ -15602,10 +15605,10 @@ MonoBehaviour:
   mission1Success: 0
   mission2Success: 0
   mission3Success: 0
-  maxEmotionValue: 150
-  currentEmotionValue: 0
-  emotionPlusValuePerObject: 10
-  emotionMinusValuePerObject: 5
+  maxEmotionScore: 150
+  currentEmotionScore: 0
+  emotionPlusScorePerObject: 10
+  emotionMinusScorePerObject: 5
 --- !u!1 &831770313
 GameObject:
   m_ObjectHideFlags: 0
@@ -25084,6 +25087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCam: {fileID: 74204253}
+  brain: {fileID: 1680340030}
   skyboxCam: {fileID: 440205188}
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
@@ -25346,7 +25350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1274541479
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26174,6 +26178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCam: {fileID: 1036599842}
+  brain: {fileID: 1680340030}
   skyboxCam: {fileID: 440205188}
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
@@ -29103,6 +29108,7 @@ MonoBehaviour:
   mission1Text: {fileID: 299579856}
   mission2Text: {fileID: 119400330}
   mission3Text: {fileID: 2144127500}
+  emotionScoreImage: {fileID: 1539473252}
 --- !u!4 &1416969807
 Transform:
   m_ObjectHideFlags: 0
@@ -39824,13 +39830,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905347882}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1539473251}
-  m_Father: {fileID: 438252638}
+  m_Father: {fileID: 6826788}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -40358,6 +40364,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926656445}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1931781654 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5239663849593720591, guid: 7929aafe70ab2d04191a315f0555948c, type: 3}
+  m_PrefabInstance: {fileID: 951520314}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1938279964
 GameObject:
   m_ObjectHideFlags: 0
