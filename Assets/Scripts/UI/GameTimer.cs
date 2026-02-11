@@ -11,11 +11,6 @@ public class GameTimer : MonoBehaviour
     [SerializeField]
     private TMP_Text timerText;
 
-    private void Start()
-    {
-
-    }
-
     void Update()
     {
         // ★ 게임이 종료되었다면 더 이상 타이머 코드를 실행하지 않음

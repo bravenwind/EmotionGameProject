@@ -16,15 +16,6 @@ public class DataManager : MonoBehaviour
 
     public EmotionState targetEmotion = EmotionState.Happy;
 
-    [Header("캐릭터 프리팹 설정")]
-    public GameObject happyCharacter;
-    public GameObject hopeCharacter;
-    public GameObject angryCharacter;
-    public GameObject sadCharacter;
-
-    [Header("생성 위치 설정 (비워두면 프리팹 기본 위치 사용)")]
-    public Transform spawnPoint;
-
     [Header("현재 선택된 캐릭터 (자동 할당)")]
     public GameObject selectedCharacter;
 
@@ -33,6 +24,7 @@ public class DataManager : MonoBehaviour
     public MouseLook mouseLook;
     public Transform playerTransform;
     public Transform playerLineTransform;
+    public Animator playerAnimator;
 
     [Header("제한시간")]
     public float limitTime = 300f;

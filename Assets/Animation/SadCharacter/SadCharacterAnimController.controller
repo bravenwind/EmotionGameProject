@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HopeCharacter_Clear
+  m_Name: SadCharacter_Clear
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -89,7 +89,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HopeCharacter_ Fail
+  m_Name: SadCharacter_ Fail
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -114,7 +114,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HopeCharacterAnimController
+  m_Name: SadCharacterAnimController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: IsMoving
@@ -167,7 +167,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HopeCharacter_Dash
+  m_Name: SadCharacter_Dash
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

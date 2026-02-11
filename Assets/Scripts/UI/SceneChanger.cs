@@ -4,7 +4,11 @@ using System.Collections;
 
 public class SceneChanger : MonoBehaviour
 {
-    public string gameSceneName = "Game";
+    public string HappyCharacterSceneName = "HappyCharacterLevel";
+    public string HopeCharacterSceneName = "HopeCharacterLevel";
+    public string AngryCharacterSceneName = "AngryCharacterLevel";
+    public string SadCharacterSceneName = "SadCharacterLevel";
+
     public string titleSceneName = "Title";
 
     [Header("UI ¼³Á¤")]
@@ -17,22 +21,27 @@ public class SceneChanger : MonoBehaviour
     public void ChangeToGameScene(EmotionStateComponent emotionStateComponent)
     {
         EmotionState emotionState = emotionStateComponent.emotionState;
+        string sceneName = "";
         switch (emotionState)
         {
             case EmotionState.Happy:
                 DataManager.Instance.targetEmotion = EmotionState.Happy;
+                sceneName = HappyCharacterSceneName;
                 break;
             case EmotionState.Hope:
                 DataManager.Instance.targetEmotion = EmotionState.Hope;
+                sceneName = HopeCharacterSceneName;
                 break;
             case EmotionState.Angry:
                 DataManager.Instance.targetEmotion = EmotionState.Angry;
+                sceneName = AngryCharacterSceneName;
                 break;
             case EmotionState.Sad:
                 DataManager.Instance.targetEmotion = EmotionState.Sad;
+                sceneName = SadCharacterSceneName;
                 break;
         }
-        StartCoroutine(SceneFade(FadeState.FadeOut, gameSceneName));
+        StartCoroutine(SceneFade(FadeState.FadeOut, sceneName));
         DataManager.Instance.ResetGameData();
     }
 

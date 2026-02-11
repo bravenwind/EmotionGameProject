@@ -16,7 +16,9 @@ public class PathManager : MonoBehaviour
 
     [Header("Settings")]
     public float lineWidth = 0.1f;
-    public float nodeScaleMultiplier = 2.0f;
+    public Vector3 originalNodeScale;
+    public float targetNodeScaleMultiplier = 2.4f;
+    public float nonTargetNodeScaleMultiplier = 0.7f;
 
     [Header("Materials")]
     public Material defaultMaterial;
@@ -77,11 +79,14 @@ public class PathManager : MonoBehaviour
         isWaitingForFinal = false; // 초기화
         lineRenderer.positionCount = 0;
 
+        originalNodeScale = pathNodes[0].transform.localScale;
+
         for (int i = 0; i < pathNodes.Count; i++)
         {
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
             pathNodes[i].emotion = completedEmotion;
+            pathNodes[i].transform.localScale = originalNodeScale * nonTargetNodeScaleMultiplier;
         }
 
         // 만약 finalNode가 설정되어 있다면 그것도 매니저 연결 (보통 리스트 안에 있어서 중복되겠지만 안전하게)
@@ -128,7 +133,7 @@ public class PathManager : MonoBehaviour
                 pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
                 if (completedEmotion == DataManager.Instance.targetEmotion)
                 {
-                    pathNodes[i].transform.localScale *= nodeScaleMultiplier;
+                    pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
                 }
             }
             else

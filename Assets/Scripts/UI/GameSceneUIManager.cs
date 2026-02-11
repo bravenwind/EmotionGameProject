@@ -85,7 +85,7 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private TMP_Text mission3Text;
 
     [Header("감정 점수 이미지")]
-    [SerializeField] private Image emotionScoreImage;
+    [SerializeField] private Image emotionScoreFillImage;
 
     private void Awake()
     {
@@ -101,6 +101,15 @@ public class GameSceneUIManager : MonoBehaviour
             fadeCanvasGroup.gameObject.SetActive(true);
         }
 
+        if (prologueImage != null)
+        {
+            prologueImage.gameObject.SetActive(true);
+        }
+
+        if (emotionScoreFillImage != null)
+        {
+            emotionScoreFillImage.fillAmount = 0.0f;
+        }
         StartCoroutine(SceneFade(FadeState.FadeIn));
         SetState(startState);
     }
@@ -265,7 +274,15 @@ public class GameSceneUIManager : MonoBehaviour
                         successedCount++;
                     }
                 }
-                
+
+                if (successedCount == 0)
+                {
+                    DataManager.Instance.playerAnimator.SetTrigger("GameFail");
+                }
+                else if (successedCount >= 2)
+                {
+                    DataManager.Instance.playerAnimator.SetTrigger("GameClear");
+                }
                 resultStarsUI.SetStarIndex(successedCount);
 
                 Cursor.visible = true;
@@ -347,6 +364,6 @@ public class GameSceneUIManager : MonoBehaviour
 
     public void UpdateEmotionScoreImage()
     {
-        emotionScoreImage.fillAmount = DataManager.Instance.currentEmotionScore / DataManager.Instance.maxEmotionScore;
+        emotionScoreFillImage.fillAmount = DataManager.Instance.currentEmotionScore / DataManager.Instance.maxEmotionScore;
     }
 }
