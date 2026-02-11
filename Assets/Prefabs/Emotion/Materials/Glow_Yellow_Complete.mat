@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Glow_Green_Complete
+  m_Name: Glow_Yellow_Complete
   m_Shader: {fileID: -6465566751694194690, guid: 1bf4c401e5beebc4e8a166e1b78538d4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -59,7 +59,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 59.465225, b: 0.5537067, a: 0}
-    - _FresnelColor: {r: 0, g: 0.0009765625, b: 0.00006847177, a: 0}
+    - _BaseColor: {r: 79.39076, g: 59.465225, b: 0, a: 0}
+    - _FresnelColor: {r: 0.0013037875, g: 0.0009765625, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

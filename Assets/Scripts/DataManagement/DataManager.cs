@@ -56,6 +56,13 @@ public class DataManager : MonoBehaviour
     public float emotionPlusScorePerObject = 10;
     public float emotionMinusScorePerObject = 5;
 
+    [Header("커지는 캐릭터")]
+    public int maxScaleLevel = 5;
+    public List<float> playerScalePerLevel = new List<float>(5);
+    public int emotionForLevelUp = 5;
+    public int currentEmotionCount = 0;
+    public int currentScaleLevel = 1;
+
     private void Awake()
     {
         if (Instance == null)
@@ -69,12 +76,13 @@ public class DataManager : MonoBehaviour
             return;
         }
 
+        ResetGameData();
+
         missionDict.Add(mission1, mission1Success);
         missionDict.Add(mission2, mission2Success);
         missionDict.Add(mission3, mission3Success);
 
         targetTime = (float)char.GetNumericValue(mission3[0]) * 60.0f;
-        ResetGameData();
     }
 
     public void GameOver()
@@ -89,5 +97,11 @@ public class DataManager : MonoBehaviour
     {
         currentEmotionScore = 0;
         currentTime = limitTime;
+        currentEmotionCount = 0;
+        currentScaleLevel = 1;
+
+        mission1Success = false;
+        mission2Success = false;
+        mission3Success = false;
     }
 }

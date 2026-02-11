@@ -142,6 +142,12 @@ public class PathNode : MonoBehaviour
         }
 
         DataManager.Instance.currentEmotionScore = Mathf.Clamp(DataManager.Instance.currentEmotionScore, 0, DataManager.Instance.maxEmotionScore);
+        DataManager.Instance.currentEmotionCount++;
+
+        if (DataManager.Instance.currentEmotionCount >= DataManager.Instance.emotionForLevelUp)
+        {
+            DataManager.Instance.currentScaleLevel++;
+        }
 
         if (DataManager.Instance.currentEmotionScore >= DataManager.Instance.maxEmotionScore)
         {

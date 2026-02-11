@@ -16,6 +16,7 @@ public class PathManager : MonoBehaviour
 
     [Header("Settings")]
     public float lineWidth = 0.1f;
+    public float nodeScaleMultiplier = 2.0f;
 
     [Header("Materials")]
     public Material defaultMaterial;
@@ -81,10 +82,6 @@ public class PathManager : MonoBehaviour
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
             pathNodes[i].emotion = completedEmotion;
-            if (completedEmotion == DataManager.Instance.targetEmotion)
-            {
-                pathNodes[i].transform.localScale *= 2.0f;
-            }
         }
 
         // 만약 finalNode가 설정되어 있다면 그것도 매니저 연결 (보통 리스트 안에 있어서 중복되겠지만 안전하게)
@@ -129,6 +126,10 @@ public class PathManager : MonoBehaviour
             {
                 // 현재 목표 노드 (활성화)
                 pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
+                if (completedEmotion == DataManager.Instance.targetEmotion)
+                {
+                    pathNodes[i].transform.localScale *= nodeScaleMultiplier;
+                }
             }
             else
             {

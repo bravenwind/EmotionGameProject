@@ -267,6 +267,9 @@ public class GameSceneUIManager : MonoBehaviour
                 }
                 
                 resultStarsUI.SetStarIndex(successedCount);
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 break;
         }
     }

@@ -2774,8 +2774,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4840,17 +4840,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetEmotion: 0
-  happyCharacterPrefab: {fileID: 5239663849593720591, guid: 7929aafe70ab2d04191a315f0555948c, type: 3}
-  hopeCharacterPrefab: {fileID: 282197992276870625, guid: 213d37781b4325b48b6bd43aa77c4598, type: 3}
-  angryCharacterPrefab: {fileID: 5388399288073204179, guid: 795f6f4e106dc004b92d1761f6e14520, type: 3}
-  sadCharacterPrefab: {fileID: 4151325112556039328, guid: dae230aa74e64b74e94dd5b4cbf9735e, type: 3}
+  happyCharacter: {fileID: 0}
+  hopeCharacter: {fileID: 0}
+  angryCharacter: {fileID: 0}
+  sadCharacter: {fileID: 0}
   spawnPoint: {fileID: 0}
   selectedCharacter: {fileID: 0}
   playerCam: {fileID: 0}
   mouseLook: {fileID: 0}
   playerTransform: {fileID: 0}
   playerLineTransform: {fileID: 0}
-  limitTime: 300
+  limitTime: 180
+  targetTime: 120
   currentTime: 0
   mission1: "\uBAA9\uD45C\uAC10\uC815 \uB3C4\uB2EC"
   mission2: "\uAC10\uC815\uC744 \uBAA8\uB450 \uC5F0\uACB0"
@@ -4858,6 +4859,10 @@ MonoBehaviour:
   mission1Success: 0
   mission2Success: 0
   mission3Success: 0
+  maxEmotionScore: 150
+  currentEmotionScore: 0
+  emotionPlusScorePerObject: 10
+  emotionMinusScorePerObject: 5
 --- !u!4 &810009578
 Transform:
   m_ObjectHideFlags: 0
@@ -5484,12 +5489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -9963,8 +9968,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
