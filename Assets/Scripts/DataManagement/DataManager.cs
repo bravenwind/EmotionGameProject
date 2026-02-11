@@ -25,6 +25,7 @@ public class DataManager : MonoBehaviour
     public Transform playerTransform;
     public Transform playerLineTransform;
     public Animator playerAnimator;
+    public ZeroGravityMovement playerMovementScript;
 
     [Header("제한시간")]
     public float limitTime = 300f;
@@ -49,11 +50,13 @@ public class DataManager : MonoBehaviour
     public float emotionMinusScorePerObject = 5;
 
     [Header("커지는 캐릭터")]
+    public float playerOriginalScale = 1;
     public int maxScaleLevel = 5;
     public List<float> playerScalePerLevel = new List<float>(5);
     public int emotionForLevelUp = 5;
     public int currentEmotionCount = 0;
     public int currentScaleLevel = 1;
+    public float scaleIncreaseDuration = 1.5f;
 
     private void Awake()
     {

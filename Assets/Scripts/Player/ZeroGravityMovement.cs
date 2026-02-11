@@ -35,12 +35,6 @@ public class ZeroGravityMovement : MonoBehaviour
     public float currentStamina;           // 현재 스태미나 (Inspector 확인용)
     private bool isSprinting;
 
-    [Header("순간 대쉬 (Impulse Dash)")]
-    public KeyCode impulseDashKey = KeyCode.LeftControl; // 키 변경 (Shift는 스프린트용)
-    public float dashForce = 20f;
-    public float dashCooldown = 1.5f;
-    private float lastDashTime = -100f;
-
     [Header("애니메이션 (Animation)")]
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private string speedParamName = "Speed";
@@ -58,7 +52,6 @@ public class ZeroGravityMovement : MonoBehaviour
     [Header("이펙트 - 카메라 FOV")]
     public CinemachineCamera characterCamera;
     public float sprintFovBoost = 10f;     // 스프린트 시 늘어날 FOV
-    public float impulseFovBoost = 5f;     // 순간 대쉬 시 추가될 FOV
     public float fovChangeSpeed = 5f;      // FOV가 변하는 속도 (Lerp)
 
     private float defaultFov;
@@ -73,12 +66,18 @@ public class ZeroGravityMovement : MonoBehaviour
 
     private Rigidbody rb;
 
+    [Header("캐릭터 크기 설정")]
+    public Transform scaleTransform;
+    public Vector3 currentScale;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.freezeRotation = true;
         speedHash = Animator.StringToHash(speedParamName);
+        scaleTransform.localScale = Vector3.one * DataManager.Instance.playerOriginalScale;
+        currentScale = scaleTransform.localScale;
 
         currentStamina = staminaMax; // 스태미나 초기화
 
@@ -131,12 +130,6 @@ public class ZeroGravityMovement : MonoBehaviour
 
     void HandleInput()
     {
-        // 순간 대쉬 (Ctrl 키로 변경 - Shift와 겹침 방지)
-        if (Input.GetKeyDown(impulseDashKey))
-        {
-            TryImpulseDash();
-        }
-
         // 스프린트 상태 체크 (Shift 누름 + 스태미나 있음 + 앞뒤 이동 중)
         bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S);
         bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -200,25 +193,6 @@ public class ZeroGravityMovement : MonoBehaviour
         }
     }
 
-    private void TryImpulseDash()
-    {
-        if (Time.time >= lastDashTime + dashCooldown)
-        {
-            // 순간적으로 힘을 줌
-            rb.AddForce(cameraTransform.forward * dashForce, ForceMode.Impulse);
-            lastDashTime = Time.time;
-
-            // 시각 효과 트리거
-            StartCoroutine(ImpulseFovEffect()); // 순간적인 FOV 변화
-
-            // 잔상 효과
-            if (characterMesh != null && ghostMaterial != null)
-                StartCoroutine(ShowGhostTrail());
-
-            Debug.Log("Impulse Dash!");
-        }
-    }
-
     void HandleVisualEffects(float dt)
     {
         // --- 1. FOV 제어 ---
@@ -257,17 +231,51 @@ public class ZeroGravityMovement : MonoBehaviour
         }
     }
 
-    // 순간 대쉬 시 FOV가 팍 늘어났다가 돌아오는 효과 (기존 로직 변형)
-    IEnumerator ImpulseFovEffect()
+    public IEnumerator IncreaseScale(float increaseTime)
     {
-        // 목표 FOV를 순간적으로 더 크게 설정
-        float originalTarget = targetFov;
-        targetFov += impulseFovBoost;
+        if (DataManager.Instance.currentScaleLevel == DataManager.Instance.maxScaleLevel)
+        {
+            yield break;
+        }
 
-        yield return new WaitForSeconds(0.2f); // 0.2초 유지
+        //DataManager.Instance.detectRadius = DataManager.Instance.originalDetectRadius + DataManager.Instance.detectPlusRadiusPerLevel * DataManager.Instance.playerCurrentScaleLevel;
 
-        // 다시 원래 흐름으로 복귀
-        targetFov = originalTarget;
+        //if (softBody3D != null) softBody3D.DisableCloth();
+
+        if (PlaySFXAudio.Instance != null) PlaySFXAudio.Instance.PlayScaleUpSound();
+
+        //uIPoolManager.SpawnUI(scaleIncreasedEffect, transform);
+
+        Vector3 startScale = currentScale;
+        Vector3 originalScale = Vector3.one * DataManager.Instance.playerOriginalScale;
+        Vector3 targetScale = originalScale * DataManager.Instance.playerScalePerLevel[DataManager.Instance.currentScaleLevel];
+
+        Debug.Log(startScale);
+        Debug.Log(originalScale);
+        Debug.Log(targetScale);
+
+        float t = 0f;
+
+        while (t < increaseTime)
+        {
+            t += Time.deltaTime;
+            float progress = t / increaseTime;
+
+            currentScale = Vector3.Lerp(startScale, targetScale, progress);
+            Debug.Log(currentScale);
+            scaleTransform.localScale = currentScale;
+
+            yield return null;
+        }
+
+        scaleTransform.localScale = targetScale;
+        currentScale = targetScale;
+        //playerController.moveSpeed *= 1.2f;
+
+        //if (softBody3D != null)
+        //{
+        //    StartCoroutine(softBody3D.EnableAndRebuildCloth());
+        //}
     }
 
     // --- 잔상 코루틴 (기존 유지) ---

@@ -147,6 +147,8 @@ public class PathNode : MonoBehaviour
         if (DataManager.Instance.currentEmotionCount >= DataManager.Instance.emotionForLevelUp)
         {
             DataManager.Instance.currentScaleLevel++;
+            StartCoroutine(DataManager.Instance.playerMovementScript.IncreaseScale(DataManager.Instance.scaleIncreaseDuration));
+            DataManager.Instance.currentEmotionCount = 0;
         }
 
         if (DataManager.Instance.currentEmotionScore >= DataManager.Instance.maxEmotionScore)

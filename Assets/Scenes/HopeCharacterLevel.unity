@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 81f714daf7144784b8a2f42f1cd30927, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 211e67658df9a24458531ce3d53a6870, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1204,7 +1204,9 @@ MonoBehaviour:
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
   lineWidth: 1
-  nodeScaleMultiplier: 2
+  originalNodeScale: {x: 0, y: 0, z: 0}
+  targetNodeScaleMultiplier: 2.4
+  nonTargetNodeScaleMultiplier: 0.7
   defaultMaterial: {fileID: 2100000, guid: 9c4fcb41c886f7a40b70c6e0642c40bc, type: 2}
   activeMaterial: {fileID: 2100000, guid: 7e4d00dd898669248bcd2aab70fb72fc, type: 2}
   completedMaterial: {fileID: 2100000, guid: dc099aba02d66cf40a5cc5311fe5c536, type: 2}
@@ -7292,7 +7294,9 @@ MonoBehaviour:
   mainCam: {fileID: 0}
   mapCamZpos: -6000
   lineWidth: 0.1
-  nodeScaleMultiplier: 2
+  originalNodeScale: {x: 0, y: 0, z: 0}
+  targetNodeScaleMultiplier: 2.4
+  nonTargetNodeScaleMultiplier: 0.7
   defaultMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   activeMaterial: {fileID: 2100000, guid: 192b5b75d3d431f4f8c6d23842c41847, type: 2}
   completedMaterial: {fileID: 2100000, guid: c4c3e53d6c50dda4d89faeacde28ec4d, type: 2}
@@ -8418,7 +8422,9 @@ MonoBehaviour:
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
   lineWidth: 1
-  nodeScaleMultiplier: 2
+  originalNodeScale: {x: 0, y: 0, z: 0}
+  targetNodeScaleMultiplier: 2.4
+  nonTargetNodeScaleMultiplier: 0.7
   defaultMaterial: {fileID: 2100000, guid: 9c4fcb41c886f7a40b70c6e0642c40bc, type: 2}
   activeMaterial: {fileID: 2100000, guid: d0225e8f300dd684786f2761713a96de, type: 2}
   completedMaterial: {fileID: 2100000, guid: 5e4eb398b07889a40985839e20e7d1a0, type: 2}
@@ -15437,6 +15443,8 @@ MonoBehaviour:
   mouseLook: {fileID: 0}
   playerTransform: {fileID: 0}
   playerLineTransform: {fileID: 0}
+  playerAnimator: {fileID: 0}
+  playerMovementScript: {fileID: 0}
   limitTime: 180
   targetTime: 120
   currentTime: 0
@@ -15450,6 +15458,7 @@ MonoBehaviour:
   currentEmotionScore: 0
   emotionPlusScorePerObject: 10
   emotionMinusScorePerObject: 5
+  playerOriginalScale: 1
   maxScaleLevel: 5
   playerScalePerLevel:
   - 1
@@ -15460,6 +15469,7 @@ MonoBehaviour:
   emotionForLevelUp: 5
   currentEmotionCount: 0
   currentScaleLevel: 1
+  scaleIncreaseDuration: 1.5
 --- !u!1 &831770313
 GameObject:
   m_ObjectHideFlags: 0
@@ -29625,7 +29635,9 @@ MonoBehaviour:
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
   lineWidth: 1
-  nodeScaleMultiplier: 2
+  originalNodeScale: {x: 0, y: 0, z: 0}
+  targetNodeScaleMultiplier: 2.4
+  nonTargetNodeScaleMultiplier: 0.7
   defaultMaterial: {fileID: 2100000, guid: 9c4fcb41c886f7a40b70c6e0642c40bc, type: 2}
   activeMaterial: {fileID: 2100000, guid: c9295593e81f0fb4482a56d56ecf92f7, type: 2}
   completedMaterial: {fileID: 2100000, guid: bba0002d7d7016c46ae3b3268051ec0d, type: 2}
@@ -30717,7 +30729,9 @@ MonoBehaviour:
   mainCam: {fileID: 1680340029}
   mapCamZpos: -128
   lineWidth: 1
-  nodeScaleMultiplier: 2
+  originalNodeScale: {x: 0, y: 0, z: 0}
+  targetNodeScaleMultiplier: 2.4
+  nonTargetNodeScaleMultiplier: 0.7
   defaultMaterial: {fileID: 2100000, guid: 9c4fcb41c886f7a40b70c6e0642c40bc, type: 2}
   activeMaterial: {fileID: 2100000, guid: 73eb6e567a2cb9d45af7d6eb0ad25406, type: 2}
   completedMaterial: {fileID: 2100000, guid: 7d50aafd5f67ba248a371f2f33b01ce7, type: 2}
@@ -33643,7 +33657,7 @@ MonoBehaviour:
   mission1Text: {fileID: 299579856}
   mission2Text: {fileID: 119400330}
   mission3Text: {fileID: 2144127500}
-  emotionScoreImage: {fileID: 1539473252}
+  emotionScoreFillImage: {fileID: 0}
 --- !u!4 &1416969807
 Transform:
   m_ObjectHideFlags: 0

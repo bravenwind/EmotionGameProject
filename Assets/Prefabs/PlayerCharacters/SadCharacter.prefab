@@ -974,9 +974,6 @@ MonoBehaviour:
   tired: 0
   staminaImage: {fileID: 0}
   currentStamina: 0
-  impulseDashKey: 306
-  dashForce: 20
-  dashCooldown: 0
   playerAnimator: {fileID: 2912019421920045554}
   speedParamName: Speed
   animRestoreSpeed: 2
@@ -984,13 +981,14 @@ MonoBehaviour:
   maxBlurIntensity: 1
   characterCamera: {fileID: 7090973213061698120}
   sprintFovBoost: 30
-  impulseFovBoost: 5
   fovChangeSpeed: 5
   characterMesh: {fileID: 4787020963417897138}
   ghostMaterial: {fileID: 2100000, guid: dd7bbff6d18dcbd45a6f38fed02bc16c, type: 2}
   ghostDuration: 0.5
   ghostSpawnInterval: 0.05
   ghostLifeTime: 0.5
+  scaleTransform: {fileID: 2859239669594378747}
+  currentScale: {x: 0, y: 0, z: 0}
 --- !u!95 &2912019421920045554
 Animator:
   serializedVersion: 7

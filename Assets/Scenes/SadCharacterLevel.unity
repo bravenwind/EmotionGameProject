@@ -15444,6 +15444,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   playerLineTransform: {fileID: 0}
   playerAnimator: {fileID: 0}
+  playerMovementScript: {fileID: 0}
   limitTime: 180
   targetTime: 120
   currentTime: 0
@@ -15457,8 +15458,10 @@ MonoBehaviour:
   currentEmotionScore: 0
   emotionPlusScorePerObject: 10
   emotionMinusScorePerObject: 5
+  playerOriginalScale: 1
   maxScaleLevel: 5
   playerScalePerLevel:
+  - 0
   - 1
   - 2
   - 3
@@ -15467,6 +15470,7 @@ MonoBehaviour:
   emotionForLevelUp: 5
   currentEmotionCount: 0
   currentScaleLevel: 1
+  scaleIncreaseDuration: 1.5
 --- !u!1 &831770313
 GameObject:
   m_ObjectHideFlags: 0
@@ -33732,10 +33736,7 @@ MonoBehaviour:
   mission1Text: {fileID: 299579856}
   mission2Text: {fileID: 119400330}
   mission3Text: {fileID: 2144127500}
-  emotionScoreBGImage: {fileID: 1905347884}
   emotionScoreFillImage: {fileID: 1539473252}
-  emotionScoreBGSprite: {fileID: 816019961, guid: a35821d084bb65a46a12aaa52c120b8c, type: 3}
-  emotionScoreFillSprite: {fileID: 545506546, guid: 601e004df2c30c84789dbbc9e2b36f12, type: 3}
 --- !u!4 &1416969807
 Transform:
   m_ObjectHideFlags: 0

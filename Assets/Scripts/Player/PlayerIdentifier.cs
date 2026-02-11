@@ -16,6 +16,7 @@ public class PlayerIdentifier : MonoBehaviour
 
             // 5. 플레이어 관련 컴포넌트 정보 DataManager에 갱신
             DataManager.Instance.playerTransform = charToUse.transform;
+            DataManager.Instance.playerMovementScript = charToUse.GetComponent<ZeroGravityMovement>();
             DataManager.Instance.playerCam = charToUse.GetComponentInChildren<CinemachineCamera>();
             DataManager.Instance.mouseLook = charToUse.GetComponentInChildren<MouseLook>();
             DataManager.Instance.playerLineTransform = charToUse.transform.Find("LineTransform");
