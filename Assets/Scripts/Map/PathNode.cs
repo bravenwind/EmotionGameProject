@@ -76,7 +76,21 @@ public class PathNode : MonoBehaviour
         if (isCurrentTarget)
         {
             transform.LookAt(DataManager.Instance.playerTransform.position);
-            transform.Rotate(DataManager.Instance.textureOffset);
+            switch (emotion)
+            {
+                case EmotionState.Happy:
+                    transform.Rotate(DataManager.Instance.happyTextureOffset);
+                    break;
+                case EmotionState.Hope:
+                    transform.Rotate(DataManager.Instance.hopeTextureOffset);
+                    break;
+                case EmotionState.Angry:
+                    transform.Rotate(DataManager.Instance.angryTextureOffset);
+                    break;
+                case EmotionState.Sad:
+                    transform.Rotate(DataManager.Instance.sadTextureOffset);
+                    break;
+            }
         }
     }
 

@@ -29,6 +29,7 @@ public class PathManager : MonoBehaviour
     public Vector3 originalNodeScale;
     public float targetNodeScaleMultiplier = 2.4f;
     public float nonTargetNodeScaleMultiplier = 0.7f;
+    public Mesh targetMesh;
 
     [Header("Materials")]
     public Material defaultMaterial;
@@ -54,6 +55,10 @@ public class PathManager : MonoBehaviour
     private bool isFinished = false;
     private bool isLineStarted = false;
     private bool isWaitingForFinal = false;
+
+    [Header("Animation Settings")]
+    [Tooltip("PathNode의 Animator에 설정된 Trigger 파라미터 이름")]
+    public string activeAnimTrigger = "Targetted";
 
     void Start()
     {
@@ -99,6 +104,7 @@ public class PathManager : MonoBehaviour
                 var main = drawingParticles.main;
                 main.simulationSpace = ParticleSystemSimulationSpace.World; // 월드 좌표 필수
                 main.startLifetime = Mathf.Infinity; // 영구 보존
+                main.startSpeed = 0;
 
                 var emission = drawingParticles.emission;
                 emission.enabled = false; // 일단 멈춤
@@ -161,6 +167,12 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
+        // [치트키] M키를 누르면 즉시 클리어
+        if (Input.GetKeyDown(KeyCode.M) && !isFinished && completedEmotion == DataManager.Instance.targetEmotion)
+        {
+            CheatCompletePath();
+        }
+
         // ★ 라인 모드일 때만 매 프레임 선을 갱신합니다.
         if (!useParticleMode && isLineStarted && !isFinished && DataManager.Instance.playerLineTransform != null)
         {
@@ -187,6 +199,10 @@ public class PathManager : MonoBehaviour
                 if (completedEmotion == DataManager.Instance.targetEmotion)
                 {
                     pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+                    pathNodes[i].GetComponent<MeshFilter>().mesh = targetMesh;
+
+                    // ★ 애니메이션 재생 함수 호출
+                    PlayActiveAnimation(pathNodes[i]);
                 }
             }
             else
@@ -353,7 +369,7 @@ public class PathManager : MonoBehaviour
     public void SwitchToMapCamera()
     {
         DataManager.Instance.mouseLook.enabled = false;
-        DataManager.Instance.playerTransform.rotation = mapCam.transform.rotation;
+        DataManager.Instance.playerCam.transform.rotation = mapCam.transform.rotation;
         if (DataManager.Instance.playerCam != null && mapCam != null)
         {
             DataManager.Instance.playerCam.Priority = 0;
@@ -385,5 +401,73 @@ public class PathManager : MonoBehaviour
     public void OnTransitionComplete()
     {
         GameSceneUIManager.Instance.SetState(GameSceneUIState.GameOver);
+    }
+
+    /// <summary>
+    /// 해당 노드의 Animator를 찾아 활성화 애니메이션을 재생합니다.
+    /// </summary>
+    private void PlayActiveAnimation(PathNode node)
+    {
+        if (node == null) return;
+
+        Animator anim = node.GetComponent<Animator>();
+        if (anim == null)
+        {
+            // 혹시 자식 오브젝트에 Animator가 있을 경우를 대비해InChildren으로 검색
+            anim = node.GetComponentInChildren<Animator>();
+        }
+
+        if (anim != null)
+        {
+            // 현재 애니메이션이 이미 재생 중인지 체크하는 로직이 필요하다면 추가 가능하지만,
+            // Trigger 방식은 중복 호출되어도 상태 전이 조건만 맞으면 자연스럽게 처리됩니다.
+            anim.SetTrigger(activeAnimTrigger);
+        }
+    }
+
+    void CheatCompletePath()
+    {
+        Debug.Log("치트 사용: 경로 강제 완성");
+
+        // 1. 모든 인덱스 강제 통과 처리
+        currentIndex = pathNodes.Count;
+
+        // 2. Final Node가 있다면 대기 상태로 변경
+        if (finalNode != null)
+        {
+            isWaitingForFinal = true;
+            finalNode.gameObject.SetActive(true); // 혹시 꺼져있다면 켜기
+        }
+
+        // 3. 라인 렌더러 모드라면, 모든 점을 강제로 연결해서 그림
+        if (!useParticleMode)
+        {
+            lineRenderer.enabled = true;
+
+            // 필요한 점의 개수 계산 (경유지 노드들 + 마지막 노드)
+            int totalCount = pathNodes.Count + (finalNode != null ? 1 : 0);
+            lineRenderer.positionCount = totalCount;
+
+            // 경유지 좌표 입력
+            for (int i = 0; i < pathNodes.Count; i++)
+            {
+                lineRenderer.SetPosition(i, pathNodes[i].transform.position);
+            }
+
+            // 마지막 노드 좌표 입력
+            if (finalNode != null)
+            {
+                lineRenderer.SetPosition(pathNodes.Count, finalNode.transform.position);
+            }
+        }
+        else
+        {
+            // 파티클 모드라면 단순히 파티클을 켜서 흔적만 남기거나, 
+            // 즉시 클리어 처리하므로 별도 드로잉 로직은 생략해도 됩니다.
+            // 필요하다면 여기서 drawingParticles.Play() 등을 호출할 수 있습니다.
+        }
+
+        // 4. 최종 종료 함수 호출 (성공 처리)
+        FinishPath();
     }
 }
