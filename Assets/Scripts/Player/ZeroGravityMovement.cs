@@ -230,7 +230,7 @@ public class ZeroGravityMovement : MonoBehaviour
             yield break;
         }
 
-        UIPoolManager.Instance.SpawnUI(scaleIncreaseEffect, transform);
+        //UIPoolManager.Instance.SpawnUI(scaleIncreaseEffect, transform);
         //if (PlaySFXAudio.Instance != null) PlaySFXAudio.Instance.PlayScaleUpSound();
 
         // 1. 크기(Scale) 계산

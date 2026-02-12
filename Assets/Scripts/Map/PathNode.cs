@@ -71,6 +71,15 @@ public class PathNode : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (isCurrentTarget)
+        {
+            transform.LookAt(DataManager.Instance.playerTransform.position);
+            transform.Rotate(DataManager.Instance.textureOffset);
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         // ✅ [추가된 부분] 

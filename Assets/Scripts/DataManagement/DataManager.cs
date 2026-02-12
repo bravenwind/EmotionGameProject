@@ -58,6 +58,8 @@ public class DataManager : MonoBehaviour
     public int currentScaleLevel = 1;
     public float scaleIncreaseDuration = 1.5f;
 
+    public Vector3 textureOffset = new Vector3(0, 2f, 0); // 머리 위 2미터를 바라보게 설정
+
     private void Awake()
     {
         if (Instance == null)
