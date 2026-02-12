@@ -70,7 +70,6 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         ResetGameData();
 
         missionDict.Add(mission1, mission1Success);

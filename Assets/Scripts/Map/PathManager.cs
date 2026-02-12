@@ -76,21 +76,51 @@ public class PathManager : MonoBehaviour
         currentIndex = 0;
         isFinished = false;
         isLineStarted = false;
-        isWaitingForFinal = false; // 초기화
+        isWaitingForFinal = false;
         lineRenderer.positionCount = 0;
 
-        originalNodeScale = pathNodes[0].transform.localScale;
+        // ★ [핵심 수정] finalNode가 리스트의 '마지막'에 포함되어 있다면 제거합니다.
+        // 예: 리스트가 [A, B, C, A]이고 Final이 A라면 -> [A, B, C]로 만듭니다.
+        // 이렇게 해야 C까지 먹고 나서 "이제 A(Final)를 연결하세요"라는 로직이 작동합니다.
+        if (finalNode != null && pathNodes.Count > 0)
+        {
+            if (pathNodes[pathNodes.Count - 1] == finalNode)
+            {
+                pathNodes.RemoveAt(pathNodes.Count - 1);
+                Debug.Log("리스트 마지막에 Final Node가 있어서 자동으로 제외했습니다.");
+            }
+        }
 
+        // 안전 장치: 혹시 리스트가 비어버렸으면 에러 방지
+        if (pathNodes.Count > 0)
+        {
+            originalNodeScale = pathNodes[0].transform.localScale;
+        }
+
+        // 인덱스 재할당 (리스트 개수가 바뀌었을 수 있으므로 다시 돕니다)
         for (int i = 0; i < pathNodes.Count; i++)
         {
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
             pathNodes[i].emotion = completedEmotion;
+
+            // 안전 장치: originalNodeScale이 초기화 안 됐을 경우 대비
+            if (i == 0 && originalNodeScale == Vector3.zero)
+                originalNodeScale = pathNodes[i].transform.localScale;
+
             pathNodes[i].transform.localScale = originalNodeScale * nonTargetNodeScaleMultiplier;
         }
 
-        // 만약 finalNode가 설정되어 있다면 그것도 매니저 연결 (보통 리스트 안에 있어서 중복되겠지만 안전하게)
-        if (finalNode != null) finalNode.manager = this;
+        // Final Node 초기화
+        if (finalNode != null)
+        {
+            finalNode.manager = this;
+            // 리스트에 없으므로 인덱스는 의미 없지만, 충돌 방지를 위해 큰 값 부여
+            finalNode.myIndex = 9999;
+
+            finalNode.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            finalNode.gameObject.GetComponent<Collider>().enabled = false;
+        }
 
         UpdateNodeStates();
 
@@ -149,6 +179,10 @@ public class PathManager : MonoBehaviour
         {
             // finalNode를 활성화 (목표 지점으로 표시)
             finalNode.gameObject.SetActive(true);
+
+            finalNode.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            finalNode.gameObject.GetComponent<Collider>().enabled = true;
+
             finalNode.SetState(true, activeMaterial, defaultMaterial);
             finalNode.GetComponent<Collider>().isTrigger = true; // 닿을 수 있게 트리거 켬
         }
@@ -191,6 +225,8 @@ public class PathManager : MonoBehaviour
                 int lastIndex = lineRenderer.positionCount - 1;
                 lineRenderer.SetPosition(lastIndex, node.transform.position);
             }
+
+            //PlaySFXAudio.Instance.PlayEmotionConnect();
         }
 
         currentIndex++;

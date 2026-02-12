@@ -5,9 +5,12 @@ public class PlayerIdentifier : MonoBehaviour
 {
     [Header("씬에 배치된 캐릭터 오브젝트 연결")]
     public GameObject charToUse;
+    public GameObject playerCamera;
 
     private void Start()
     {
+        playerCamera = FindAnyObjectByType<MouseLook>().gameObject;
+
         // 4. 캐릭터 위치 설정 및 활성화
         if (charToUse != null)
         {
@@ -17,8 +20,8 @@ public class PlayerIdentifier : MonoBehaviour
             // 5. 플레이어 관련 컴포넌트 정보 DataManager에 갱신
             DataManager.Instance.playerTransform = charToUse.transform;
             DataManager.Instance.playerMovementScript = charToUse.GetComponent<ZeroGravityMovement>();
-            DataManager.Instance.playerCam = charToUse.GetComponentInChildren<CinemachineCamera>();
-            DataManager.Instance.mouseLook = charToUse.GetComponentInChildren<MouseLook>();
+            DataManager.Instance.playerCam = playerCamera.GetComponentInChildren<CinemachineCamera>();
+            DataManager.Instance.mouseLook = playerCamera.GetComponent<MouseLook>();
             DataManager.Instance.playerLineTransform = charToUse.transform.Find("LineTransform");
             DataManager.Instance.playerAnimator = charToUse.GetComponentInChildren<Animator>();
         }

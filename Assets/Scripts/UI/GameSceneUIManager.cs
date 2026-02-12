@@ -38,7 +38,8 @@ public class GameSceneUIManager : MonoBehaviour
     public List<UIStateMapping> uiList = new List<UIStateMapping>();
 
     [Header("초기 상태")]
-    public GameSceneUIState startState = GameSceneUIState.InGame;
+    public GameSceneUIState startState = GameSceneUIState.Prologue;
+    public CanvasGroup prologuePanel;
 
     [Header("UI 설정")]
     [Tooltip("화면을 가릴 검은색 이미지의 CanvasGroup 컴포넌트")]
@@ -49,7 +50,7 @@ public class GameSceneUIManager : MonoBehaviour
     public float fadeDuration = 1.0f;
 
     // 현재 상태를 저장하는 변수
-    private GameSceneUIState currentState;
+    public GameSceneUIState currentState;
 
     [Header("프롤로그")]
     [SerializeField] private Sprite prologue_Happy;
@@ -61,8 +62,6 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private float prologueScale_Hope;
     [SerializeField] private float prologueScale_Angry;
     [SerializeField] private float prologueScale_Sad;
-
-    [SerializeField] private Image prologueImage;
 
     [Header("감정 아이콘")]
     [SerializeField] private Sprite happyIcon;
@@ -101,17 +100,27 @@ public class GameSceneUIManager : MonoBehaviour
             fadeCanvasGroup.gameObject.SetActive(true);
         }
 
-        if (prologueImage != null)
-        {
-            prologueImage.gameObject.SetActive(true);
-        }
-
         if (emotionScoreFillImage != null)
         {
             emotionScoreFillImage.fillAmount = 0.0f;
         }
         StartCoroutine(SceneFade(FadeState.FadeIn));
         SetState(startState);
+    }
+
+    public void FinishPrologue()
+    {
+        StartCoroutine(ProcessPrologueEnd());
+    }
+
+    private IEnumerator ProcessPrologueEnd()
+    {
+        // 2. 상태 변경 (인게임)
+        SetState(GameSceneUIState.InGame);
+
+        // 3. 다시 화면 밝아짐 (FadeIn = Alpha 1 -> 0)
+        yield return StartCoroutine(Fade(prologuePanel, FadeState.FadeIn, fadeDuration));
+        prologuePanel.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -183,11 +192,6 @@ public class GameSceneUIManager : MonoBehaviour
                 //}
                 break;
             case GameSceneUIState.Prologue:
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-                {
-                    SetState(GameSceneUIState.InGame);
-                    StartCoroutine(Fade(prologueImage.GetComponent<CanvasGroup>(), FadeState.FadeIn, fadeDuration));
-                }
                 break;
         }
     }
@@ -248,7 +252,7 @@ public class GameSceneUIManager : MonoBehaviour
             case GameSceneUIState.Prologue:
                 Time.timeScale = 0f;
                 // 공통 함수 사용 (프롤로그 이미지 설정)
-                UpdateEmotionUI(prologueImage, prologue_Happy, prologueScale_Happy, prologue_Hope, prologueScale_Hope, prologue_Angry, prologueScale_Angry, prologue_Sad, prologueScale_Sad);
+                //UpdateEmotionUI(prologueImage, prologue_Happy, prologueScale_Happy, prologue_Hope, prologueScale_Hope, prologue_Angry, prologueScale_Angry, prologue_Sad, prologueScale_Sad);
                 break;
 
             case GameSceneUIState.GameOver:

@@ -73,7 +73,21 @@ public class PathNode : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        // ... (기존 내용 유지) ...
+        // ✅ [추가된 부분] 
+        // 이미 들어와 있는데 타겟으로 활성화된 경우를 체크합니다.
+        // absorbing이 false일 때만 체크해야 중복 호출을 막을 수 있습니다.
+        if (isCurrentTarget && !absorbing)
+        {
+            if (other.CompareTag("Player"))
+            {
+                // OnTriggerEnter와 동일한 로직 실행
+                StartAbsorb(other.transform.root.transform);
+                manager.OnNodeCollected(this);
+                return; // 흡수 시작했으니 아래 로직은 다음 프레임부터
+            }
+        }
+
+        // ... (기존 흡수 완료 체크 로직 유지) ...
         if (other.gameObject.CompareTag("PlayerPhysicalCollider") && absorbing)
         {
             absorbTimer += Time.deltaTime;
@@ -147,7 +161,7 @@ public class PathNode : MonoBehaviour
         if (DataManager.Instance.currentEmotionCount >= DataManager.Instance.emotionForLevelUp)
         {
             DataManager.Instance.currentScaleLevel++;
-            StartCoroutine(DataManager.Instance.playerMovementScript.IncreaseScale(DataManager.Instance.scaleIncreaseDuration));
+            DataManager.Instance.playerMovementScript.StartCoroutine(DataManager.Instance.playerMovementScript.IncreaseScale(DataManager.Instance.scaleIncreaseDuration));
             DataManager.Instance.currentEmotionCount = 0;
         }
 

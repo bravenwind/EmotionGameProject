@@ -4,7 +4,6 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using Unity.Cinemachine;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ZeroGravityMovement : MonoBehaviour
@@ -12,50 +11,52 @@ public class ZeroGravityMovement : MonoBehaviour
     [Header("기본 이동 설정 (Movement)")]
     [SerializeField] private Transform cameraTransform;
     public float acceleration = 15f;
-    public float normalMaxSpeed = 10f; // 평상시 최대 속도
+    public float normalMaxSpeed = 10f;
     public float dampingOnIdle = 0.5f;
     public float dampingOnBrake = 3.0f;
 
     [Header("스프린트 (Sustain Dash)")]
     public bool infiniteStamina = false;
-
-    public float sprintAcceleration = 25f; // 달리기 가속도
-    public float sprintMaxSpeed = 25f;     // 달리기 최대 속도
-    public float staminaMax = 100f;        // 최대 스태미나
-    public float staminaDrainRate = 20f;   // 초당 소모량
-    public float staminaRegenRate = 10f;   // 초당 회복량
-
+    public float sprintAcceleration = 25f;
+    public float sprintMaxSpeed = 25f;
+    public float staminaMax = 100f;
+    public float staminaDrainRate = 20f;
+    public float staminaRegenRate = 10f;
     public float tiredSeconds = 2.0f;
     public float tiredTimer = 0.0f;
     public bool tired = false;
-
     public Image staminaImage;
 
     [Range(0, 100)]
-    public float currentStamina;           // 현재 스태미나 (Inspector 확인용)
+    public float currentStamina;
     private bool isSprinting;
 
-    [Header("애니메이션 (Animation)")]
+    [Header("애니메이션")]
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private string speedParamName = "Speed";
     private int speedHash;
-
-    // 애니메이션 속도 제어
-    private float currentAnimSpeedMult = 1f;
-    public float animRestoreSpeed = 2f;
 
     [Header("이펙트 - 포스트 프로세싱")]
     public Volume globalVolume;
     private MotionBlur motionBlur;
     public float maxBlurIntensity = 1f;
 
-    [Header("이펙트 - 카메라 FOV")]
+    [Header("이펙트 - 카메라 FOV (스프린트 전용)")]
     public CinemachineCamera characterCamera;
-    public float sprintFovBoost = 10f;     // 스프린트 시 늘어날 FOV
-    public float fovChangeSpeed = 5f;      // FOV가 변하는 속도 (Lerp)
+    public float sprintFovBoost = 10f;       // 스프린트 시 추가될 FOV
+    public float fovChangeSpeed = 5f;        // FOV 변화 속도
 
     private float defaultFov;
-    private float targetFov;               // 목표 FOV
+    private float targetFov;
+
+    [Header("이펙트 - 거대화 카메라 거리 설정")]
+    public MouseLook mouseLookScript;        // [필수] MouseLook 스크립트를 연결해주세요!
+
+    // 1레벨당 늘어날 거리 (예: y는 1만큼 위로, z는 -2만큼 뒤로)
+    public Vector3 offsetIncreasePerLevel = new Vector3(0f, 1.0f, -2.0f);
+
+    private Vector3 originalCameraOffset;    // 게임 시작 시의 기본 오프셋 저장용
+    public UIFollowTarget scaleIncreaseEffect;
 
     [Header("이펙트 - 잔상 (Ghost Trail)")]
     public SkinnedMeshRenderer characterMesh;
@@ -76,10 +77,11 @@ public class ZeroGravityMovement : MonoBehaviour
         rb.useGravity = false;
         rb.freezeRotation = true;
         speedHash = Animator.StringToHash(speedParamName);
+
         scaleTransform.localScale = Vector3.one * DataManager.Instance.playerOriginalScale;
         currentScale = scaleTransform.localScale;
 
-        currentStamina = staminaMax; // 스태미나 초기화
+        currentStamina = staminaMax;
 
         if (globalVolume != null && globalVolume.profile.TryGet<MotionBlur>(out var blur))
             motionBlur = blur;
@@ -89,9 +91,22 @@ public class ZeroGravityMovement : MonoBehaviour
             defaultFov = characterCamera.Lens.FieldOfView;
             targetFov = defaultFov;
         }
+
+        // [추가] 초기 카메라 오프셋 저장 및 현재 레벨 반영
+        if (mouseLookScript != null)
+        {
+            // MouseLook 스크립트의 현재 값을 원본으로 저장
+            // 주의: MouseLook 스크립트에서 초기값을 Start에서 세팅한다면, 실행 순서에 주의해야 함.
+            // 여기서는 Inspector에 설정된 값을 원본으로 간주합니다.
+            originalCameraOffset = mouseLookScript.cameraOffset;
+
+            // 만약 게임 시작 시 레벨이 0이 아니라면 바로 적용
+            //Vector3 startLevelOffset = originalCameraOffset + (offsetIncreasePerLevel * DataManager.Instance.currentScaleLevel);
+            //mouseLookScript.cameraOffset = startLevelOffset;
+        }
         else
         {
-            Debug.LogError("Cinemachine Camera를 찾을 수 없습니다.");
+            Debug.LogError("MouseLook 스크립트가 연결되지 않았습니다! Inspector에서 할당해주세요.");
         }
     }
 
@@ -99,10 +114,8 @@ public class ZeroGravityMovement : MonoBehaviour
     {
         float dt = Time.deltaTime;
 
-        // 1. 입력 감지
         HandleInput();
 
-        // 2. 스태미나 관리
         if (tired)
         {
             tiredTimer += dt;
@@ -117,7 +130,6 @@ public class ZeroGravityMovement : MonoBehaviour
             HandleStamina(dt);
         }
 
-        // 3. 시각 효과 (FOV, Blur, Anim)
         HandleVisualEffects(dt);
     }
 
@@ -126,11 +138,8 @@ public class ZeroGravityMovement : MonoBehaviour
         MovePhysics();
     }
 
-    // --- 로직 분리 ---
-
     void HandleInput()
     {
-        // 스프린트 상태 체크 (Shift 누름 + 스태미나 있음 + 앞뒤 이동 중)
         bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S);
         bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
@@ -144,49 +153,38 @@ public class ZeroGravityMovement : MonoBehaviour
             if (!infiniteStamina)
             {
                 currentStamina -= staminaDrainRate * dt;
-                if (currentStamina < 0)
-                {
-                    tired = true;
-                }
+                if (currentStamina < 0) tired = true;
             }
         }
         else
         {
-            // 스태미나 회복
             currentStamina += staminaRegenRate * dt;
         }
 
-        // 0 ~ Max 사이로 클램프
         currentStamina = Mathf.Clamp(currentStamina, 0, staminaMax);
         staminaImage.fillAmount = currentStamina / staminaMax;
     }
 
     void MovePhysics()
     {
-        // 1. 브레이크 (Space)
         if (Input.GetKey(KeyCode.Space))
         {
             rb.linearDamping = dampingOnBrake;
-            return; // 브레이크 중엔 가속 안함
+            return;
         }
         else
         {
             rb.linearDamping = dampingOnIdle;
         }
 
-        // 2. 가속력 적용 (W 키)
         if (Input.GetKey(KeyCode.W))
         {
-            // 스프린트 여부에 따라 다른 가속도 적용
             float currentAccel = isSprinting ? sprintAcceleration : acceleration;
             rb.AddForce(cameraTransform.forward * currentAccel, ForceMode.Acceleration);
         }
 
-        // 3. [핵심] 최대 속도 제한 로직
-        // 현재 상태에 따른 속도 제한값 결정
         float currentSpeedLimit = isSprinting ? sprintMaxSpeed : normalMaxSpeed;
 
-        // 현재 속도가 제한을 넘으면 잘라냄 (Clamping)
         if (rb.linearVelocity.magnitude > currentSpeedLimit)
         {
             rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, currentSpeedLimit);
@@ -195,27 +193,22 @@ public class ZeroGravityMovement : MonoBehaviour
 
     void HandleVisualEffects(float dt)
     {
-        // --- 1. FOV 제어 ---
+        // --- 1. FOV 제어 (이제 스프린트만 담당) ---
         if (characterCamera != null)
         {
-            // 기본 목표: 스프린트 중이면 넓게, 아니면 원래대로
-            float baseTarget = isSprinting ? (defaultFov + sprintFovBoost) : defaultFov;
+            // 거대화 로직 제거됨: 오직 스프린트 여부에 따라 FOV 변경
+            float finalTargetFov = isSprinting ? (defaultFov + sprintFovBoost) : defaultFov;
 
-            // Impulse 효과 등으로 인해 설정된 targetFov와 부드럽게 섞기
-            // (Impulse 코루틴이 targetFov를 잠시 건드릴 수 있음, 여기서는 베이스로 복귀하려는 힘)
-            targetFov = Mathf.Lerp(targetFov, baseTarget, dt * fovChangeSpeed);
-
+            targetFov = Mathf.Lerp(targetFov, finalTargetFov, dt * fovChangeSpeed);
             characterCamera.Lens.FieldOfView = Mathf.Lerp(characterCamera.Lens.FieldOfView, targetFov, dt * fovChangeSpeed);
         }
 
         // --- 2. 애니메이션 ---
         if (playerAnimator != null)
         {
-            // 실제 속도 기반 파라미터 전달
             float currentSpeed = rb.linearVelocity.magnitude;
             playerAnimator.SetFloat(speedHash, currentSpeed, 0.1f, dt);
 
-            // (선택) 스프린트 중일 때 재생 속도를 좀 더 빠르게?
             float targetAnimMult = isSprinting ? 1.5f : 1f;
             playerAnimator.speed = Mathf.Lerp(playerAnimator.speed, targetAnimMult, dt * 5f);
         }
@@ -223,7 +216,6 @@ public class ZeroGravityMovement : MonoBehaviour
         // --- 3. 모션 블러 ---
         if (motionBlur != null)
         {
-            // 속도가 빠를수록 블러 강해짐 (최대 속도 기준 비율)
             float speedRatio = rb.linearVelocity.magnitude / sprintMaxSpeed;
             float targetBlur = Mathf.Clamp01(speedRatio) * maxBlurIntensity;
 
@@ -233,26 +225,25 @@ public class ZeroGravityMovement : MonoBehaviour
 
     public IEnumerator IncreaseScale(float increaseTime)
     {
-        if (DataManager.Instance.currentScaleLevel == DataManager.Instance.maxScaleLevel)
+        if (DataManager.Instance.currentScaleLevel > DataManager.Instance.maxScaleLevel)
         {
             yield break;
         }
 
-        //DataManager.Instance.detectRadius = DataManager.Instance.originalDetectRadius + DataManager.Instance.detectPlusRadiusPerLevel * DataManager.Instance.playerCurrentScaleLevel;
+        UIPoolManager.Instance.SpawnUI(scaleIncreaseEffect, transform);
+        //if (PlaySFXAudio.Instance != null) PlaySFXAudio.Instance.PlayScaleUpSound();
 
-        //if (softBody3D != null) softBody3D.DisableCloth();
-
-        if (PlaySFXAudio.Instance != null) PlaySFXAudio.Instance.PlayScaleUpSound();
-
-        //uIPoolManager.SpawnUI(scaleIncreasedEffect, transform);
-
+        // 1. 크기(Scale) 계산
         Vector3 startScale = currentScale;
-        Vector3 originalScale = Vector3.one * DataManager.Instance.playerOriginalScale;
-        Vector3 targetScale = originalScale * DataManager.Instance.playerScalePerLevel[DataManager.Instance.currentScaleLevel];
+        Vector3 targetScale = Vector3.one * DataManager.Instance.playerScalePerLevel[DataManager.Instance.currentScaleLevel];
 
-        Debug.Log(startScale);
-        Debug.Log(originalScale);
-        Debug.Log(targetScale);
+        // 2. 카메라 오프셋(거리) 계산 [수정됨]
+        // 현재 오프셋에서 시작
+        Vector3 startOffset = mouseLookScript.cameraOffset;
+
+        // 목표 오프셋: 기본값 + (레벨 * 증가량)
+        // 예: 0레벨(0,0,0) -> 1레벨(0, 1, -2) -> 2레벨(0, 2, -4)
+        Vector3 targetOffset = originalCameraOffset + (offsetIncreasePerLevel * DataManager.Instance.currentScaleLevel);
 
         float t = 0f;
 
@@ -261,21 +252,28 @@ public class ZeroGravityMovement : MonoBehaviour
             t += Time.deltaTime;
             float progress = t / increaseTime;
 
+            // 크기 보간
             currentScale = Vector3.Lerp(startScale, targetScale, progress);
-            Debug.Log(currentScale);
             scaleTransform.localScale = currentScale;
+
+            // [핵심] 카메라 거리(Offset) 보간
+            // MouseLook 스크립트의 변수를 실시간으로 건드려서 카메라를 뒤로 뺍니다.
+            if (mouseLookScript != null)
+            {
+                mouseLookScript.cameraOffset = Vector3.Lerp(startOffset, targetOffset, progress);
+            }
 
             yield return null;
         }
 
+        // 최종 값 확정
         scaleTransform.localScale = targetScale;
         currentScale = targetScale;
-        //playerController.moveSpeed *= 1.2f;
 
-        //if (softBody3D != null)
-        //{
-        //    StartCoroutine(softBody3D.EnableAndRebuildCloth());
-        //}
+        if (mouseLookScript != null)
+        {
+            mouseLookScript.cameraOffset = targetOffset;
+        }
     }
 
     // --- 잔상 코루틴 (기존 유지) ---
@@ -296,7 +294,6 @@ public class ZeroGravityMovement : MonoBehaviour
         ghostObj.transform.position = characterMesh.transform.position;
         ghostObj.transform.rotation = characterMesh.transform.rotation;
         ghostObj.transform.localScale = characterMesh.transform.localScale;
-        // ghostObj.layer = LayerMask.NameToLayer("Ignore Raycast"); // 필요시 레이어 설정
 
         MeshFilter meshFilter = ghostObj.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = ghostObj.AddComponent<MeshRenderer>();
@@ -305,7 +302,7 @@ public class ZeroGravityMovement : MonoBehaviour
         characterMesh.BakeMesh(snapshotMesh);
         meshFilter.mesh = snapshotMesh;
         meshRenderer.material = ghostMaterial;
-        meshRenderer.shadowCastingMode = ShadowCastingMode.Off; // 그림자 끄기 (최적화)
+        meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
 
         StartCoroutine(FadeAndDestroyGhost(ghostObj, meshRenderer.material));
     }
