@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -26,6 +27,10 @@ public class DataManager : MonoBehaviour
     public Transform playerLineTransform;
     public Animator playerAnimator;
     public ZeroGravityMovement playerMovementScript;
+    public CinemachineBrain brain;
+
+    [Header("맵")]
+    public CinemachineCamera targetMapCam;
 
     [Header("제한시간")]
     public float limitTime = 300f;
@@ -63,6 +68,9 @@ public class DataManager : MonoBehaviour
     public Vector3 angryTextureOffset = new Vector3(-85, 196.399994f, -201.800003f); // 머리 위 2미터를 바라보게 설정
     public Vector3 sadTextureOffset = new Vector3(0, 2f, 0); // 머리 위 2미터를 바라보게 설정
 
+    [Header("게임 오버")]
+    public CinemachineCamera camToClearFail;
+
     private void Awake()
     {
         if (Instance == null)
@@ -75,6 +83,7 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         ResetGameData();
 
         missionDict.Add(mission1, mission1Success);
@@ -84,7 +93,53 @@ public class DataManager : MonoBehaviour
         targetTime = (float)char.GetNumericValue(mission3[0]) * 60.0f;
     }
 
-    public void GameOver()
+    public void SwitchToMapCamera()
+    {
+        DataManager.Instance.mouseLook.enabled = false;
+        DataManager.Instance.playerCam.transform.rotation = targetMapCam.transform.rotation;
+        if (DataManager.Instance.playerCam != null && targetMapCam != null)
+        {
+            DataManager.Instance.playerCam.Priority = 0;
+            targetMapCam.Priority = 10;
+        }
+    }
+
+    public void SwitchToPlayerCamera()
+    {
+        DataManager.Instance.mouseLook.enabled = true;
+        if (DataManager.Instance.playerCam != null && targetMapCam != null)
+        {
+            DataManager.Instance.playerCam.Priority = 10;
+            targetMapCam.Priority = 0;
+        }
+    }
+
+    public IEnumerator GameOver()
+    {
+        GameSceneUIManager.Instance.SetAllDisable();
+        SwitchToMapCamera();
+        yield return StartCoroutine(WaitForBlendToFinish());
+        Debug.Log("맵 카메라로 전환 완료");
+        camToClearFail.Priority = 20;
+        yield return StartCoroutine(WaitForBlendToFinish());
+        Debug.Log("맵 카메라2로 전환 완료");
+        CharacterFocus.Instance.FocusCharacter();
+        Debug.Log("캐릭터 키우고 게임 오버");
+    }
+
+    IEnumerator WaitForBlendToFinish()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        while (brain.IsBlending)
+        {
+
+            Debug.Log("블렌딩 중");
+            yield return null;
+
+        }
+    }
+
+    public void OnTransitionComplete()
     {
         if (GameSceneUIManager.Instance != null)
         {

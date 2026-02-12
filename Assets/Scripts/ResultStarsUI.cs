@@ -43,14 +43,14 @@ public class ResultStarsUI : MonoBehaviour
         if (failTopImage != null) failTopImage.SetActive(!isClear);
         if (clearTopImage != null) clearTopImage.SetActive(isClear);
 
-        if (isClear)
-        {
-            topText.text = topText_Clear;
-        }
-        else
-        {
-            topText.text = topText_Fail;
-        }
+        //if (isClear)
+        //{
+        //    topText.text = topText_Clear;
+        //}
+        //else
+        //{
+        //    topText.text = topText_Fail;
+        //}
 
         // 메인 별 활성화
         for (int i = 0; i < stars.Count; i++)

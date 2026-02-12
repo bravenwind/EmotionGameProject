@@ -1,4 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,6 +12,10 @@ public class RandomXPositionTool : MonoBehaviour
     public float minX = -10.0f;
     public float maxX = 10.0f;
 
+    [Header("오브젝트")]
+    public GameObject objectPrefab;
+    public List<Transform> objectTransforms;
+
     // ---------------------------------------------------------
     // 3. Z축만 랜덤 변경
     // ---------------------------------------------------------
@@ -17,6 +24,27 @@ public class RandomXPositionTool : MonoBehaviour
     {
         ApplyRandomPosition(true, false, false);
     }
+
+    //private void CreateAndApplyYandZ()
+    //{
+    //    if (objectTransforms.Count == 0)
+    //    {
+    //        Debug.LogWarning("선택된 오브젝트가 없습니다.");
+    //        return;
+    //    }
+    //    foreach (Transform t in objectTransforms)
+    //    {
+    //        Vector3 pos = t.position;
+
+    //        float newX = pos.x;
+    //        float newY = pos.y;
+    //        float newZ = pos.z;
+
+    //        pos = new Vector3(newX, newY, newZ);
+
+    //        Instantiate(objectPrefab, pos, Quaternion.identity);
+    //    }
+    //}
 
     // 실제 로직을 처리하는 함수
     private void ApplyRandomPosition(bool changeX, bool changeY, bool changeZ)

@@ -167,7 +167,7 @@ public class PathNode : MonoBehaviour
         rb.linearVelocity = dir * currentSpeed;
     }
 
-    void OnAbsorbed()
+    public void OnAbsorbed()
     {
         if (emotion == DataManager.Instance.targetEmotion)
         {

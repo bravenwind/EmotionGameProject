@@ -106,14 +106,687 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_0
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 4425
+        width: 1905
+        height: 284
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3141c11d4ae9494c93eec9d27e552af
+      internalID: 1821348881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_1
+      rect:
+        serializedVersion: 2
+        x: 817
+        y: 3424
+        width: 353
+        height: 518
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1ae5db052fff344cb0970c24e061ae3
+      internalID: 2046017534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_2
+      rect:
+        serializedVersion: 2
+        x: 1334
+        y: 3561
+        width: 1490
+        height: 209
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f0237c9016d79e419a31a2a796b8a99
+      internalID: 556510002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_3
+      rect:
+        serializedVersion: 2
+        x: 1095
+        y: 2194
+        width: 846
+        height: 1004
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 957df99049a155548b61e81eef808390
+      internalID: 2008130911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_4
+      rect:
+        serializedVersion: 2
+        x: 2074
+        y: 2194
+        width: 846
+        height: 1004
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bb55c41bb1a19b4f8dcfeff41e62c77
+      internalID: 1530284408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_5
+      rect:
+        serializedVersion: 2
+        x: 3085
+        y: 2194
+        width: 846
+        height: 1004
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60c9c7141eedcc44787a96df0cf0c1d4
+      internalID: -287233708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_6
+      rect:
+        serializedVersion: 2
+        x: 4078
+        y: 2194
+        width: 847
+        height: 1004
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8b4d7b292142e247af04ed9551e1ffa
+      internalID: -23121952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_7
+      rect:
+        serializedVersion: 2
+        x: 5360
+        y: 2811
+        width: 188
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f92565a6bee8724dbf54c417cf75c43
+      internalID: -195928106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_8
+      rect:
+        serializedVersion: 2
+        x: 5733
+        y: 2835
+        width: 188
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a1fd3a56d20a9143b57aea2d9bd37d7
+      internalID: 1551091486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_9
+      rect:
+        serializedVersion: 2
+        x: 5761
+        y: 2833
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1d399576a6580149a1e9bdf761dad47
+      internalID: 491525896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_10
+      rect:
+        serializedVersion: 2
+        x: 5759
+        y: 2822
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bff667e1e2ac7db44b0bee1911c1ca53
+      internalID: -970088124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_11
+      rect:
+        serializedVersion: 2
+        x: 5386
+        y: 2795
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebc493e1991a85c4783447817e882742
+      internalID: 827701059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_12
+      rect:
+        serializedVersion: 2
+        x: 5754
+        y: 2799
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9aa22c607b16a7e4e92f17c824a5485e
+      internalID: -909213162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_13
+      rect:
+        serializedVersion: 2
+        x: 5381
+        y: 2772
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1efbdc51cb0dedf4896cfc33d554183d
+      internalID: 776167580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_14
+      rect:
+        serializedVersion: 2
+        x: 5360
+        y: 2523
+        width: 188
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a5e2389ce4807a4ca74eaf1a88f6809
+      internalID: 1787930599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_15
+      rect:
+        serializedVersion: 2
+        x: 5743
+        y: 2525
+        width: 189
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18c5b494b21276a408f5a21140ad52d6
+      internalID: -565431150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_16
+      rect:
+        serializedVersion: 2
+        x: 5389
+        y: 2518
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 310637d003941364abc3c594930665a8
+      internalID: 2099883924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_17
+      rect:
+        serializedVersion: 2
+        x: 5768
+        y: 2514
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1edb916dabc27ad438695a3110d17c93
+      internalID: 1850967881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_18
+      rect:
+        serializedVersion: 2
+        x: 5386
+        y: 2507
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2024ee778ddbd964494783eeb4dd0a55
+      internalID: -2095133251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_19
+      rect:
+        serializedVersion: 2
+        x: 5381
+        y: 2484
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06b0ce5050d3b934fa2a3064777dcdc6
+      internalID: 1589279809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_20
+      rect:
+        serializedVersion: 2
+        x: 5765
+        y: 2491
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93ac889cc447d7a45823287c15cc4c3b
+      internalID: -722067583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_21
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 1818
+        width: 322
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4aae1af14def3d84c9ef491eef75e5b1
+      internalID: 556294802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_22
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 1763
+        width: 322
+        height: 195
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35e1074dc56f74543babdcff4c6f3b1e
+      internalID: 271562216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_23
+      rect:
+        serializedVersion: 2
+        x: 2492
+        y: 1197
+        width: 816
+        height: 751
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 128170f61eb69c8438fb94f47ccbcc38
+      internalID: 770915348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_24
+      rect:
+        serializedVersion: 2
+        x: 4294
+        y: 1242
+        width: 785
+        height: 716
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2944464ccadcc44fb59b5bda91c8911
+      internalID: -938696813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_25
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 1270
+        width: 325
+        height: 195
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1351c27029087e48889e3d1309556bc
+      internalID: -1397859155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_26
+      rect:
+        serializedVersion: 2
+        x: 1584
+        y: 1184
+        width: 326
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5275b9fea6e5db64f92a5ac9d0e43f1a
+      internalID: -1225686435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_27
+      rect:
+        serializedVersion: 2
+        x: 4633
+        y: 1215
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13ddd9880b67bc246ad9898f5c430aa9
+      internalID: -1356965434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_28
+      rect:
+        serializedVersion: 2
+        x: 3345
+        y: 129
+        width: 792
+        height: 726
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e82e8cff834526f44a575a0678651e79
+      internalID: -881198227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LevelSelectAndStamina_29
+      rect:
+        serializedVersion: 2
+        x: 5195
+        y: 108
+        width: 788
+        height: 723
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cc23e4961aecf74abdfc4e130545957
+      internalID: -206672487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b48e11c8f510b1a4d96a996c9892181e
     internalID: 0
     vertices: []
     indices: 
@@ -122,7 +795,37 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      LevelSelectAndStamina_0: 1821348881
+      LevelSelectAndStamina_1: 2046017534
+      LevelSelectAndStamina_10: -970088124
+      LevelSelectAndStamina_11: 827701059
+      LevelSelectAndStamina_12: -909213162
+      LevelSelectAndStamina_13: 776167580
+      LevelSelectAndStamina_14: 1787930599
+      LevelSelectAndStamina_15: -565431150
+      LevelSelectAndStamina_16: 2099883924
+      LevelSelectAndStamina_17: 1850967881
+      LevelSelectAndStamina_18: -2095133251
+      LevelSelectAndStamina_19: 1589279809
+      LevelSelectAndStamina_2: 556510002
+      LevelSelectAndStamina_20: -722067583
+      LevelSelectAndStamina_21: 556294802
+      LevelSelectAndStamina_22: 271562216
+      LevelSelectAndStamina_23: 770915348
+      LevelSelectAndStamina_24: -938696813
+      LevelSelectAndStamina_25: -1397859155
+      LevelSelectAndStamina_26: -1225686435
+      LevelSelectAndStamina_27: -1356965434
+      LevelSelectAndStamina_28: -881198227
+      LevelSelectAndStamina_29: -206672487
+      LevelSelectAndStamina_3: 2008130911
+      LevelSelectAndStamina_4: 1530284408
+      LevelSelectAndStamina_5: -287233708
+      LevelSelectAndStamina_6: -23121952
+      LevelSelectAndStamina_7: -195928106
+      LevelSelectAndStamina_8: 1551091486
+      LevelSelectAndStamina_9: 491525896
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

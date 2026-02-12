@@ -6,10 +6,16 @@ public class PlayerIdentifier : MonoBehaviour
     [Header("씬에 배치된 캐릭터 오브젝트 연결")]
     public GameObject charToUse;
     public GameObject playerCamera;
+    public GameObject camToClearFail;
 
     private void Start()
     {
         playerCamera = FindAnyObjectByType<MouseLook>().gameObject;
+        DataManager.Instance.brain = Camera.main.GetComponent<CinemachineBrain>();
+        if (camToClearFail != null )
+        {
+            DataManager.Instance.camToClearFail = camToClearFail.GetComponent<CinemachineCamera>();
+        }
 
         // 4. 캐릭터 위치 설정 및 활성화
         if (charToUse != null)

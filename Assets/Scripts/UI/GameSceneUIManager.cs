@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using System.Threading;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 
 // 1. 상태를 정의하는 Enum (필요에 따라 추가/수정하세요)
 public enum GameSceneUIState
@@ -13,6 +15,7 @@ public enum GameSceneUIState
     InGame = 1,     // 게임 플레이 중 HUD
     Settings = 2,
     GameOver = 3,
+    None
 }
 
 public enum FadeState
@@ -76,6 +79,8 @@ public class GameSceneUIManager : MonoBehaviour
 
     [SerializeField] private Image iconImage;
 
+    [SerializeField] private Image[] prologueBlackImages;
+
     [Header("미션 텍스트")]
     [SerializeField] private ResultStarsUI resultStarsUI;
 
@@ -85,6 +90,15 @@ public class GameSceneUIManager : MonoBehaviour
 
     [Header("감정 점수 이미지")]
     [SerializeField] private Image emotionScoreFillImage;
+
+    [Header("게임 오버")]
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private bool gameCleared;
+    [SerializeField] private bool epilogueActived;
+    [SerializeField] private bool epilogueEnded;
+    [SerializeField] private CanvasGroup epilogueImage;
+
+    private bool isEpilogueRoutineStarted = false;
 
     private void Awake()
     {
@@ -110,6 +124,14 @@ public class GameSceneUIManager : MonoBehaviour
 
     public void FinishPrologue()
     {
+        if (prologueBlackImages != null) 
+        {
+            foreach (Image image in prologueBlackImages)
+            {
+                image.gameObject.SetActive(false);
+            }
+        }
+
         StartCoroutine(ProcessPrologueEnd());
     }
 
@@ -138,6 +160,14 @@ public class GameSceneUIManager : MonoBehaviour
         Debug.Log($"상태 변경: {currentState}");
 
         // 등록된 모든 UI를 순회하며 상태에 맞는 것만 켜고, 나머지는 끕니다.
+        SetOnlyState(newState);
+
+        // 상태 진입 시 1회성 로직이 필요하다면 여기에 작성 (예: 점수 초기화 등)
+        OnEnterState(newState);
+    }
+
+    public void SetOnlyState(GameSceneUIState newState)
+    {
         foreach (var mapping in uiList)
         {
             if (mapping.uiObject != null)
@@ -147,9 +177,16 @@ public class GameSceneUIManager : MonoBehaviour
                 mapping.uiObject.SetActive(isActive);
             }
         }
-
-        // 상태 진입 시 1회성 로직이 필요하다면 여기에 작성 (예: 점수 초기화 등)
-        OnEnterState(newState);
+    }
+    public void SetAllDisable()
+    {
+        foreach (var mapping in uiList)
+        {
+            if (mapping.uiObject != null)
+            {
+                mapping.uiObject.SetActive(false);
+            }
+        }
     }
 
     // ==========================================
@@ -185,11 +222,23 @@ public class GameSceneUIManager : MonoBehaviour
                 break;
 
             case GameSceneUIState.GameOver:
-                // 게임 오버 로직 (예: R키로 재시작)
-                //if (Input.GetKeyDown(KeyCode.R))
-                //{
-                //    SceneManager.LoadScene("LevelDesign");
-                //}
+
+                if (gameCleared && !epilogueActived && !isEpilogueRoutineStarted)
+                {
+                    StartCoroutine(WaitForEpilogue());
+                }
+
+                // 에필로그가 활성화(이미지가 다 뜸) 되었고, 아직 종료(클릭) 안 했을 때
+                if (epilogueActived && !epilogueEnded)
+                {
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        // 클릭 시 에필로그 끄기 (FadeIn = Alpha 1 -> 0)
+                        StartCoroutine(Fade(epilogueImage, FadeState.FadeIn, fadeDuration));
+                        epilogueEnded = true;
+                    }
+                }
+
                 break;
             case GameSceneUIState.Prologue:
                 break;
@@ -258,6 +307,8 @@ public class GameSceneUIManager : MonoBehaviour
             case GameSceneUIState.GameOver:
                 Time.timeScale = 0f;
                 DataManager.Instance.mouseLook.enabled = false;
+                CharacterFocus.Instance.ApplyAnimationOnCharacter();
+                playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
                 mission1Text.text = DataManager.Instance.mission1;
                 mission2Text.text = DataManager.Instance.mission2;
@@ -281,11 +332,15 @@ public class GameSceneUIManager : MonoBehaviour
 
                 if (successedCount == 0)
                 {
+                    gameCleared = false;
                     DataManager.Instance.playerAnimator.SetTrigger("GameFail");
+                    PlaySFXAudio.Instance.PlayFail();
                 }
                 else if (successedCount >= 2)
                 {
+                    gameCleared = true;
                     DataManager.Instance.playerAnimator.SetTrigger("GameClear");
+                    PlaySFXAudio.Instance.PlayMissionComplete();
                 }
                 resultStarsUI.SetStarIndex(successedCount);
 
@@ -369,5 +424,22 @@ public class GameSceneUIManager : MonoBehaviour
     public void UpdateEmotionScoreImage()
     {
         emotionScoreFillImage.fillAmount = DataManager.Instance.currentEmotionScore / DataManager.Instance.maxEmotionScore;
+    }
+
+    public IEnumerator WaitForEpilogue()
+    {
+        // 1. 중복 실행 방지 플래그 On
+        isEpilogueRoutineStarted = true;
+
+        // 2. 3초 대기
+        yield return new WaitForSecondsRealtime(3.0f);
+
+        // 3. 페이드 효과 실행 (FadeOut = Alpha 0 -> 1 : 이미지 나타남)
+        // yield return을 써서 페이드가 끝날 때까지 기다릴 수도 있고,
+        // 그냥 실행만 시킬 수도 있습니다. 여기선 실행만 시켜도 무방합니다.
+        yield return StartCoroutine(Fade(epilogueImage, FadeState.FadeOut, fadeDuration));
+
+        // 4. 입력 허용 (Update에서 클릭 체크 시작)
+        epilogueActived = true;
     }
 }

@@ -8,9 +8,18 @@ public class HoveredLevelManager : MonoBehaviour
     [SerializeField] private Sprite thumbnail_hope;
     [SerializeField] private Sprite thumbnail_angry;
     [SerializeField] private Sprite thumbnail_sad;
+    [SerializeField] private Sprite thumbnail_null;
 
     [SerializeField]
-    private Image levelThumbnailImage;
+    private Image[] levelThumbnailImages = new Image[4];
+    [SerializeField]
+    private Image levelThumbnailImage_happy;
+    [SerializeField]
+    private Image levelThumbnailImage_hope;
+    [SerializeField]
+    private Image levelThumbnailImage_angry;
+    [SerializeField]
+    private Image levelThumbnailImage_sad;
 
     [SerializeField]
     private TMP_Text levelNameText;
@@ -18,37 +27,54 @@ public class HoveredLevelManager : MonoBehaviour
     [SerializeField]
     private TMP_Text levelDesriptionText;
 
+    private void Start()
+    {
+        DisableAll();
+    }
+
     public void OnEnterHoverLevel(EmotionState emotion)
     {
         switch (emotion)
         {
             case EmotionState.Happy:
-                levelThumbnailImage.sprite = thumbnail_happy;
-                levelNameText.text = "행복";
-                levelDesriptionText.text = "스테이지 설명";
+                DisableAll();
+                levelThumbnailImage_happy.sprite = thumbnail_happy;
+                //levelNameText.text = "행복";
+                //levelDesriptionText.text = "스테이지 설명";
                 break;
             case EmotionState.Hope:
-                levelThumbnailImage.sprite = thumbnail_hope;
-                levelNameText.text = "희망";
-                levelDesriptionText.text = "스테이지 설명";
+                DisableAll();
+                levelThumbnailImage_hope.sprite = thumbnail_hope;
+                //levelNameText.text = "희망";
+                //levelDesriptionText.text = "스테이지 설명";
                 break;
             case EmotionState.Angry:
-                levelThumbnailImage.sprite = thumbnail_angry;
-                levelNameText.text = "분노";
-                levelDesriptionText.text = "스테이지 설명";
+                DisableAll();
+                levelThumbnailImage_angry.sprite = thumbnail_angry;
+                //levelNameText.text = "분노";
+                //levelDesriptionText.text = "스테이지 설명";
                 break;
             case EmotionState.Sad:
-                levelThumbnailImage.sprite = thumbnail_sad;
-                levelNameText.text = "슬픔";
-                levelDesriptionText.text = "스테이지 설명";
+                DisableAll();
+                levelThumbnailImage_sad.sprite = thumbnail_sad;
+                //levelNameText.text = "슬픔";
+                //levelDesriptionText.text = "스테이지 설명";
                 break;
         }
     }
 
     public void OnExitHoverLevel()
     {
-        levelDesriptionText.text = string.Empty;
-        levelNameText.text = string.Empty;
-        levelThumbnailImage.sprite = null;
+        //levelDesriptionText.text = string.Empty;
+        //levelNameText.text = string.Empty;
+        DisableAll();
+    }
+
+    public void DisableAll()
+    {
+        foreach (Image image in levelThumbnailImages) 
+        {
+            image.sprite = thumbnail_null;
+        }
     }
 }

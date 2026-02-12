@@ -29,7 +29,7 @@ public class Debug_ShapeActiveManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            shapeSets[0].manager.SwitchToPlayerCamera();
+            DataManager.Instance.SwitchToPlayerCamera();
         }
     }
 
@@ -46,7 +46,7 @@ public class Debug_ShapeActiveManager : MonoBehaviour
             {
                 // 타겟 발견!
                 set.manager.gameObject.SetActive(true);
-                set.manager.SwitchToMapCamera(); // 카메라 전환
+                DataManager.Instance.SwitchToMapCamera(); // 카메라 전환
                 foundTarget = true;
             }
             else
