@@ -116,6 +116,7 @@ public class DataManager : MonoBehaviour
 
     public IEnumerator GameOver()
     {
+        DisableAllChild.Instance.DisableAll();
         GameSceneUIManager.Instance.SetAllDisable();
         SwitchToMapCamera();
         yield return StartCoroutine(WaitForBlendToFinish());

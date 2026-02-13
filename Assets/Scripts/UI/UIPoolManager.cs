@@ -128,7 +128,7 @@ public class UIPoolManager : MonoBehaviour
 
         if (activeObjectMap.TryGetValue(objID, out int originPrefabID))
         {
-            ui.ClearTarget();
+           // ui.ClearTarget();
             ui.gameObject.SetActive(false);
 
             if (poolDictionary.ContainsKey(originPrefabID))

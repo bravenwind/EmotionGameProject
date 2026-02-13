@@ -29,7 +29,7 @@ public class HoveredLevelManager : MonoBehaviour
 
     private void Start()
     {
-        DisableAll();
+
     }
 
     public void OnEnterHoverLevel(EmotionState emotion)
@@ -37,28 +37,24 @@ public class HoveredLevelManager : MonoBehaviour
         switch (emotion)
         {
             case EmotionState.Happy:
-                DisableAll();
                 levelThumbnailImage_happy.color = new Color(1, 1, 1, 1);
                 levelThumbnailImage_happy.sprite = thumbnail_happy;
                 //levelNameText.text = "행복";
                 //levelDesriptionText.text = "스테이지 설명";
                 break;
             case EmotionState.Hope:
-                DisableAll();
                 levelThumbnailImage_hope.color = new Color(1, 1, 1, 1);
                 levelThumbnailImage_hope.sprite = thumbnail_hope;
                 //levelNameText.text = "희망";
                 //levelDesriptionText.text = "스테이지 설명";
                 break;
             case EmotionState.Angry:
-                DisableAll();
                 levelThumbnailImage_angry.color = new Color(1, 1, 1, 1);
                 levelThumbnailImage_angry.sprite = thumbnail_angry;
                 //levelNameText.text = "분노";
                 //levelDesriptionText.text = "스테이지 설명";
                 break;
             case EmotionState.Sad:
-                DisableAll();
                 levelThumbnailImage_sad.color = new Color(1, 1, 1, 1);
                 levelThumbnailImage_sad.sprite = thumbnail_sad;
                 //levelNameText.text = "슬픔";
@@ -71,7 +67,6 @@ public class HoveredLevelManager : MonoBehaviour
     {
         //levelDesriptionText.text = string.Empty;
         //levelNameText.text = string.Empty;
-        DisableAll();
     }
 
     public void DisableAll()

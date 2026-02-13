@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -8,14 +8,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody))]
 public class ZeroGravityMovement : MonoBehaviour
 {
-    [Header("±âº» ÀÌµ¿ ¼³Á¤ (Movement)")]
+    [Header("ê¸°ë³¸ ì´ë™ ì„¤ì • (Movement)")]
     [SerializeField] private Transform cameraTransform;
     public float acceleration = 15f;
     public float normalMaxSpeed = 10f;
     public float dampingOnIdle = 0.5f;
     public float dampingOnBrake = 3.0f;
 
-    [Header("½ºÇÁ¸°Æ® (Sustain Dash)")]
+    [Header("ìŠ¤í”„ë¦°íŠ¸ (Sustain Dash)")]
     public bool infiniteStamina = false;
     public float sprintAcceleration = 25f;
     public float sprintMaxSpeed = 25f;
@@ -31,34 +31,39 @@ public class ZeroGravityMovement : MonoBehaviour
     public float currentStamina;
     private bool isSprinting;
 
-    [Header("¾Ö´Ï¸ŞÀÌ¼Ç")]
+    [Header("ì• ë‹ˆë©”ì´ì…˜")]
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private string speedParamName = "Speed";
     private int speedHash;
 
-    [Header("ÀÌÆåÆ® - Æ÷½ºÆ® ÇÁ·Î¼¼½Ì")]
+    [Header("ì´í™íŠ¸ - í¬ìŠ¤íŠ¸ í”„ë¡œì„¸ì‹±")]
     public Volume globalVolume;
     private MotionBlur motionBlur;
     public float maxBlurIntensity = 1f;
 
-    [Header("ÀÌÆåÆ® - Ä«¸Ş¶ó FOV (½ºÇÁ¸°Æ® Àü¿ë)")]
+    [Header("ì´í™íŠ¸ - ì¹´ë©”ë¼ FOV (ìŠ¤í”„ë¦°íŠ¸ ì „ìš©)")]
     public CinemachineCamera characterCamera;
-    public float sprintFovBoost = 10f;       // ½ºÇÁ¸°Æ® ½Ã Ãß°¡µÉ FOV
-    public float fovChangeSpeed = 5f;        // FOV º¯È­ ¼Óµµ
+    public float sprintFovBoost = 10f;       // ìŠ¤í”„ë¦°íŠ¸ ì‹œ ì¶”ê°€ë  FOV
+    public float fovChangeSpeed = 5f;        // FOV ë³€í™” ì†ë„
 
     private float defaultFov;
     private float targetFov;
 
-    [Header("ÀÌÆåÆ® - °Å´ëÈ­ Ä«¸Ş¶ó °Å¸® ¼³Á¤")]
-    public MouseLook mouseLookScript;        // [ÇÊ¼ö] MouseLook ½ºÅ©¸³Æ®¸¦ ¿¬°áÇØÁÖ¼¼¿ä!
+    [Header("ì´í™íŠ¸ - ê±°ëŒ€í™” ì¹´ë©”ë¼ ê±°ë¦¬ ì„¤ì •")]
+    public MouseLook mouseLookScript;        // [í•„ìˆ˜] MouseLook ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì—°ê²°í•´ì£¼ì„¸ìš”!
 
-    // 1·¹º§´ç ´Ã¾î³¯ °Å¸® (¿¹: y´Â 1¸¸Å­ À§·Î, z´Â -2¸¸Å­ µÚ·Î)
+    // 1ë ˆë²¨ë‹¹ ëŠ˜ì–´ë‚  ê±°ë¦¬ (ì˜ˆ: yëŠ” 1ë§Œí¼ ìœ„ë¡œ, zëŠ” -2ë§Œí¼ ë’¤ë¡œ)
     public Vector3 offsetIncreasePerLevel = new Vector3(0f, 1.0f, -2.0f);
 
-    private Vector3 originalCameraOffset;    // °ÔÀÓ ½ÃÀÛ ½ÃÀÇ ±âº» ¿ÀÇÁ¼Â ÀúÀå¿ë
+    private Vector3 originalCameraOffset;    // ê²Œì„ ì‹œì‘ ì‹œì˜ ê¸°ë³¸ ì˜¤í”„ì…‹ ì €ì¥ìš©
     public UIFollowTarget scaleIncreaseEffect;
 
-    [Header("ÀÌÆåÆ® - ÀÜ»ó (Ghost Trail)")]
+    // âœ¨ [ì¶”ê°€] UIê°€ ìƒì„±ë  ìº”ë²„ìŠ¤ì˜ Transform (Hierarchyì— ìˆëŠ” Canvas ì§€ì •)
+    public Transform uiCanvasRoot;
+
+    public UIFollowTarget dashEffectPrefab;
+
+    [Header("ì´í™íŠ¸ - ì”ìƒ (Ghost Trail)")]
     public SkinnedMeshRenderer characterMesh;
     public Material ghostMaterial;
     public float ghostDuration = 0.5f;
@@ -67,7 +72,7 @@ public class ZeroGravityMovement : MonoBehaviour
 
     private Rigidbody rb;
 
-    [Header("Ä³¸¯ÅÍ Å©±â ¼³Á¤")]
+    [Header("ìºë¦­í„° í¬ê¸° ì„¤ì •")]
     public Transform scaleTransform;
     public Vector3 currentScale;
 
@@ -92,21 +97,21 @@ public class ZeroGravityMovement : MonoBehaviour
             targetFov = defaultFov;
         }
 
-        // [Ãß°¡] ÃÊ±â Ä«¸Ş¶ó ¿ÀÇÁ¼Â ÀúÀå ¹× ÇöÀç ·¹º§ ¹İ¿µ
+        // [ì¶”ê°€] ì´ˆê¸° ì¹´ë©”ë¼ ì˜¤í”„ì…‹ ì €ì¥ ë° í˜„ì¬ ë ˆë²¨ ë°˜ì˜
         if (mouseLookScript != null)
         {
-            // MouseLook ½ºÅ©¸³Æ®ÀÇ ÇöÀç °ªÀ» ¿øº»À¸·Î ÀúÀå
-            // ÁÖÀÇ: MouseLook ½ºÅ©¸³Æ®¿¡¼­ ÃÊ±â°ªÀ» Start¿¡¼­ ¼¼ÆÃÇÑ´Ù¸é, ½ÇÇà ¼ø¼­¿¡ ÁÖÀÇÇØ¾ß ÇÔ.
-            // ¿©±â¼­´Â Inspector¿¡ ¼³Á¤µÈ °ªÀ» ¿øº»À¸·Î °£ÁÖÇÕ´Ï´Ù.
+            // MouseLook ìŠ¤í¬ë¦½íŠ¸ì˜ í˜„ì¬ ê°’ì„ ì›ë³¸ìœ¼ë¡œ ì €ì¥
+            // ì£¼ì˜: MouseLook ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì´ˆê¸°ê°’ì„ Startì—ì„œ ì„¸íŒ…í•œë‹¤ë©´, ì‹¤í–‰ ìˆœì„œì— ì£¼ì˜í•´ì•¼ í•¨.
+            // ì—¬ê¸°ì„œëŠ” Inspectorì— ì„¤ì •ëœ ê°’ì„ ì›ë³¸ìœ¼ë¡œ ê°„ì£¼í•©ë‹ˆë‹¤.
             originalCameraOffset = mouseLookScript.cameraOffset;
 
-            // ¸¸¾à °ÔÀÓ ½ÃÀÛ ½Ã ·¹º§ÀÌ 0ÀÌ ¾Æ´Ï¶ó¸é ¹Ù·Î Àû¿ë
+            // ë§Œì•½ ê²Œì„ ì‹œì‘ ì‹œ ë ˆë²¨ì´ 0ì´ ì•„ë‹ˆë¼ë©´ ë°”ë¡œ ì ìš©
             //Vector3 startLevelOffset = originalCameraOffset + (offsetIncreasePerLevel * DataManager.Instance.currentScaleLevel);
             //mouseLookScript.cameraOffset = startLevelOffset;
         }
         else
         {
-            Debug.LogError("MouseLook ½ºÅ©¸³Æ®°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù! Inspector¿¡¼­ ÇÒ´çÇØÁÖ¼¼¿ä.");
+            Debug.LogError("MouseLook ìŠ¤í¬ë¦½íŠ¸ê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤! Inspectorì—ì„œ í• ë‹¹í•´ì£¼ì„¸ìš”.");
         }
     }
 
@@ -141,6 +146,17 @@ public class ZeroGravityMovement : MonoBehaviour
     void HandleInput()
     {
         bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S);
+
+        // âœ¨ [ì¶”ê°€] Shift í‚¤ë¥¼ 'ëˆ„ë¥´ëŠ” ìˆœê°„' (GetKeyDown) ê°ì§€
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        {
+            // (ì˜µì…˜) ì´ë™ ì¤‘ì´ê³  ìŠ¤í…Œë¯¸ë„ˆê°€ ë‚¨ì•„ìˆì„ ë•Œë§Œ ì´í™íŠ¸ê°€ ë‚˜ì˜¤ê²Œ í•˜ë ¤ë©´ ì¡°ê±´ ì¶”ê°€
+            if (isMoving && currentStamina > 0)
+            {
+                UIPoolManager.Instance.SpawnUI(dashEffectPrefab, transform);
+            }
+        }
+
         bool shiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
         isSprinting = shiftPressed && (currentStamina > 0) && isMoving;
@@ -193,17 +209,17 @@ public class ZeroGravityMovement : MonoBehaviour
 
     void HandleVisualEffects(float dt)
     {
-        // --- 1. FOV Á¦¾î (ÀÌÁ¦ ½ºÇÁ¸°Æ®¸¸ ´ã´ç) ---
+        // --- 1. FOV ì œì–´ (ì´ì œ ìŠ¤í”„ë¦°íŠ¸ë§Œ ë‹´ë‹¹) ---
         if (characterCamera != null)
         {
-            // °Å´ëÈ­ ·ÎÁ÷ Á¦°ÅµÊ: ¿ÀÁ÷ ½ºÇÁ¸°Æ® ¿©ºÎ¿¡ µû¶ó FOV º¯°æ
+            // ê±°ëŒ€í™” ë¡œì§ ì œê±°ë¨: ì˜¤ì§ ìŠ¤í”„ë¦°íŠ¸ ì—¬ë¶€ì— ë”°ë¼ FOV ë³€ê²½
             float finalTargetFov = isSprinting ? (defaultFov + sprintFovBoost) : defaultFov;
 
             targetFov = Mathf.Lerp(targetFov, finalTargetFov, dt * fovChangeSpeed);
             characterCamera.Lens.FieldOfView = Mathf.Lerp(characterCamera.Lens.FieldOfView, targetFov, dt * fovChangeSpeed);
         }
 
-        // --- 2. ¾Ö´Ï¸ŞÀÌ¼Ç ---
+        // --- 2. ì• ë‹ˆë©”ì´ì…˜ ---
         if (playerAnimator != null)
         {
             float currentSpeed = rb.linearVelocity.magnitude;
@@ -213,7 +229,7 @@ public class ZeroGravityMovement : MonoBehaviour
             playerAnimator.speed = Mathf.Lerp(playerAnimator.speed, targetAnimMult, dt * 5f);
         }
 
-        // --- 3. ¸ğ¼Ç ºí·¯ ---
+        // --- 3. ëª¨ì…˜ ë¸”ëŸ¬ ---
         if (motionBlur != null)
         {
             float speedRatio = rb.linearVelocity.magnitude / sprintMaxSpeed;
@@ -223,60 +239,74 @@ public class ZeroGravityMovement : MonoBehaviour
         }
     }
 
-    public IEnumerator IncreaseScale(float increaseTime)
-    {
-        if (DataManager.Instance.currentScaleLevel > DataManager.Instance.maxScaleLevel)
-        {
-            yield break;
-        }
+    //public IEnumerator IncreaseScale(float increaseTime)
+    //{
+    //    if (DataManager.Instance.currentScaleLevel >= DataManager.Instance.maxScaleLevel)
+    //    {
+    //        yield break;
+    //    }
 
-        //UIPoolManager.Instance.SpawnUI(scaleIncreaseEffect, transform);
-        //if (PlaySFXAudio.Instance != null) PlaySFXAudio.Instance.PlayScaleUpSound();
+    //    // ë ˆë²¨ ì¦ê°€
+    //    DataManager.Instance.currentScaleLevel++;
 
-        // 1. Å©±â(Scale) °è»ê
-        Vector3 startScale = currentScale;
-        Vector3 targetScale = Vector3.one * DataManager.Instance.playerScalePerLevel[DataManager.Instance.currentScaleLevel];
+    //    // âœ¨ 1. ì´í™íŠ¸ ìƒì„± (UI Canvas ì•„ë˜ì— ìƒì„±í•´ì•¼ ë³´ì…ë‹ˆë‹¤)
+    //    if (scaleIncreaseEffectPrefab != null && uiCanvasRoot != null)
+    //    {
+    //        // í”„ë¦¬íŒ¹ ìƒì„±
+    //        UIFollowTarget effectInstance = Instantiate(scaleIncreaseEffectPrefab, uiCanvasRoot);
 
-        // 2. Ä«¸Ş¶ó ¿ÀÇÁ¼Â(°Å¸®) °è»ê [¼öÁ¤µÊ]
-        // ÇöÀç ¿ÀÇÁ¼Â¿¡¼­ ½ÃÀÛ
-        Vector3 startOffset = mouseLookScript.cameraOffset;
+    //        // íƒ€ê²Ÿ ì„¤ì • (í˜„ì¬ í”Œë ˆì´ì–´)
+    //        effectInstance.SetTarget(this.transform);
 
-        // ¸ñÇ¥ ¿ÀÇÁ¼Â: ±âº»°ª + (·¹º§ * Áõ°¡·®)
-        // ¿¹: 0·¹º§(0,0,0) -> 1·¹º§(0, 1, -2) -> 2·¹º§(0, 2, -4)
-        Vector3 targetOffset = originalCameraOffset + (offsetIncreasePerLevel * DataManager.Instance.currentScaleLevel);
+    //        // (ì˜µì…˜) ì‚¬ìš´ë“œ ì¬ìƒ
+    //        // if (PlaySFXAudio.Instance != null) PlaySFXAudio.Instance.PlayScaleUpSound();
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("ScaleEffectPrefab ë˜ëŠ” UICanvasRootê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+    //    }
 
-        float t = 0f;
+    //    // 2. í¬ê¸°(Scale) ê³„ì‚°
+    //    Vector3 startScale = currentScale;
+    //    // DataManager ë°°ì—´ ì¸ë±ìŠ¤ ì—ëŸ¬ ë°©ì§€ìš© Clamp
+    //    int levelIndex = Mathf.Clamp(DataManager.Instance.currentScaleLevel, 0, DataManager.Instance.playerScalePerLevel.Count - 1);
+    //    Vector3 targetScale = Vector3.one * DataManager.Instance.playerScalePerLevel[levelIndex];
 
-        while (t < increaseTime)
-        {
-            t += Time.deltaTime;
-            float progress = t / increaseTime;
+    //    // 3. ì¹´ë©”ë¼ ì˜¤í”„ì…‹(ê±°ë¦¬) ê³„ì‚°
+    //    Vector3 startOffset = mouseLookScript.cameraOffset;
+    //    Vector3 targetOffset = originalCameraOffset + (offsetIncreasePerLevel * DataManager.Instance.currentScaleLevel);
 
-            // Å©±â º¸°£
-            currentScale = Vector3.Lerp(startScale, targetScale, progress);
-            scaleTransform.localScale = currentScale;
+    //    float t = 0f;
 
-            // [ÇÙ½É] Ä«¸Ş¶ó °Å¸®(Offset) º¸°£
-            // MouseLook ½ºÅ©¸³Æ®ÀÇ º¯¼ö¸¦ ½Ç½Ã°£À¸·Î °Çµå·Á¼­ Ä«¸Ş¶ó¸¦ µÚ·Î »®´Ï´Ù.
-            if (mouseLookScript != null)
-            {
-                mouseLookScript.cameraOffset = Vector3.Lerp(startOffset, targetOffset, progress);
-            }
+    //    while (t < increaseTime)
+    //    {
+    //        t += Time.deltaTime;
+    //        float progress = t / increaseTime;
 
-            yield return null;
-        }
+    //        // í¬ê¸° ë³´ê°„
+    //        currentScale = Vector3.Lerp(startScale, targetScale, progress);
+    //        scaleTransform.localScale = currentScale;
 
-        // ÃÖÁ¾ °ª È®Á¤
-        scaleTransform.localScale = targetScale;
-        currentScale = targetScale;
+    //        // ì¹´ë©”ë¼ ê±°ë¦¬ ë³´ê°„
+    //        if (mouseLookScript != null)
+    //        {
+    //            mouseLookScript.cameraOffset = Vector3.Lerp(startOffset, targetOffset, progress);
+    //        }
 
-        if (mouseLookScript != null)
-        {
-            mouseLookScript.cameraOffset = targetOffset;
-        }
-    }
+    //        yield return null;
+    //    }
 
-    // --- ÀÜ»ó ÄÚ·çÆ¾ (±âÁ¸ À¯Áö) ---
+    //    // ìµœì¢… ê°’ í™•ì •
+    //    scaleTransform.localScale = targetScale;
+    //    currentScale = targetScale;
+
+    //    if (mouseLookScript != null)
+    //    {
+    //        mouseLookScript.cameraOffset = targetOffset;
+    //    }
+    //}
+
+    // --- ì”ìƒ ì½”ë£¨í‹´ (ê¸°ì¡´ ìœ ì§€) ---
     IEnumerator ShowGhostTrail()
     {
         float timeElapsed = 0f;

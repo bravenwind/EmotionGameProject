@@ -65,20 +65,6 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private float prologueScale_Hope;
     [SerializeField] private float prologueScale_Angry;
     [SerializeField] private float prologueScale_Sad;
-
-    [Header("감정 아이콘")]
-    [SerializeField] private Sprite happyIcon;
-    [SerializeField] private Sprite hopeIcon;
-    [SerializeField] private Sprite angryIcon;
-    [SerializeField] private Sprite sadIcon;
-
-    [SerializeField] private float happyIconScale;
-    [SerializeField] private float hopeIconScale;
-    [SerializeField] private float angryIconScale;
-    [SerializeField] private float sadIconScale;
-
-    [SerializeField] private Image iconImage;
-
     [SerializeField] private Image[] prologueBlackImages;
 
     [Header("미션 텍스트")]
@@ -97,6 +83,11 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private bool epilogueActived;
     [SerializeField] private bool epilogueEnded;
     [SerializeField] private CanvasGroup epilogueImage;
+
+    [Header("컷인")]
+    [SerializeField] private Image level1to2CutIn;
+    [SerializeField] private Image level2to3CutIn;
+    [SerializeField] private Image level3to4CutIn;
 
     private bool isEpilogueRoutineStarted = false;
 
@@ -287,7 +278,7 @@ public class GameSceneUIManager : MonoBehaviour
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 // 공통 함수 사용 (아이콘 설정)
-                UpdateEmotionUI(iconImage, happyIcon, happyIconScale, hopeIcon, hopeIconScale, angryIcon, angryIconScale, sadIcon, sadIconScale);
+                //UpdateEmotionUI(iconImage, happyIcon, happyIconScale, hopeIcon, hopeIconScale, angryIcon, angryIconScale, sadIcon, sadIconScale);
                 GUI.enabled = true;
                 break;
 
@@ -310,9 +301,9 @@ public class GameSceneUIManager : MonoBehaviour
                 CharacterFocus.Instance.ApplyAnimationOnCharacter();
                 playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
-                mission1Text.text = DataManager.Instance.mission1;
-                mission2Text.text = DataManager.Instance.mission2;
-                mission3Text.text = DataManager.Instance.mission3;
+                //mission1Text.text = DataManager.Instance.mission1;
+                //mission2Text.text = DataManager.Instance.mission2;
+                //mission3Text.text = DataManager.Instance.mission3;
 
                 if (DataManager.Instance.limitTime - DataManager.Instance.currentTime <= DataManager.Instance.targetTime)
                 {

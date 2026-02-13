@@ -181,12 +181,12 @@ public class PathNode : MonoBehaviour
         DataManager.Instance.currentEmotionScore = Mathf.Clamp(DataManager.Instance.currentEmotionScore, 0, DataManager.Instance.maxEmotionScore);
         DataManager.Instance.currentEmotionCount++;
 
-        if (DataManager.Instance.currentEmotionCount >= DataManager.Instance.emotionForLevelUp)
-        {
-            DataManager.Instance.currentScaleLevel++;
-            DataManager.Instance.playerMovementScript.StartCoroutine(DataManager.Instance.playerMovementScript.IncreaseScale(DataManager.Instance.scaleIncreaseDuration));
-            DataManager.Instance.currentEmotionCount = 0;
-        }
+        //if (DataManager.Instance.currentEmotionCount >= DataManager.Instance.emotionForLevelUp)
+        //{
+        //    DataManager.Instance.currentScaleLevel++;
+        //    DataManager.Instance.playerMovementScript.StartCoroutine(DataManager.Instance.playerMovementScript.IncreaseScale(DataManager.Instance.scaleIncreaseDuration));
+        //    DataManager.Instance.currentEmotionCount = 0;
+        //}
 
         if (DataManager.Instance.currentEmotionScore >= DataManager.Instance.maxEmotionScore)
         {
@@ -195,6 +195,7 @@ public class PathNode : MonoBehaviour
         }
 
         GameSceneUIManager.Instance.UpdateEmotionScoreImage();
+        PlaySFXAudio.Instance.PlayEmotionConnect();
         gameObject.SetActive(false);
     }
 }

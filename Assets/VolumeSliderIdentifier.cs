@@ -12,7 +12,8 @@ public class VolumeSliderIdentifier : MonoBehaviour
         AudioManager.Instance.volumeSlider_SFX = slider_SFX;
 
 
-        AudioManager.Instance.volumeSlider_BGM.onValueChanged.AddListener(AudioManager.Instance.SetBGMVolume);        AudioManager.Instance.volumeSlider_SFX.onValueChanged.AddListener(AudioManager.Instance.SetSFXVolume);
+        AudioManager.Instance.volumeSlider_BGM.onValueChanged.AddListener(AudioManager.Instance.SetBGMVolume);        
+        AudioManager.Instance.volumeSlider_SFX.onValueChanged.AddListener(AudioManager.Instance.SetSFXVolume);
 
         AudioManager.Instance.ResetVolumeUI();
     }
