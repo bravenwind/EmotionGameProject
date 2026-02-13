@@ -461,7 +461,7 @@ public class PathManager : MonoBehaviour
             finalNode.GetComponent<Renderer>().material = completedMaterial;
         }
 
-        DisableAllChild.Instance.DisableAll();
+        
         ActivateThis();
 
         // activeManager 유무와 상관없이 카메라 전환이 필요하다면 아래 주석을 해제하거나 activeManager 내부에서 처리해야 함

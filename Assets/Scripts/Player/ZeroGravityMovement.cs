@@ -153,7 +153,10 @@ public class ZeroGravityMovement : MonoBehaviour
             // (옵션) 이동 중이고 스테미너가 남아있을 때만 이펙트가 나오게 하려면 조건 추가
             if (isMoving && currentStamina > 0)
             {
-                UIPoolManager.Instance.SpawnUI(dashEffectPrefab, transform);
+                if (dashEffectPrefab != null)
+                {
+                    //UIPoolManager.Instance.SpawnUI(dashEffectPrefab, transform);
+                }
             }
         }
 

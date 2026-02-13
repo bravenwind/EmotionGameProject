@@ -8,6 +8,7 @@ public class DisableAllChild : MonoBehaviour
     {
         Instance = this;
         DisableAllLineRenderer();
+        DisableAllRigidBody();
     }
 
     public void DisableAll()
@@ -26,6 +27,15 @@ public class DisableAllChild : MonoBehaviour
         foreach (LineRenderer line in lines)
         {
             line.enabled = false;
+        }
+    }
+
+    public void DisableAllRigidBody()
+    {
+        Rigidbody[] lines = GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody line in lines)
+        {
+            line.isKinematic = true;
         }
     }
 }
