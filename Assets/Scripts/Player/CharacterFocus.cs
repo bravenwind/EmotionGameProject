@@ -13,6 +13,7 @@ public class CharacterFocus : MonoBehaviour
     public AnimationCurve motionCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // 부드러운 움직임 곡선
 
     public Transform animationPosition;
+    public float failAnimationMinusY;
     public Vector3 animationRotation = new Vector3(-90, 90, 90);
 
     private Vector3 startPos;
@@ -76,7 +77,14 @@ public class CharacterFocus : MonoBehaviour
 
     public void ApplyAnimationOnCharacter()
     {
-        transform.position = animationPosition.position;
-        transform.rotation = Quaternion.Euler(animationRotation);
+        if (DataManager.Instance.gameCleared)
+        {
+            transform.position = animationPosition.position;
+            transform.rotation = Quaternion.Euler(animationRotation);
+        }
+        else
+        {
+            transform.position = animationPosition.position + new Vector3(0.0f, failAnimationMinusY, 0.0f);
+        }
     }
 }

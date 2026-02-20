@@ -171,12 +171,12 @@ public class PathNode : MonoBehaviour
     {
         if (emotion == DataManager.Instance.targetEmotion)
         {
-            DataManager.Instance.currentEmotionScore += DataManager.Instance.emotionPlusScorePerObject;
+            DataManager.Instance.currentEmotionScore++;
         }
-        else
-        {
-            DataManager.Instance.currentEmotionScore -= DataManager.Instance.emotionMinusScorePerObject;
-        }
+        //else
+        //{
+        //    DataManager.Instance.currentEmotionScore -= DataManager.Instance.emotionMinusScorePerObject;
+        //}
 
         DataManager.Instance.currentEmotionScore = Mathf.Clamp(DataManager.Instance.currentEmotionScore, 0, DataManager.Instance.maxEmotionScore);
         DataManager.Instance.currentEmotionCount++;
@@ -187,12 +187,6 @@ public class PathNode : MonoBehaviour
         //    DataManager.Instance.playerMovementScript.StartCoroutine(DataManager.Instance.playerMovementScript.IncreaseScale(DataManager.Instance.scaleIncreaseDuration));
         //    DataManager.Instance.currentEmotionCount = 0;
         //}
-
-        if (DataManager.Instance.currentEmotionScore >= DataManager.Instance.maxEmotionScore)
-        {
-            DataManager.Instance.missionDict[DataManager.Instance.mission1] = true;
-            DataManager.Instance.mission1Success = true;
-        }
 
         GameSceneUIManager.Instance.UpdateEmotionScoreImage();
         PlaySFXAudio.Instance.PlayEmotionConnect();

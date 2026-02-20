@@ -214,7 +214,7 @@ public class GameSceneUIManager : MonoBehaviour
 
             case GameSceneUIState.GameOver:
 
-                if (gameCleared && !epilogueActived && !isEpilogueRoutineStarted)
+                if (DataManager.Instance.gameCleared && !epilogueActived && !isEpilogueRoutineStarted)
                 {
                     StartCoroutine(WaitForEpilogue());
                 }
@@ -305,35 +305,18 @@ public class GameSceneUIManager : MonoBehaviour
                 //mission2Text.text = DataManager.Instance.mission2;
                 //mission3Text.text = DataManager.Instance.mission3;
 
-                if (DataManager.Instance.limitTime - DataManager.Instance.currentTime <= DataManager.Instance.targetTime)
+                if (DataManager.Instance.gameCleared)
                 {
-                    DataManager.Instance.missionDict[DataManager.Instance.mission3] = true;
-                    DataManager.Instance.mission3Success = true;
-                }
-
-                int successedCount = 0;
-
-                foreach (bool successed in DataManager.Instance.missionDict.Values)
-                {
-                    if (successed) 
-                    {
-                        successedCount++;
-                    }
-                }
-
-                if (successedCount == 0)
-                {
-                    gameCleared = false;
-                    DataManager.Instance.playerAnimator.SetTrigger("GameFail");
-                    PlaySFXAudio.Instance.PlayFail();
-                }
-                else if (successedCount >= 2)
-                {
-                    gameCleared = true;
+                    resultStarsUI.SetStarIndex(3);
                     DataManager.Instance.playerAnimator.SetTrigger("GameClear");
                     PlaySFXAudio.Instance.PlayMissionComplete();
                 }
-                resultStarsUI.SetStarIndex(successedCount);
+                else
+                {
+                    resultStarsUI.SetStarIndex(0);
+                    DataManager.Instance.playerAnimator.SetTrigger("GameFail");
+                    PlaySFXAudio.Instance.PlayFail();
+                }
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;

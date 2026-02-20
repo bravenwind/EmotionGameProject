@@ -79,6 +79,8 @@ public class PathManager : MonoBehaviour
         lineRenderer.numCornerVertices = 50;
         lineRenderer.numCapVertices = 50;
 
+        pathNodes.Clear();
+
         if (pathNodes.Count <= 0)
         {
             PathNode[] pathNodesInChildren = GetComponentsInChildren<PathNode>();
@@ -91,6 +93,7 @@ public class PathManager : MonoBehaviour
         if (completedEmotion == DataManager.Instance.targetEmotion)
         {
             DataManager.Instance.targetMapCam = mapCam;
+            DataManager.Instance.maxEmotionScore = pathNodes.Count;
         }
 
         if (pathNodes.Count > 0)
@@ -441,8 +444,7 @@ public class PathManager : MonoBehaviour
         Debug.Log($"한붓그리기 완성! (모드: {(useParticleMode ? "파티클" : "라인")})");
 
         
-        DataManager.Instance.missionDict[DataManager.Instance.mission2] = true;
-        DataManager.Instance.mission2Success = true;
+        DataManager.Instance.gameCleared = true;
 
         // 완료 시 모든 노드 정리 (프리팹 제거 및 완료 메테리얼 적용)
         foreach (var node in pathNodes)

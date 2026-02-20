@@ -3261,12 +3261,7 @@ MonoBehaviour:
   limitTime: 180
   targetTime: 120
   currentTime: 0
-  mission1: "\uBAA9\uD45C\uAC10\uC815 \uB3C4\uB2EC"
-  mission2: "\uAC10\uC815\uC744 \uBAA8\uB450 \uC5F0\uACB0"
-  mission3: "2\uBD84 \uB0B4 \uD074\uB9AC\uC5B4"
-  mission1Success: 0
-  mission2Success: 0
-  mission3Success: 0
+  gameCleared: 0
   maxEmotionScore: 150
   currentEmotionScore: 0
   emotionPlusScorePerObject: 10
@@ -3473,7 +3468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &868805505
 RectTransform:
   m_ObjectHideFlags: 0

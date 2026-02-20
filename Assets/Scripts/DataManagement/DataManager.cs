@@ -37,22 +37,12 @@ public class DataManager : MonoBehaviour
     public float targetTime = 120f;
     public float currentTime;
 
-    [Header("미션 내용")]
-    public Dictionary<string, bool> missionDict = new Dictionary<string, bool>();
-
-    public string mission1 = "목표감정 도달";
-    public string mission2 = "감정을 모두 연결";
-    public string mission3 = "2분 내 클리어";
-
-    public bool mission1Success = false;
-    public bool mission2Success = false;
-    public bool mission3Success = false;
+    [Header("게임 완료")]
+    public bool gameCleared = false;
 
     [Header("감정 게이지")]
-    public float maxEmotionScore = 150;
+    public float maxEmotionScore;
     public float currentEmotionScore = 0;
-    public float emotionPlusScorePerObject = 10;
-    public float emotionMinusScorePerObject = 5;
 
     [Header("커지는 캐릭터")]
     public float playerOriginalScale = 1;
@@ -85,12 +75,6 @@ public class DataManager : MonoBehaviour
         }
 
         ResetGameData();
-
-        missionDict.Add(mission1, mission1Success);
-        missionDict.Add(mission2, mission2Success);
-        missionDict.Add(mission3, mission3Success);
-
-        targetTime = (float)char.GetNumericValue(mission3[0]) * 60.0f;
     }
 
     public void SwitchToMapCamera()
@@ -154,9 +138,5 @@ public class DataManager : MonoBehaviour
         currentTime = limitTime;
         currentEmotionCount = 0;
         currentScaleLevel = 1;
-
-        mission1Success = false;
-        mission2Success = false;
-        mission3Success = false;
     }
 }
