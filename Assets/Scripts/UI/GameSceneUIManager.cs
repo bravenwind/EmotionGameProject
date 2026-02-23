@@ -1,12 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using System.Threading;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 
 // 1. 상태를 정의하는 Enum (필요에 따라 추가/수정하세요)
 public enum GameSceneUIState
@@ -43,6 +39,7 @@ public class GameSceneUIManager : MonoBehaviour
     [Header("초기 상태")]
     public GameSceneUIState startState = GameSceneUIState.Prologue;
     public CanvasGroup prologuePanel;
+    public GameObject manualPanel;
 
     [Header("UI 설정")]
     [Tooltip("화면을 가릴 검은색 이미지의 CanvasGroup 컴포넌트")]
@@ -67,19 +64,11 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private float prologueScale_Sad;
     [SerializeField] private Image[] prologueBlackImages;
 
-    [Header("미션 텍스트")]
-    [SerializeField] private ResultStarsUI resultStarsUI;
-
-    [SerializeField] private TMP_Text mission1Text;
-    [SerializeField] private TMP_Text mission2Text;
-    [SerializeField] private TMP_Text mission3Text;
-
     [Header("감정 점수 이미지")]
     [SerializeField] private Image emotionScoreFillImage;
 
     [Header("게임 오버")]
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private bool gameCleared;
     [SerializeField] private bool epilogueActived;
     [SerializeField] private bool epilogueEnded;
     [SerializeField] private CanvasGroup epilogueImage;
@@ -98,6 +87,7 @@ public class GameSceneUIManager : MonoBehaviour
 
     private void Start()
     {
+
         // 시작하자마자 검은 화면(Alpha 1)으로 세팅하고 시작해야 자연스럽습니다.
         if (fadeCanvasGroup != null)
         {
@@ -128,18 +118,41 @@ public class GameSceneUIManager : MonoBehaviour
 
     private IEnumerator ProcessPrologueEnd()
     {
-        // 2. 상태 변경 (인게임)
+        // 상태 변경 (인게임)
         SetState(GameSceneUIState.InGame);
 
-        // 3. 다시 화면 밝아짐 (FadeIn = Alpha 1 -> 0)
+        // 다시 화면 밝아짐 (FadeIn = Alpha 1 -> 0)
         yield return StartCoroutine(Fade(prologuePanel, FadeState.FadeIn, fadeDuration));
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        
         prologuePanel.gameObject.SetActive(false);
+    }
+
+    private IEnumerator ProcessEpilogueEnd()
+    {
+        // 다시 화면 밝아짐 (FadeIn = Alpha 1 -> 0)
+        yield return StartCoroutine(Fade(epilogueImage, FadeState.FadeIn, fadeDuration));
+
+        epilogueImage.gameObject.SetActive(false);
+
+        DataManager.Instance.StartCoroutine(DataManager.Instance.AfterEpilogue());
     }
 
     private void Update()
     {
         // 매 프레임 현재 상태에 따른 로직 실행
         UpdateState();
+
+        if (epilogueActived)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                StartCoroutine(ProcessEpilogueEnd());
+                epilogueActived = false;
+            }
+        }
     }
 
     // ==========================================
@@ -187,25 +200,17 @@ public class GameSceneUIManager : MonoBehaviour
     {
         switch (currentState)
         {
-            //case UIState.MainMenu:
-            //    // 메인 메뉴에서의 로직 (예: 아무 키나 누르면 게임 시작)
-            //    if (Input.GetKeyDown(KeyCode.Space))
-            //    {
-            //        Debug.Log("게임 시작!");
-            //        SetState(UIState.InGame);
-            //    }
-            //    break;
-
             case GameSceneUIState.InGame:
-                // 게임 중 로직 (예: ESC 누르면 일시정지/설정)
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    SetState(GameSceneUIState.Settings);
+                    if (!manualPanel.activeSelf && !DataManager.Instance.gameEnded)
+                    {
+                        SetState(GameSceneUIState.Settings);
+                    }
                 }
                 break;
 
             case GameSceneUIState.Settings:
-                // 설정 창 로직 (예: ESC 누르면 다시 게임으로)
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     SetState(GameSceneUIState.InGame);
@@ -213,61 +218,44 @@ public class GameSceneUIManager : MonoBehaviour
                 break;
 
             case GameSceneUIState.GameOver:
-
-                if (DataManager.Instance.gameCleared && !epilogueActived && !isEpilogueRoutineStarted)
-                {
-                    StartCoroutine(WaitForEpilogue());
-                }
-
-                // 에필로그가 활성화(이미지가 다 뜸) 되었고, 아직 종료(클릭) 안 했을 때
-                if (epilogueActived && !epilogueEnded)
-                {
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
-                    {
-                        // 클릭 시 에필로그 끄기 (FadeIn = Alpha 1 -> 0)
-                        StartCoroutine(Fade(epilogueImage, FadeState.FadeIn, fadeDuration));
-                        epilogueEnded = true;
-                    }
-                }
-
                 break;
             case GameSceneUIState.Prologue:
                 break;
         }
     }
 
-    private void UpdateEmotionUI(Image targetImage, Sprite happy, float happyScale, Sprite hope, float hopeScale, Sprite angry, float angryScale, Sprite sad, float sadScale)
-    {
-        if (targetImage == null) return;
+    //private void UpdateEmotionUI(Image targetImage, Sprite happy, float happyScale, Sprite hope, float hopeScale, Sprite angry, float angryScale, Sprite sad, float sadScale)
+    //{
+    //    if (targetImage == null) return;
 
-        EmotionState currentEmotion = DataManager.Instance.targetEmotion;
-        Sprite selectedSprite = null;
-        float selectedScale = 1f;
+    //    EmotionState currentEmotion = DataManager.Instance.targetEmotion;
+    //    Sprite selectedSprite = null;
+    //    float selectedScale = 1f;
 
-        switch (currentEmotion)
-        {
-            case EmotionState.Happy:
-                selectedSprite = happy;
-                selectedScale = happyScale;
-                break;
-            case EmotionState.Hope:
-                selectedSprite = hope;
-                selectedScale = hopeScale;
-                break;
-            case EmotionState.Angry:
-                selectedSprite = angry;
-                selectedScale = angryScale;
-                break;
-            case EmotionState.Sad:
-                selectedSprite = sad;
-                selectedScale = sadScale;
-                break;
-        }
+    //    switch (currentEmotion)
+    //    {
+    //        case EmotionState.Happy:
+    //            selectedSprite = happy;
+    //            selectedScale = happyScale;
+    //            break;
+    //        case EmotionState.Hope:
+    //            selectedSprite = hope;
+    //            selectedScale = hopeScale;
+    //            break;
+    //        case EmotionState.Angry:
+    //            selectedSprite = angry;
+    //            selectedScale = angryScale;
+    //            break;
+    //        case EmotionState.Sad:
+    //            selectedSprite = sad;
+    //            selectedScale = sadScale;
+    //            break;
+    //    }
 
-        targetImage.sprite = selectedSprite;
-        targetImage.rectTransform.localScale = Vector3.one * selectedScale;
-        targetImage.SetNativeSize();
-    }
+    //    targetImage.sprite = selectedSprite;
+    //    targetImage.rectTransform.localScale = Vector3.one * selectedScale;
+    //    targetImage.SetNativeSize();
+    //}
 
     private void OnEnterState(GameSceneUIState state)
     {
@@ -291,6 +279,7 @@ public class GameSceneUIManager : MonoBehaviour
 
             case GameSceneUIState.Prologue:
                 Time.timeScale = 0f;
+                manualPanel.SetActive(true);
                 // 공통 함수 사용 (프롤로그 이미지 설정)
                 //UpdateEmotionUI(prologueImage, prologue_Happy, prologueScale_Happy, prologue_Hope, prologueScale_Hope, prologue_Angry, prologueScale_Angry, prologue_Sad, prologueScale_Sad);
                 break;
@@ -298,28 +287,6 @@ public class GameSceneUIManager : MonoBehaviour
             case GameSceneUIState.GameOver:
                 Time.timeScale = 0f;
                 DataManager.Instance.mouseLook.enabled = false;
-                CharacterFocus.Instance.ApplyAnimationOnCharacter();
-                playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-
-                //mission1Text.text = DataManager.Instance.mission1;
-                //mission2Text.text = DataManager.Instance.mission2;
-                //mission3Text.text = DataManager.Instance.mission3;
-
-                if (DataManager.Instance.gameCleared)
-                {
-                    resultStarsUI.SetStarIndex(3);
-                    DataManager.Instance.playerAnimator.SetTrigger("GameClear");
-                    PlaySFXAudio.Instance.PlayMissionComplete();
-                }
-                else
-                {
-                    resultStarsUI.SetStarIndex(0);
-                    DataManager.Instance.playerAnimator.SetTrigger("GameFail");
-                    PlaySFXAudio.Instance.PlayFail();
-                }
-
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
                 break;
         }
     }
@@ -402,11 +369,15 @@ public class GameSceneUIManager : MonoBehaviour
 
     public IEnumerator WaitForEpilogue()
     {
+        if (isEpilogueRoutineStarted)
+        {
+            yield break;
+        }
         // 1. 중복 실행 방지 플래그 On
         isEpilogueRoutineStarted = true;
 
         // 2. 3초 대기
-        yield return new WaitForSecondsRealtime(3.0f);
+        yield return new WaitForSecondsRealtime(1.0f);
 
         // 3. 페이드 효과 실행 (FadeOut = Alpha 0 -> 1 : 이미지 나타남)
         // yield return을 써서 페이드가 끝날 때까지 기다릴 수도 있고,

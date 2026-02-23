@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ResultStarsUI : MonoBehaviour
 {
+    public static ResultStarsUI Instance;
+
     [Header("Top Images")]
     [SerializeField] private GameObject failTopImage;   // 0일 때 켜짐
     [SerializeField] private GameObject clearTopImage;  // 1~3일 때 켜짐
@@ -20,6 +22,11 @@ public class ResultStarsUI : MonoBehaviour
     [SerializeField] private List<GameObject> miniStars = new List<GameObject>(); // 0,1,2 인덱스 = 미니별 1~3
 
     public int _starIndex = 0;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void OnEnable()
     {

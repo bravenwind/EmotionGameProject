@@ -27,11 +27,6 @@ public class HoveredLevelManager : MonoBehaviour
     [SerializeField]
     private TMP_Text levelDesriptionText;
 
-    private void Start()
-    {
-
-    }
-
     public void OnEnterHoverLevel(EmotionState emotion)
     {
         switch (emotion)
@@ -59,6 +54,8 @@ public class HoveredLevelManager : MonoBehaviour
                 levelThumbnailImage_sad.sprite = thumbnail_sad;
                 //levelNameText.text = "슬픔";
                 //levelDesriptionText.text = "스테이지 설명";
+                break;
+            default:
                 break;
         }
     }

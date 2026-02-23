@@ -1,16 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class CharacterFocus : MonoBehaviour
 {
     public static CharacterFocus Instance;
 
-    [Header("¼³Á¤ °ª")]
-    public Transform targetPosition; // ÀÌµ¿ÇÒ ¸ñÇ¥ À§Ä¡ (ºó ¿ÀºêÁ§Æ® µîÀ¸·Î À§Ä¡ ÁöÁ¤)
-    public float targetScale = 90.0f; // ¸ñÇ¥ Å©±â (¿¹: 2¹è)
+    [Header("ì„¤ì • ê°’")]
+    public Transform targetPosition; // ì´ë™í•  ëª©í‘œ ìœ„ì¹˜ (ë¹ˆ ì˜¤ë¸Œì íŠ¸ ë“±ìœ¼ë¡œ ìœ„ì¹˜ ì§€ì •)
+    public float targetScale = 90.0f; // ëª©í‘œ í¬ê¸° (ì˜ˆ: 2ë°°)
     public Vector3 targetRotation = new Vector3(-90, 90, 90);
-    public float duration = 1.5f;    // °É¸®´Â ½Ã°£ (ÃÊ)
-    public AnimationCurve motionCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // ºÎµå·¯¿î ¿òÁ÷ÀÓ °î¼±
+    public float duration = 1.5f;    // ê±¸ë¦¬ëŠ” ì‹œê°„ (ì´ˆ)
+    public AnimationCurve motionCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // ë¶€ë“œëŸ¬ìš´ ì›€ì§ì„ ê³¡ì„ 
 
     public Transform animationPosition;
     public float failAnimationMinusY;
@@ -20,7 +20,7 @@ public class CharacterFocus : MonoBehaviour
     private Vector3 startScale;
     private Quaternion startRot;
 
-    // Å×½ºÆ®¿ë: °ÔÀÓ ½ÃÀÛ ½Ã ÀÚµ¿ ½ÇÇàÇÏ·Á¸é ÁÖ¼® ÇØÁ¦
+    // í…ŒìŠ¤íŠ¸ìš©: ê²Œì„ ì‹œì‘ ì‹œ ìë™ ì‹¤í–‰í•˜ë ¤ë©´ ì£¼ì„ í•´ì œ
     // void Start() { FocusCharacter(); }
 
     public void Awake()
@@ -28,51 +28,31 @@ public class CharacterFocus : MonoBehaviour
         Instance = this;
     }
 
-    /// <summary>
-    /// ¿ÜºÎ¿¡¼­ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇÏ¸é ¿¬ÃâÀÌ ½ÃÀÛµË´Ï´Ù.
-    /// </summary>
-    public void FocusCharacter()
+    // IEnumeratorë¥¼ publicìœ¼ë¡œ ë³€ê²½í•©ë‹ˆë‹¤.
+    public IEnumerator AnimateCharacter()
     {
-        StartCoroutine(AnimateCharacter());
-    }
-
-    IEnumerator AnimateCharacter()
-    {
-        // 1. ½ÃÀÛ »óÅÂ ÀúÀå
-        startPos = transform.position;
-        startScale = transform.localScale;
-        startRot = transform.rotation;
-
+        Vector3 startPos = transform.position;
+        Vector3 startScale = transform.localScale;
+        Quaternion startRot = transform.rotation;
         Quaternion targetRot = Quaternion.Euler(targetRotation);
 
-        // 3. ½Ã°£ Èå¸§¿¡ µû¸¥ º¸°£(Lerp) ½ÇÇà
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
-            elapsedTime += Time.deltaTime;
-
-            // 0~1 »çÀÌÀÇ ÁøÇà·ü (AnimationCurve¸¦ Àû¿ëÇØ ºÎµå·´°Ô)
+            elapsedTime += Time.unscaledDeltaTime;
             float t = motionCurve.Evaluate(elapsedTime / duration);
 
-            // À§Ä¡ ÀÌµ¿
             transform.position = Vector3.Lerp(startPos, targetPosition.position, t);
-
-            // Å©±â º¯°æ
             transform.localScale = Vector3.Lerp(startScale, Vector3.one * targetScale, t);
-
-            // È¸Àü (Ä«¸Ş¶ó Á¤¸é º¸±â)
             transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
 
-            yield return null; // ÇÑ ÇÁ·¹ÀÓ ´ë±â
+            yield return null;
         }
 
-        // 4. ¿¬Ãâ ³¡³­ ÈÄ ÃÖÁ¾ °ª °­Á¦ °íÁ¤ (¿ÀÂ÷ ¹æÁö)
         transform.position = targetPosition.position;
         transform.localScale = Vector3.one * targetScale;
         transform.rotation = targetRot;
-
-        DataManager.Instance.OnTransitionComplete();
     }
 
     public void ApplyAnimationOnCharacter()

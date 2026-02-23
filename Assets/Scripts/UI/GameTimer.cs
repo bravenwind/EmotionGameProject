@@ -19,6 +19,7 @@ public class GameTimer : MonoBehaviour
         if (DataManager.Instance.currentTime <= 0)
         {
             DataManager.Instance.targetMapCam.GetComponentInParent<PathManager>().ActivateThis();
+            DataManager.Instance.gameEnded = true;
             DataManager.Instance.gameCleared = false;
             DataManager.Instance.StartCoroutine("GameOver");
             return; // GameFail() 실행 후 아래 코드 실행 방지

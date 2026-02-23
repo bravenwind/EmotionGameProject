@@ -1082,6 +1082,7 @@ GameObject:
   - component: {fileID: 9138370359621830706}
   - component: {fileID: 5512192860738820317}
   - component: {fileID: 6588665562059018604}
+  - component: {fileID: 5834094124286896014}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -1106,7 +1107,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -117, y: -205.2}
+  m_AnchoredPosition: {x: -137.1, y: -205.2}
   m_SizeDelta: {x: 1199.1133, y: 343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4947764161695347088
@@ -1215,6 +1216,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5834094124286896014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2495985473211412750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.3
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &2634112305882049150
 GameObject:
   m_ObjectHideFlags: 0
@@ -2569,6 +2587,7 @@ GameObject:
   - component: {fileID: 6855039649754154118}
   - component: {fileID: 7639674006590756934}
   - component: {fileID: 1342167495967769695}
+  - component: {fileID: 8588207282040687313}
   m_Layer: 5
   m_Name: GameQuitButton
   m_TagString: Untagged
@@ -2593,7 +2612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 117, y: -205.2}
+  m_AnchoredPosition: {x: 137.2, y: -205.2}
   m_SizeDelta: {x: 1199.1133, y: 343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7736535229012488981
@@ -2702,6 +2721,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8588207282040687313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8370172255491746186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.3
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &8421691441387088046
 GameObject:
   m_ObjectHideFlags: 0

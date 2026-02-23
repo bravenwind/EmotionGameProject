@@ -47,6 +47,14 @@ public class AudioManager : MonoBehaviour
         ResetVolumeUI();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1)) 
+        {
+            SetBGMVolume(0);
+        }
+    }
+
     // [중요 변경] BGM 전용 함수
     public void SetBGMVolume(float value)
     {

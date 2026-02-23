@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -17,10 +17,10 @@ public class DataManager : MonoBehaviour
 
     public EmotionState targetEmotion = EmotionState.Happy;
 
-    [Header("ÇöÀç ¼±ÅÃµÈ Ä³¸¯ÅÍ (ÀÚµ¿ ÇÒ´ç)")]
+    [Header("í˜„ì¬ ì„ íƒëœ ìºë¦­í„° (ìë™ í• ë‹¹)")]
     public GameObject selectedCharacter;
 
-    [Header("ÇÃ·¹ÀÌ¾î ÂüÁ¶ ÄÄÆ÷³ÍÆ®")]
+    [Header("í”Œë ˆì´ì–´ ì°¸ì¡° ì»´í¬ë„ŒíŠ¸")]
     public CinemachineCamera playerCam;
     public MouseLook mouseLook;
     public Transform playerTransform;
@@ -29,22 +29,23 @@ public class DataManager : MonoBehaviour
     public ZeroGravityMovement playerMovementScript;
     public CinemachineBrain brain;
 
-    [Header("¸Ê")]
+    [Header("ë§µ")]
     public CinemachineCamera targetMapCam;
 
-    [Header("Á¦ÇÑ½Ã°£")]
+    [Header("ì œí•œì‹œê°„")]
     public float limitTime = 300f;
     public float targetTime = 120f;
     public float currentTime;
 
-    [Header("°ÔÀÓ ¿Ï·á")]
+    [Header("ê²Œì„ ì™„ë£Œ")]
+    public bool gameEnded = false;
     public bool gameCleared = false;
 
-    [Header("°¨Á¤ °ÔÀÌÁö")]
+    [Header("ê°ì • ê²Œì´ì§€")]
     public float maxEmotionScore;
     public float currentEmotionScore = 0;
 
-    [Header("Ä¿Áö´Â Ä³¸¯ÅÍ")]
+    [Header("ì»¤ì§€ëŠ” ìºë¦­í„°")]
     public float playerOriginalScale = 1;
     public int maxScaleLevel = 5;
     public List<float> playerScalePerLevel = new List<float>(5);
@@ -53,12 +54,12 @@ public class DataManager : MonoBehaviour
     public int currentScaleLevel = 1;
     public float scaleIncreaseDuration = 1.5f;
 
-    public Vector3 happyTextureOffset = new Vector3(0, 2f, 0); // ¸Ó¸® À§ 2¹ÌÅÍ¸¦ ¹Ù¶óº¸°Ô ¼³Á¤
-    public Vector3 hopeTextureOffset = new Vector3(-85, 196.399994f, -201.800003f); // ¸Ó¸® À§ 2¹ÌÅÍ¸¦ ¹Ù¶óº¸°Ô ¼³Á¤
-    public Vector3 angryTextureOffset = new Vector3(-85, 196.399994f, -201.800003f); // ¸Ó¸® À§ 2¹ÌÅÍ¸¦ ¹Ù¶óº¸°Ô ¼³Á¤
-    public Vector3 sadTextureOffset = new Vector3(0, 2f, 0); // ¸Ó¸® À§ 2¹ÌÅÍ¸¦ ¹Ù¶óº¸°Ô ¼³Á¤
+    public Vector3 happyTextureOffset = new Vector3(0, 2f, 0); // ë¨¸ë¦¬ ìœ„ 2ë¯¸í„°ë¥¼ ë°”ë¼ë³´ê²Œ ì„¤ì •
+    public Vector3 hopeTextureOffset = new Vector3(-85, 196.399994f, -201.800003f); // ë¨¸ë¦¬ ìœ„ 2ë¯¸í„°ë¥¼ ë°”ë¼ë³´ê²Œ ì„¤ì •
+    public Vector3 angryTextureOffset = new Vector3(-85, 196.399994f, -201.800003f); // ë¨¸ë¦¬ ìœ„ 2ë¯¸í„°ë¥¼ ë°”ë¼ë³´ê²Œ ì„¤ì •
+    public Vector3 sadTextureOffset = new Vector3(0, 2f, 0); // ë¨¸ë¦¬ ìœ„ 2ë¯¸í„°ë¥¼ ë°”ë¼ë³´ê²Œ ì„¤ì •
 
-    [Header("°ÔÀÓ ¿À¹ö")]
+    [Header("ê²Œì„ ì˜¤ë²„")]
     public CinemachineCamera camToClearFail;
 
     private void Awake()
@@ -104,12 +105,9 @@ public class DataManager : MonoBehaviour
         GameSceneUIManager.Instance.SetAllDisable();
         SwitchToMapCamera();
         yield return StartCoroutine(WaitForBlendToFinish());
-        Debug.Log("¸Ê Ä«¸Ş¶ó·Î ÀüÈ¯ ¿Ï·á");
-        camToClearFail.Priority = 20;
-        yield return StartCoroutine(WaitForBlendToFinish());
-        Debug.Log("¸Ê Ä«¸Ş¶ó2·Î ÀüÈ¯ ¿Ï·á");
-        CharacterFocus.Instance.FocusCharacter();
-        Debug.Log("Ä³¸¯ÅÍ Å°¿ì°í °ÔÀÓ ¿À¹ö");
+        Debug.Log("ë§µ ì¹´ë©”ë¼ë¡œ ì „í™˜ ì™„ë£Œ");
+
+        yield return GameSceneUIManager.Instance.StartCoroutine(GameSceneUIManager.Instance.WaitForEpilogue());
     }
 
     IEnumerator WaitForBlendToFinish()
@@ -118,16 +116,51 @@ public class DataManager : MonoBehaviour
         while (brain.IsBlending)
         {
 
-            Debug.Log("ºí·»µù Áß");
+            Debug.Log("ë¸”ë Œë”© ì¤‘");
             yield return null;
 
         }
+    }
+
+    public IEnumerator AfterEpilogue()
+    {
+        // [4. ì¹´ë©”ë¼ ë°”ê¿ˆ]
+        camToClearFail.Priority = 20;
+        yield return StartCoroutine(WaitForBlendToFinish());
+        Debug.Log("ë§µ ì¹´ë©”ë¼2ë¡œ ì „í™˜ ì™„ë£Œ");
+
+        // [5. ìºë¦­í„° ì§€ì •ëœ ìœ„ì¹˜ë¡œ ì´ë™í•˜ë©´ì„œ ì»¤ì§]
+        // ğŸš¨ í•µì‹¬ ìˆ˜ì •: ì½”ë£¨í‹´ì´ ëë‚  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦½ë‹ˆë‹¤!
+        yield return StartCoroutine(CharacterFocus.Instance.AnimateCharacter());
+        Debug.Log("ìºë¦­í„° í‚¤ìš°ê¸° ì™„ë£Œ");
+
+        // [6. ê²°ê³¼ UI ë‚´ë ¤ì˜´ ë° ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ]
+        if (DataManager.Instance.gameCleared)
+        {
+            ResultStarsUI.Instance.SetStarIndex(3);
+            DataManager.Instance.playerAnimator.SetTrigger("GameClear");
+            PlaySFXAudio.Instance.PlayMissionComplete();
+        }
+        else
+        {
+            ResultStarsUI.Instance.SetStarIndex(0);
+            DataManager.Instance.playerAnimator.SetTrigger("GameFail");
+            PlaySFXAudio.Instance.PlayFail();
+        }
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        // CharacterFocusì—ì„œ ì§€ì› ë˜ ë§ˆë¬´ë¦¬ ì‘ì—…ì„ ì—¬ê¸°ì„œ ìµœì¢… í˜¸ì¶œí•©ë‹ˆë‹¤.
+        OnTransitionComplete();
     }
 
     public void OnTransitionComplete()
     {
         if (GameSceneUIManager.Instance != null)
         {
+            playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            CharacterFocus.Instance.ApplyAnimationOnCharacter();
             GameSceneUIManager.Instance.SetState(GameSceneUIState.GameOver);
         }
     }

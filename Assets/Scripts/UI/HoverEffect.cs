@@ -21,7 +21,10 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         targetImage = GetComponent<Image>();
         originalScale = transform.localScale;
         originalColor = targetImage.color;
-        hoveredLevelManager.OnExitHoverLevel();
+        if (hoveredLevelManager != null )
+        {
+            hoveredLevelManager.OnExitHoverLevel();
+        }
     }
 
     // 마우스가 들어왔을 때
@@ -30,9 +33,10 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         StopAllCoroutines(); // 기존 동작 멈춤
         targetImage.color = hoverColor;
         transform.localScale = originalScale * scaleMultiplier;
-        hoveredLevelManager.OnEnterHoverLevel(hoveredEmotion);
-
-        // 더 부드러운 연출을 원한다면 여기서 DoTween 같은 라이브러리를 쓰면 좋습니다.
+        if (hoveredLevelManager != null ) 
+        {
+            hoveredLevelManager.OnEnterHoverLevel(hoveredEmotion);
+        }
     }
 
     // 마우스가 나갔을 때
@@ -40,6 +44,9 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         targetImage.color = originalColor;
         transform.localScale = originalScale;
-        hoveredLevelManager.OnExitHoverLevel();
+        if (hoveredLevelManager != null ) 
+        {
+            hoveredLevelManager.OnExitHoverLevel();
+        }
     }
 }

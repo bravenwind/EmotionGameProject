@@ -6,7 +6,7 @@ public class PressTabToActive : MonoBehaviour
 
     private void Update()
     {
-        if (GameSceneUIManager.Instance.currentState == GameSceneUIState.InGame)
+        if (GameSceneUIManager.Instance.currentState == GameSceneUIState.InGame && !DataManager.Instance.gameEnded)
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {

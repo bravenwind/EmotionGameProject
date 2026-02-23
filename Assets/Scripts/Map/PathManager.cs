@@ -43,6 +43,7 @@ public class PathManager : MonoBehaviour
     [Header("Path Nodes")]
     public List<PathNode> pathNodes = new List<PathNode>();
     public PathNode finalNode;
+    public Vector3 finalPosition;
 
     public EmotionState completedEmotion;
 
@@ -172,6 +173,7 @@ public class PathManager : MonoBehaviour
         {
             finalNode.manager = this;
             finalNode.myIndex = 9999;
+            finalPosition = finalNode.transform.position;
             finalNode.gameObject.GetComponent<Renderer>().enabled = false;
             finalNode.gameObject.GetComponent<Collider>().enabled = false;
         }
@@ -432,7 +434,7 @@ public class PathManager : MonoBehaviour
                 int lastIndex = lineRenderer.positionCount - 1;
                 Vector3 targetPos;
 
-                targetPos = finalNode.transform.position;
+                targetPos = finalPosition;
 
 
                 // ★ 강제 위치 할당: 이 코드가 실행되면 라인 끝이 플레이어에서 목표점으로 '스냅'됩니다.
@@ -443,7 +445,7 @@ public class PathManager : MonoBehaviour
 
         Debug.Log($"한붓그리기 완성! (모드: {(useParticleMode ? "파티클" : "라인")})");
 
-        
+        DataManager.Instance.gameEnded = true;
         DataManager.Instance.gameCleared = true;
 
         // 완료 시 모든 노드 정리 (프리팹 제거 및 완료 메테리얼 적용)
