@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: 2978324632668948346}
   - component: {fileID: 5800070159415673630}
   - component: {fileID: 8400938472926123128}
+  - component: {fileID: 3757332166634653127}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -498,6 +499,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3757332166634653127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999481040792537300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &2325492140552833034
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +529,7 @@ GameObject:
   - component: {fileID: 4371964639230999056}
   - component: {fileID: 6666859847253672009}
   - component: {fileID: 4330742690798497825}
+  - component: {fileID: 24584553863991461}
   m_Layer: 5
   m_Name: GameQuitButton
   m_TagString: Untagged
@@ -644,6 +663,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &24584553863991461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325492140552833034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &2933839071198852202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,6 +2247,7 @@ GameObject:
   - component: {fileID: 1187588711381323595}
   - component: {fileID: 6639759078728824902}
   - component: {fileID: 5238046810887521816}
+  - component: {fileID: 4148833457802503604}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -2344,6 +2381,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4148833457802503604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251741011921133206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &8603838204598476538
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,6 +2486,7 @@ GameObject:
   - component: {fileID: 1974063547953811606}
   - component: {fileID: 8694467629463622943}
   - component: {fileID: 6113924669337726261}
+  - component: {fileID: 3724084216152073836}
   m_Layer: 5
   m_Name: SoundButton
   m_TagString: Untagged
@@ -2565,6 +2620,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3724084216152073836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015724391145755952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &9149117225229086963
 GameObject:
   m_ObjectHideFlags: 0

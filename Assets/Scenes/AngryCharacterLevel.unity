@@ -52864,6 +52864,7 @@ MonoBehaviour:
   currentTime: 0
   gameEnded: 0
   gameCleared: 0
+  resultStarsUI: {fileID: 0}
   maxEmotionScore: 150
   currentEmotionScore: 0
   playerOriginalScale: 3
@@ -65240,32 +65241,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1008883474}
-  - component: {fileID: 1008883473}
+  - component: {fileID: 1008883475}
   m_Layer: 0
-  m_Name: UIPoolManager
+  m_Name: PoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1008883473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008883472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55a5f5f12bc49cb41ad7e830baa4a7c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasTransform: {fileID: 438252638}
-  prewarmPools:
-  - prefab: {fileID: 1183509590}
-    initialSize: 2
-  - prefab: {fileID: 2111959492}
-    initialSize: 2
 --- !u!4 &1008883474
 Transform:
   m_ObjectHideFlags: 0
@@ -65281,6 +65264,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1008883475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008883472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6cbbe994584d84ba80de1bba08002b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePrefab: {fileID: 7154405725048966893, guid: 1eca91d6f1aed4646801825c9bb7967a, type: 3}
+  initialPoolSize: 10
+  particleScaleMultiplier: 3
+  particleWaitTime: 1
+  particleShrinkTime: 0.5
 --- !u!1 &1009716433
 GameObject:
   m_ObjectHideFlags: 0
@@ -92967,6 +92967,7 @@ MonoBehaviour:
   epilogueActived: 0
   epilogueEnded: 0
   epilogueImage: {fileID: 906872439}
+  resultStarsUI: {fileID: 1484985530}
   level1to2CutIn: {fileID: 1183509588}
   level2to3CutIn: {fileID: 2111959490}
   level3to4CutIn: {fileID: 0}
@@ -98494,6 +98495,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5173154013071706412, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
   m_PrefabInstance: {fileID: 1484985528}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1484985530 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7313302041195541813, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
+  m_PrefabInstance: {fileID: 1484985528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991949492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650fed238b6e97a408a2059b59ff3b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1488170906
 GameObject:
   m_ObjectHideFlags: 0
@@ -145458,16 +145470,8 @@ MonoBehaviour:
   characterCamera: {fileID: 1160346178959483224}
   sprintFovBoost: 30
   fovChangeSpeed: 5
-  mouseLookScript: {fileID: 1641924578861147113}
-  offsetIncreasePerLevel: {x: 0, y: 0.85, z: -0.54}
-  scaleIncreaseEffect: {fileID: 328041807}
-  uiCanvasRoot: {fileID: 0}
-  dashEffectPrefab: {fileID: 1183509590}
-  characterMesh: {fileID: 6235942208037994330}
-  ghostMaterial: {fileID: 2100000, guid: dd7bbff6d18dcbd45a6f38fed02bc16c, type: 2}
-  ghostDuration: 0.5
-  ghostSpawnInterval: 0.05
-  ghostLifeTime: 0.5
+  particleSpawnInterval: 0.1
+  enableParticleSpawning: 1
   scaleTransform: {fileID: 8662090471927210479}
   currentScale: {x: 0, y: 0, z: 0}
 --- !u!1 &3840663614235064838
@@ -147451,6 +147455,7 @@ GameObject:
   - component: {fileID: 8881459250544510105}
   - component: {fileID: 5114587606532427932}
   - component: {fileID: 6319370213650459939}
+  - component: {fileID: 8881459250544510106}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -147722,6 +147727,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8250972821138303122}
   m_CullTransparentMesh: 1
+--- !u!114 &8881459250544510106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8250972821138303122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.2
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!224 &8884035768866035634
 RectTransform:
   m_ObjectHideFlags: 0

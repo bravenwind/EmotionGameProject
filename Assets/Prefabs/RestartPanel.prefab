@@ -102,7 +102,7 @@ RectTransform:
   m_GameObject: {fileID: 776864175865246147}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.195, y: 0.20999998, z: 0.14561689}
+  m_LocalScale: {x: 0.29, y: 0.31230766, z: 0.21655841}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8247708148225624121}
@@ -316,6 +316,7 @@ GameObject:
   - component: {fileID: 1576419131794690120}
   - component: {fileID: 8634808626466310225}
   - component: {fileID: 5041775732128118390}
+  - component: {fileID: 1296614746845194683}
   m_Layer: 5
   m_Name: NoButton
   m_TagString: Untagged
@@ -437,6 +438,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1296614746845194683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355868486077386901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &5431115917356087508
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +631,7 @@ GameObject:
   - component: {fileID: 434225313974630634}
   - component: {fileID: 4102858920591607392}
   - component: {fileID: 9133001003658588371}
+  - component: {fileID: 3381147542516253126}
   m_Layer: 5
   m_Name: YesButton
   m_TagString: Untagged
@@ -734,3 +753,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3381147542516253126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780910730736278167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}

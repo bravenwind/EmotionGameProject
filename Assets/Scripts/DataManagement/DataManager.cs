@@ -40,6 +40,7 @@ public class DataManager : MonoBehaviour
     [Header("게임 완료")]
     public bool gameEnded = false;
     public bool gameCleared = false;
+    public ResultStarsUI resultStarsUI;
 
     [Header("감정 게이지")]
     public float maxEmotionScore;
@@ -137,13 +138,13 @@ public class DataManager : MonoBehaviour
         // [6. 결과 UI 내려옴 및 애니메이션 재생]
         if (DataManager.Instance.gameCleared)
         {
-            ResultStarsUI.Instance.SetStarIndex(3);
+            resultStarsUI.SetStarIndex(3);
             DataManager.Instance.playerAnimator.SetTrigger("GameClear");
             PlaySFXAudio.Instance.PlayMissionComplete();
         }
         else
         {
-            ResultStarsUI.Instance.SetStarIndex(0);
+            resultStarsUI.SetStarIndex(0);
             DataManager.Instance.playerAnimator.SetTrigger("GameFail");
             PlaySFXAudio.Instance.PlayFail();
         }

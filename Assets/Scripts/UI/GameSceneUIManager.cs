@@ -72,6 +72,7 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private bool epilogueActived;
     [SerializeField] private bool epilogueEnded;
     [SerializeField] private CanvasGroup epilogueImage;
+    [SerializeField] private ResultStarsUI resultStarsUI;
 
     [Header("컷인")]
     [SerializeField] private Image level1to2CutIn;
@@ -87,6 +88,7 @@ public class GameSceneUIManager : MonoBehaviour
 
     private void Start()
     {
+        DataManager.Instance.resultStarsUI = resultStarsUI;
 
         // 시작하자마자 검은 화면(Alpha 1)으로 세팅하고 시작해야 자연스럽습니다.
         if (fadeCanvasGroup != null)

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7088899724450013907}
   - component: {fileID: 7706875806395659173}
   - component: {fileID: 8386292035409973193}
+  - component: {fileID: 8739055938135016433}
   m_Layer: 5
   m_Name: YesButton
   m_TagString: Untagged
@@ -146,6 +147,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8739055938135016433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846220543423986388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &1669081542337772876
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,6 +176,7 @@ GameObject:
   - component: {fileID: 8470217953561006074}
   - component: {fileID: 2368322819149394349}
   - component: {fileID: 5427109123124018289}
+  - component: {fileID: 5734030247426422244}
   m_Layer: 5
   m_Name: NoButton
   m_TagString: Untagged
@@ -279,6 +298,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5734030247426422244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669081542337772876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &2183167011764036649
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +581,7 @@ RectTransform:
   m_GameObject: {fileID: 3409739207995414727}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.195, y: 0.21, z: 0.195}
+  m_LocalScale: {x: 0.29, y: 0.31230772, z: 0.29}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 253674076535016720}

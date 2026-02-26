@@ -22977,7 +22977,7 @@ MonoBehaviour:
     FieldOfView: 1
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 15000
+    FarClipPlane: 9400
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -38645,28 +38645,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629287674}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!95 &632416027
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148579752520}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b3bcd38feb6c0934680873034f3638e1, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &638446084
 GameObject:
   m_ObjectHideFlags: 0
@@ -49121,6 +49099,7 @@ MonoBehaviour:
   currentTime: 0
   gameEnded: 0
   gameCleared: 0
+  resultStarsUI: {fileID: 0}
   maxEmotionScore: 150
   currentEmotionScore: 0
   playerOriginalScale: 3
@@ -68246,6 +68225,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103949905}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1104791635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1104791637}
+  - component: {fileID: 1104791636}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1104791636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104791635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6cbbe994584d84ba80de1bba08002b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePrefab: {fileID: 7154405725048966893, guid: dafe7f8bbac745e48aac86eac20fdc62, type: 3}
+  initialPoolSize: 10
+  particleScaleMultiplier: 3
+  particleWaitTime: 1
+  particleShrinkTime: 0.5
+--- !u!4 &1104791637
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104791635}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1105317166
 GameObject:
   m_ObjectHideFlags: 0
@@ -88919,6 +88947,7 @@ MonoBehaviour:
   epilogueActived: 0
   epilogueEnded: 0
   epilogueImage: {fileID: 1261028578}
+  resultStarsUI: {fileID: 1484985530}
   level1to2CutIn: {fileID: 0}
   level2to3CutIn: {fileID: 0}
   level3to4CutIn: {fileID: 0}
@@ -92007,6 +92036,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 121619190}
+    - target: {fileID: 1342167495967769695, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 121619190}
     - target: {fileID: 1893355185813184718, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
       propertyPath: m_Name
       value: ResultPanel
@@ -92091,6 +92124,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 964893689}
+    - target: {fileID: 6588665562059018604, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 964893689}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8421691441387088046, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
@@ -92103,6 +92140,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5173154013071706412, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
   m_PrefabInstance: {fileID: 1484985528}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1484985530 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7313302041195541813, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
+  m_PrefabInstance: {fileID: 1484985528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484985537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650fed238b6e97a408a2059b59ff3b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1484985537 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1893355185813184718, guid: 0099bd5a12ae7e8498692e14e7943a38, type: 3}
@@ -135764,21 +135812,6 @@ Transform:
   - {fileID: 8052692255780147484}
   m_Father: {fileID: 908276781719904138}
   m_LocalEulerAnglesHint: {x: -0.000000026680425, y: 0, z: 0}
---- !u!4 &543450653101162738
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148579752520}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.364}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!222 &579982785338143586
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -135984,23 +136017,6 @@ Transform:
   - {fileID: 1747568654535253053}
   m_Father: {fileID: 1764910268824273316}
   m_LocalEulerAnglesHint: {x: 1.6275152, y: 10.254323, z: 0.34365213}
---- !u!1 &919132148579752520
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 543450653101162738}
-  - component: {fileID: 632416027}
-  m_Layer: 0
-  m_Name: pink happy character clear animation edited
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!137 &924910284119047782
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -136721,6 +136737,7 @@ GameObject:
   - component: {fileID: 2978324632635836768}
   - component: {fileID: 5800070159382727940}
   - component: {fileID: 8400938472959236706}
+  - component: {fileID: 8400938472959236707}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -136863,6 +136880,7 @@ GameObject:
   - component: {fileID: 4371964639264109578}
   - component: {fileID: 6666859847286754899}
   - component: {fileID: 4330742690831449659}
+  - component: {fileID: 7440204002663991502}
   m_Layer: 5
   m_Name: GameQuitButton
   m_TagString: Untagged
@@ -138793,6 +138811,7 @@ GameObject:
   - component: {fileID: 6177062711208218745}
   - component: {fileID: 7494754745308644476}
   - component: {fileID: 8740066673981225411}
+  - component: {fileID: 8740066673981225412}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -139350,6 +139369,23 @@ RectTransform:
   m_AnchoredPosition: {x: -9.078018, y: -184.682}
   m_SizeDelta: {x: 1199.1133, y: 343}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7440204002663991502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325492140518671888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!96 &7467346462497494296
 TrailRenderer:
   serializedVersion: 3
@@ -139876,6 +139912,7 @@ GameObject:
   - component: {fileID: 1187588711482425681}
   - component: {fileID: 6639759078829012572}
   - component: {fileID: 5238046810787334146}
+  - component: {fileID: 8251741011955257485}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -139883,6 +139920,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8251741011955257485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251741011955257484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!222 &8298069848355519083
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -139966,6 +140020,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8400938472959236707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999481040826533582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!4 &8417405081364541724
 Transform:
   m_ObjectHideFlags: 0
@@ -140189,6 +140260,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8740066673981225412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663434087948713074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.2
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!4 &8765962803265134262
 Transform:
   m_ObjectHideFlags: 0
@@ -140242,16 +140330,8 @@ MonoBehaviour:
   characterCamera: {fileID: 7849044247040791933}
   sprintFovBoost: 30
   fovChangeSpeed: 5
-  mouseLookScript: {fileID: 8067024999857857097}
-  offsetIncreasePerLevel: {x: 0, y: 0.85, z: -0.54}
-  scaleIncreaseEffect: {fileID: 0}
-  uiCanvasRoot: {fileID: 0}
-  dashEffectPrefab: {fileID: 0}
-  characterMesh: {fileID: 0}
-  ghostMaterial: {fileID: 2100000, guid: dd7bbff6d18dcbd45a6f38fed02bc16c, type: 2}
-  ghostDuration: 0.5
-  ghostSpawnInterval: 0.05
-  ghostLifeTime: 0.5
+  particleSpawnInterval: 0.1
+  enableParticleSpawning: 1
   scaleTransform: {fileID: 8963364284861929263}
   currentScale: {x: 0, y: 0, z: 0}
 --- !u!114 &8843956110597447455
@@ -140421,6 +140501,7 @@ GameObject:
   - component: {fileID: 1974063547987844748}
   - component: {fileID: 8694467629429463813}
   - component: {fileID: 6113924669370671919}
+  - component: {fileID: 9015724391045536555}
   m_Layer: 5
   m_Name: SoundButton
   m_TagString: Untagged
@@ -140428,6 +140509,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9015724391045536555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015724391045536554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789b19248015002459e14e22a9da8bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.1
+  duration: 0.1
+  hoveredEmotion: 0
+  hoveredLevelManager: {fileID: 0}
 --- !u!1 &9149117225262038761
 GameObject:
   m_ObjectHideFlags: 0
@@ -140455,7 +140553,6 @@ SceneRoots:
   - {fileID: 2069811394}
   - {fileID: 2696272495805596775}
   - {fileID: 8963364284861929263}
-  - {fileID: 543450653101162738}
   - {fileID: 1680340026}
   - {fileID: 440205192}
   - {fileID: 842438327}
@@ -140472,3 +140569,4 @@ SceneRoots:
   - {fileID: 942211516}
   - {fileID: 1241744512}
   - {fileID: 11939474}
+  - {fileID: 1104791637}
