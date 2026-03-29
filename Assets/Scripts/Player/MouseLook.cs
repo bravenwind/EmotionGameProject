@@ -2,53 +2,59 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    [Header("¼³Á¤ (Settings)")]
-    public float mouseSensitivity = 100f; // ¸¶¿ì½º °¨µµ
-    public Transform playerBody;          // ÇÃ·¹ÀÌ¾î ¸öÅë (È¸Àü½ÃÅ³ ´ë»ó)
+    [Header("ï¿½ï¿½ï¿½ï¿½ (Settings)")]
+    public float mouseSensitivity = 100f; // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½
+    public Transform playerBody;          // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ (È¸ï¿½ï¿½ï¿½ï¿½Å³ ï¿½ï¿½ï¿½)
 
-    [Header("Ä«¸Þ¶ó À§Ä¡ Á¶Á¤")]
-    // Ä³¸¯ÅÍ µî µÚ¿¡¼­ÀÇ ¿ÀÇÁ¼Â (x:ÁÂ¿ì, y:³ôÀÌ, z:µÚ·Î°¥ °Å¸®)
-    // ¿¹: (0, 2, -5) -> Ä³¸¯ÅÍ Áß½É¿¡¼­ À§·Î 2, µÚ·Î 5¸¸Å­ ¶³¾îÁø À§Ä¡
+    [Header("Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½")]
+    // Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (x:ï¿½Â¿ï¿½, y:ï¿½ï¿½ï¿½ï¿½, z:ï¿½Ú·Î°ï¿½ ï¿½Å¸ï¿½)
+    // ï¿½ï¿½: (0, 2, -5) -> Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ß½É¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 2, ï¿½Ú·ï¿½ 5ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
     public Vector3 cameraOffset = new Vector3(0f, 2.0f, -5.0f);
 
-    // Ä«¸Þ¶ó°¡ Ä³¸¯ÅÍº¸´Ù »ìÂ¦ À§¸¦ º¸°Ô ÇÒÁö (0ÀÌ¸é Á¤¸é, °ªÀÌ ÀÖÀ¸¸é °¢µµ Á¶Àý)
+    // Ä«ï¿½Þ¶ï¿½ Ä³ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½ ï¿½ï¿½Â¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     public float lookAngleOffset = 0f;
 
-    private float xRotation = 0f; // À§¾Æ·¡ (Pitch)
-    private float yRotation = 0f; // ÁÂ¿ì (Yaw)
+    private float xRotation = 0f; // ï¿½ï¿½ï¿½Æ·ï¿½ (Pitch)
+    private float yRotation = 0f; // ï¿½Â¿ï¿½ (Yaw)
+
+    public void SetRotation(float yaw, float pitch = 0f)
+    {
+        yRotation = yaw;
+        xRotation = pitch;
+    }
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // ¸¶¿ì½º Ä¿¼­ °íÁ¤
+        Cursor.lockState = CursorLockMode.Locked; // ï¿½ï¿½ï¿½ì½º Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     void LateUpdate()
     {
         if (playerBody == null) return;
 
-        // 1. ¸¶¿ì½º ÀÔ·Â
+        // 1. ï¿½ï¿½ï¿½ì½º ï¿½Ô·ï¿½
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // 2. È¸Àü°ª ´©Àû
+        // 2. È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         yRotation += mouseX;
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // °í°³ ²ªÀÓ Á¦ÇÑ
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        // 3. ÇÃ·¹ÀÌ¾î ¸öÅë È¸Àü (ÇÙ½É º¯°æÁ¡!)
-        // ÀÌÁ¦ Ä³¸¯ÅÍ ¸öÅë ÀÚÃ¼°¡ ¸¶¿ì½º ¹æÇâ(À§¾Æ·¡ Æ÷ÇÔ)À» ¿ÏÀüÈ÷ µû¶ó°©´Ï´Ù.
+        // 3. ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ (ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!)
+        // ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Æ·ï¿½ ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ó°©´Ï´ï¿½.
         Quaternion targetRotation = Quaternion.Euler(xRotation, yRotation, 0f);
         playerBody.rotation = targetRotation;
 
-        // 4. Ä«¸Þ¶ó À§Ä¡ Àâ±â (½´ÆÛ¸Ç µî µÚ)
-        // TransformPoint´Â ·ÎÄÃ ÁÂÇ¥¸¦ ¿ùµå ÁÂÇ¥·Î º¯È¯ÇØÁÝ´Ï´Ù.
-        // Áï, Ä³¸¯ÅÍ°¡ È¸ÀüÇÑ »óÅÂ ±âÁØÀ¸·Î µî µÚ À§Ä¡¸¦ Ã£¾Æ³À´Ï´Ù.
+        // 4. Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ ï¿½ï¿½)
+        // TransformPointï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ý´Ï´ï¿½.
+        // ï¿½ï¿½, Ä³ï¿½ï¿½ï¿½Í°ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ã£ï¿½Æ³ï¿½ï¿½Ï´ï¿½.
         Vector3 desiredPosition = playerBody.TransformPoint(cameraOffset);
 
-        // 5. Ä«¸Þ¶ó Àû¿ë
+        // 5. Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½
         transform.position = desiredPosition;
 
-        // Ä«¸Þ¶ó´Â Ä³¸¯ÅÍ¿Í ¶È°°Àº ¹æÇâÀ» º¸°Å³ª, ¾à°£ÀÇ °¢µµ Á¶ÀýÀ» ÁÝ´Ï´Ù.
+        // Ä«ï¿½Þ¶ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½È°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Å³ï¿½, ï¿½à°£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´Ï´ï¿½.
         transform.rotation = targetRotation * Quaternion.Euler(lookAngleOffset, 0, 0);
     }
 }

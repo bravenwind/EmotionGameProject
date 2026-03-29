@@ -20,28 +20,38 @@ public class CharacterSelector : MonoBehaviour
         public Animator playerAnimator;
         public ZeroGravityMovement movementScript;
         public MouseLook mouseLook;
+        public CinemachineCamera camToClearFail;
+        public GameObject trailParticle;
+        public Material emotionSkybox;
     }
 
     [Header("감정별 캐릭터 세트 (4개 등록)")]
     public List<CharacterSet> characters;
 
-    void Awake()
+    void Start()
     {
         foreach (var c in characters)
         {
             bool isTarget = c.emotion == DataManager.Instance.targetEmotion;
             c.characterRoot.SetActive(isTarget);
+            c.playerCam.gameObject.SetActive(isTarget);
 
             if (isTarget)
             {
-                DataManager.Instance.playerCam          = c.playerCam;
-                DataManager.Instance.playerTransform    = c.playerTransform;
-                DataManager.Instance.playerLineTransform = c.playerLineTransform;
-                DataManager.Instance.playerAnimator     = c.playerAnimator;
-                DataManager.Instance.playerMovementScript = c.movementScript;
-                DataManager.Instance.mouseLook          = c.mouseLook;
-                DataManager.Instance.selectedCharacter  = c.characterRoot;
+                DataManager.Instance.playerCam              = c.playerCam;
+                DataManager.Instance.playerTransform        = c.playerTransform;
+                DataManager.Instance.playerLineTransform    = c.playerLineTransform;
+                DataManager.Instance.playerAnimator         = c.playerAnimator;
+                DataManager.Instance.playerMovementScript   = c.movementScript;
+                DataManager.Instance.mouseLook              = c.mouseLook;
+                DataManager.Instance.selectedCharacter      = c.characterRoot;
+                DataManager.Instance.camToClearFail         = c.camToClearFail;
+                ParticlePoolManager.Instance.particlePrefab = c.trailParticle;
+                RenderSettings.skybox = c.emotionSkybox;
             }
         }
+
+        DataManager.Instance.brain = Camera.main.GetComponent<CinemachineBrain>();
+        ParticlePoolManager.Instance.InitializePool();
     }
 }

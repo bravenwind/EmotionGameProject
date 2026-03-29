@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerPhysicalCollider
   - PlayerCamera
+  - Line
   layers:
   - Default
   - TransparentFX

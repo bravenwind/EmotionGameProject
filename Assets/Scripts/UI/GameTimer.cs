@@ -5,7 +5,7 @@ public class GameTimer : MonoBehaviour
 {
     private int lastSecond = -1;
 
-    // ¡Ú °ÔÀÓÀÌ ÀÌ¹Ì Á¾·áµÇ¾ú´ÂÁö Ã¼Å©ÇÏ´Â º¯¼ö Ãß°¡
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
     private bool isGameEnded = false;
 
     [SerializeField]
@@ -13,7 +13,7 @@ public class GameTimer : MonoBehaviour
 
     void Update()
     {
-        // ¡Ú °ÔÀÓÀÌ Á¾·áµÇ¾ú´Ù¸é ´õ ÀÌ»ó Å¸ÀÌ¸Ó ÄÚµå¸¦ ½ÇÇàÇÏÁö ¾ÊÀ½
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½Úµå¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (isGameEnded) return;
 
         if (DataManager.Instance.currentTime <= 0)
@@ -21,8 +21,8 @@ public class GameTimer : MonoBehaviour
             DataManager.Instance.targetMapCam.GetComponentInParent<PathManager>().ActivateThis();
             DataManager.Instance.gameEnded = true;
             DataManager.Instance.gameCleared = false;
-            DataManager.Instance.StartCoroutine("GameOver");
-            return; // GameFail() ½ÇÇà ÈÄ ¾Æ·¡ ÄÚµå ½ÇÇà ¹æÁö
+            DataManager.Instance.StartCoroutine(DataManager.Instance.GameOver());
+            return; // GameFail() ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Æ·ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         DataManager.Instance.currentTime -= Time.deltaTime;

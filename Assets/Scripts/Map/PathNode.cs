@@ -76,21 +76,7 @@ public class PathNode : MonoBehaviour
         if (isCurrentTarget)
         {
             transform.LookAt(DataManager.Instance.playerTransform.position);
-            switch (emotion)
-            {
-                case EmotionState.Happy:
-                    transform.Rotate(DataManager.Instance.happyTextureOffset);
-                    break;
-                case EmotionState.Hope:
-                    transform.Rotate(DataManager.Instance.hopeTextureOffset);
-                    break;
-                case EmotionState.Angry:
-                    transform.Rotate(DataManager.Instance.angryTextureOffset);
-                    break;
-                case EmotionState.Sad:
-                    transform.Rotate(DataManager.Instance.sadTextureOffset);
-                    break;
-            }
+            transform.Rotate(manager.nodeRotationOffset);
         }
     }
 
@@ -113,7 +99,6 @@ public class PathNode : MonoBehaviour
         // ... (기존 흡수 완료 체크 로직 유지) ...
         if (other.gameObject.CompareTag("PlayerPhysicalCollider") && absorbing)
         {
-            absorbTimer += Time.deltaTime;
             if (absorbTimer >= completelyAbsorbedTime)
             {
                 OnAbsorbed();

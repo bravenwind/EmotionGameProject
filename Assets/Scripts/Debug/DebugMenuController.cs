@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // TextMeshPro ÇÊ¼ö
+using TMPro; // TextMeshPro ï¿½Ê¼ï¿½
 
 public class DebugMenuController : MonoBehaviour
 {
-    [Header("Å¸°Ù ½ºÅ©¸³Æ®")]
+    [Header("Å¸ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®")]
     public ZeroGravityMovement playerScript;
     public Debug_ShapeActiveManager debug;
 
-    [Header("UI ÆÐ³Î")]
+    [Header("UI ï¿½Ð³ï¿½")]
     public GameObject uiPanel;
 
-    [Header("ÀÔ·Â ÇÊµå (Input Fields)")]
-    // ½½¶óÀÌ´õ ´ë½Å InputField¸¦ ¿¬°áÇÕ´Ï´Ù.
+    [Header("ï¿½Ô·ï¿½ ï¿½Êµï¿½ (Input Fields)")]
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ InputFieldï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     public InputField walkSpeedInput;
     public InputField sprintSpeedInput;
     public InputField fovBoostInput;
@@ -27,29 +27,29 @@ public class DebugMenuController : MonoBehaviour
     void Start()
     {
         playerScript = DataManager.Instance.playerTransform.GetComponent<ZeroGravityMovement>();
-        // 2. ÇöÀç ÇÃ·¹ÀÌ¾î °ªÀ» °¡Á®¿Í¼­ InputField¿¡ ÅØ½ºÆ®·Î ³Ö¾îÁÜ
+        // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ InputFieldï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½
         UpdateUIFromPlayerValues();
-        pressESC.text = "ESC ´­·¯¼­ ¸¶¿ì½º º¸ÀÌ±â";
+        pressESC.text = "ESC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½Ì±ï¿½";
 
-        // 3. ÀÔ·ÂÀÌ ³¡³µÀ» ¶§(¿£ÅÍ or Æ÷Ä¿½º ¾Æ¿ô) ½ÇÇàµÉ ÇÔ¼ö ¿¬°á
-        // onEndEdit: Å¸ÀÌÇÎ Áß¿¡´Â ½ÇÇà ¾È µÇ°í, ´Ù ¾²°í ¿£ÅÍ Ä¥ ¶§ ½ÇÇàµÊ
-        // ÀÌµ¿ °ü·Ã
+        // 3. ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ or ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½Æ¿ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // onEndEdit: Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç°ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¥ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
         walkSpeedInput.onValueChanged.AddListener(OnWalkAccelChanged);
-        walkSpeedInput.onValueChanged.AddListener(OnWalkMaxSpeedChanged);
+        walkMaxSpeedInput.onValueChanged.AddListener(OnWalkMaxSpeedChanged);
         sprintSpeedInput.onValueChanged.AddListener(OnSprintAccelChanged);
-        sprintSpeedInput.onValueChanged.AddListener(OnSprintMaxSpeedChanged);
+        sprintMaxSpeedInput.onValueChanged.AddListener(OnSprintMaxSpeedChanged);
 
-        // Ä«¸Þ¶ó °ü·Ã
+        // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½
         fovBoostInput.onValueChanged.AddListener(OnFovBoostAmountChanged);
         fovBoostSpeedInput.onValueChanged.AddListener(OnFovChangeSpeedChanged);
 
-        // Åä±Û
+        // ï¿½ï¿½ï¿½
         infiniteStaminaToggle.onValueChanged.AddListener(OnInfiniteStaminaToggle);
     }
 
     void Update()
     {
-        // ESC Å°·Î ¸Þ´º Åä±Û
+        // ESC Å°ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleMenu();
@@ -62,19 +62,19 @@ public class DebugMenuController : MonoBehaviour
 
         if (isMenuOpen)
         {
-            // ¸Þ´º ¿­¸²: ¸¶¿ì½º º¸ÀÌ±â + °ª ÃÖ½ÅÈ­
+            // ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½Ì±ï¿½ + ï¿½ï¿½ ï¿½Ö½ï¿½È­
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             debug.enabled = false;
-            pressESC.text = "ESC ´­·¯¼­ ¸¶¿ì½º °¨Ãß±â";
+            pressESC.text = "ESC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ß±ï¿½";
         }
         else
         {
-            // ¸Þ´º ´ÝÈû: ¸¶¿ì½º ¼û±â±â
+            // ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             debug.enabled = true;
-            pressESC.text = "ESC ´­·¯¼­ ¸¶¿ì½º º¸ÀÌ±â";
+            pressESC.text = "ESC ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½Ì±ï¿½";
         }
     }
 
@@ -82,94 +82,94 @@ public class DebugMenuController : MonoBehaviour
     {
         if (playerScript != null)
         {
-            // ÀÌµ¿
+            // ï¿½Ìµï¿½
             walkSpeedInput.text = playerScript.acceleration.ToString();
             walkMaxSpeedInput.text = playerScript.normalMaxSpeed.ToString();
             sprintSpeedInput.text = playerScript.sprintAcceleration.ToString();
             sprintMaxSpeedInput.text = playerScript.sprintMaxSpeed.ToString();
 
-            // Ä«¸Þ¶ó
+            // Ä«ï¿½Þ¶ï¿½
             fovBoostInput.text = playerScript.sprintFovBoost.ToString();
             fovBoostSpeedInput.text = playerScript.fovChangeSpeed.ToString();
 
-            // Åä±Û
+            // ï¿½ï¿½ï¿½
             infiniteStaminaToggle.isOn = playerScript.infiniteStamina;
         }
     }
 
-    // 1. °È±â °¡¼Óµµ
+    // 1. ï¿½È±ï¿½ ï¿½ï¿½ï¿½Óµï¿½
     void OnWalkAccelChanged(string input)
     {
         if (float.TryParse(input, out float result))
         {
             playerScript.acceleration = result;
-            Debug.Log($"Walk Accel º¯°æ: {result}");
+            Debug.Log($"Walk Accel ï¿½ï¿½ï¿½ï¿½: {result}");
         }
         else walkSpeedInput.text = playerScript.acceleration.ToString();
     }
 
-    // 2. °È±â ÃÖ´ë ¼Óµµ
+    // 2. ï¿½È±ï¿½ ï¿½Ö´ï¿½ ï¿½Óµï¿½
     void OnWalkMaxSpeedChanged(string input)
     {
         if (float.TryParse(input, out float result))
         {
             playerScript.normalMaxSpeed = result;
-            Debug.Log($"Walk MaxSpeed º¯°æ: {result}");
+            Debug.Log($"Walk MaxSpeed ï¿½ï¿½ï¿½ï¿½: {result}");
         }
         else walkMaxSpeedInput.text = playerScript.normalMaxSpeed.ToString();
     }
 
-    // 3. ´Þ¸®±â °¡¼Óµµ
+    // 3. ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Óµï¿½
     void OnSprintAccelChanged(string input)
     {
         if (float.TryParse(input, out float result))
         {
             playerScript.sprintAcceleration = result;
-            Debug.Log($"Sprint Accel º¯°æ: {result}");
+            Debug.Log($"Sprint Accel ï¿½ï¿½ï¿½ï¿½: {result}");
         }
         else sprintSpeedInput.text = playerScript.sprintAcceleration.ToString();
     }
 
-    // 4. ´Þ¸®±â ÃÖ´ë ¼Óµµ
+    // 4. ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Óµï¿½
     void OnSprintMaxSpeedChanged(string input)
     {
         if (float.TryParse(input, out float result))
         {
             playerScript.sprintMaxSpeed = result;
-            Debug.Log($"Sprint MaxSpeed º¯°æ: {result}");
+            Debug.Log($"Sprint MaxSpeed ï¿½ï¿½ï¿½ï¿½: {result}");
         }
         else sprintMaxSpeedInput.text = playerScript.sprintMaxSpeed.ToString();
     }
 
-    // 5. FOV Áõ°¡·®
+    // 5. FOV ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void OnFovBoostAmountChanged(string input)
     {
         if (float.TryParse(input, out float result))
         {
             playerScript.sprintFovBoost = result;
-            Debug.Log($"FOV Boost Amount º¯°æ: {result}");
+            Debug.Log($"FOV Boost Amount ï¿½ï¿½ï¿½ï¿½: {result}");
         }
         else fovBoostInput.text = playerScript.sprintFovBoost.ToString();
     }
 
-    // 6. FOV º¯È­ ¼Óµµ
+    // 6. FOV ï¿½ï¿½È­ ï¿½Óµï¿½
     void OnFovChangeSpeedChanged(string input)
     {
         if (float.TryParse(input, out float result))
         {
             playerScript.fovChangeSpeed = result;
-            Debug.Log($"FOV Change Speed º¯°æ: {result}");
+            Debug.Log($"FOV Change Speed ï¿½ï¿½ï¿½ï¿½: {result}");
         }
         else fovBoostSpeedInput.text = playerScript.fovChangeSpeed.ToString();
     }
 
-    // 7. ¹«ÇÑ ½ºÅÂ¹Ì³ª Åä±Û
+    // 7. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¹Ì³ï¿½ ï¿½ï¿½ï¿½
     void OnInfiniteStaminaToggle(bool isOn)
     {
         if (playerScript != null)
         {
             playerScript.infiniteStamina = isOn;
-            Debug.Log($"¹«ÇÑ ½ºÅÂ¹Ì³ª: {isOn}");
+            Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¹Ì³ï¿½: {isOn}");
         }
     }
 }

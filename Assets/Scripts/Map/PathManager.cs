@@ -31,12 +31,17 @@ public class PathManager : MonoBehaviour
     public float nonTargetNodeScaleMultiplier = 0.7f;
 
     [Tooltip("활성화(타겟) 상태일 때 노드를 대체할 프리팹")]
-    public GameObject activeNodePrefab; // ★ 추가됨: 활성화 시 생성될 프리팹
+    public GameObject activeNodePrefab;
     public Vector3 activeNodeRotation;
+
+    [Header("Node LookAt Offset")]
+    [Tooltip("플레이어를 바라볼 때 LookAt 후 추가로 적용할 회전 오프셋 (텍스처 정방향 보정용)")]
+    public Vector3 nodeRotationOffset;
 
     [Header("Materials")]
     public Material defaultMaterial;
     public Material activeMaterial;
+    public Material nonTargetActiveMaterial;
     public Material completedMaterial;
     public Material lineMaterial;
 
@@ -54,6 +59,7 @@ public class PathManager : MonoBehaviour
     public CinemachineCamera sadMapCam;
     public Debug_ShapeActiveManager activeManager;
 
+    private bool isTargetPath;
     private int currentIndex = 0;
     private LineRenderer lineRenderer;
     private bool isFinished = false;
@@ -69,13 +75,6 @@ public class PathManager : MonoBehaviour
 
     void Start()
     {
-        // 이 PathManager가 현재 타겟 감정과 다르면 비활성화
-        if (completedEmotion != DataManager.Instance.targetEmotion)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
-
         lineRenderer = GetComponent<LineRenderer>();
 
         // 라인 렌더러 기본 설정
@@ -83,11 +82,11 @@ public class PathManager : MonoBehaviour
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 0;
         lineRenderer.material = lineMaterial;
-        lineRenderer.enabled = !useParticleMode;
         lineRenderer.numCornerVertices = 50;
         lineRenderer.numCapVertices = 50;
 
-        pathNodes.Clear();
+        isTargetPath = completedEmotion == DataManager.Instance.targetEmotion;
+        lineRenderer.enabled = isTargetPath && !useParticleMode;
 
         if (pathNodes.Count <= 0)
         {
@@ -98,7 +97,7 @@ public class PathManager : MonoBehaviour
             }
         }
 
-        if (completedEmotion == DataManager.Instance.targetEmotion)
+        if (isTargetPath)
         {
             DataManager.Instance.targetMapCam = mapCam;
             DataManager.Instance.maxEmotionScore = pathNodes.Count;
@@ -107,7 +106,33 @@ public class PathManager : MonoBehaviour
         if (pathNodes.Count > 0)
         {
             InitializePath();
+
+            if (isTargetPath)
+                StartCoroutine(FaceFirstNodeOnStart());
         }
+    }
+
+    IEnumerator FaceFirstNodeOnStart()
+    {
+        yield return null; // 모든 Start()가 끝난 뒤 적용
+
+        if (DataManager.Instance.mouseLook == null || pathNodes.Count == 0) yield break;
+
+        Vector3 nodePos   = pathNodes[0].transform.position;
+        Vector3 playerPos = DataManager.Instance.playerTransform.position;
+        Vector3 pivotPos  = DataManager.Instance.mouseLook.transform.position;
+
+        // yaw: 캐릭터 루트 XZ 기준 수평 방향
+        Vector3 horizontal = nodePos - playerPos;
+        float yaw = Mathf.Atan2(horizontal.x, horizontal.z) * Mathf.Rad2Deg;
+
+        // pitch: CameraPivot 높이 기준 수직 방향, lookAngleOffset 보정
+        Vector3 fromPivot = nodePos - pivotPos;
+        float horizontalDist = new Vector2(fromPivot.x, fromPivot.z).magnitude;
+        float pitch = -Mathf.Atan2(fromPivot.y, horizontalDist) * Mathf.Rad2Deg;
+        pitch -= DataManager.Instance.mouseLook.lookAngleOffset;
+
+        DataManager.Instance.mouseLook.SetRotation(yaw, pitch);
     }
 
     public void InitializePath()
@@ -143,7 +168,7 @@ public class PathManager : MonoBehaviour
         }
         else
         {
-            lineRenderer.enabled = true;
+            lineRenderer.enabled = isTargetPath;
             lineRenderer.positionCount = 0;
         }
 
@@ -198,7 +223,7 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M) && !isFinished && completedEmotion == DataManager.Instance.targetEmotion)
+        if (Input.GetKeyDown(KeyCode.M) && !isFinished && isTargetPath)
         {
             CheatCompletePath();
         }
@@ -227,39 +252,19 @@ public class PathManager : MonoBehaviour
             // 2. 현재 타겟 노드 (활성 상태)
             else if (i == currentIndex && !isWaitingForFinal)
             {
-                // 마지막 노드(Final Node) 처리
-                if (isWaitingForFinal && finalNode != null)
-                {
-                    finalNode.gameObject.SetActive(true);
-
-                    // ★ [수정됨] 렌더러와 콜라이더를 확실하게 켭니다.
-                    // 프리팹(activeNodePrefab)이 없더라도 기본 모습이 보여야 하므로 여기서 켜줘야 합니다.
-                    if (finalNode.GetComponent<Renderer>() != null)
-                        finalNode.GetComponent<Renderer>().enabled = true;
-
-                    if (finalNode.GetComponent<Collider>() != null)
-                    {
-                        finalNode.GetComponent<Collider>().enabled = true;
-                        finalNode.GetComponent<Collider>().isTrigger = true;
-                    }
-
-                    // Final Node도 활성 상태면 프리팹 적용
-                    // (ReplaceNodeWithPrefab 내부에서 프리팹이 있으면 렌더러를 다시 끄겠지만, 없으면 위에서 켠 상태가 유지됨)
-                    ReplaceNodeWithPrefab(finalNode);
-                    finalNode.SetState(true, activeMaterial, defaultMaterial);
-                    pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
-
-                    if (activeNodeInstances.ContainsKey(finalNode))
-                    {
-                        PlayActiveAnimation(activeNodeInstances[finalNode]);
-                    }
-                }
-                else
+                if (isTargetPath)
                 {
                     ReplaceNodeWithPrefab(pathNodes[i]);
                     pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
                     pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
                     Debug.Log(gameObject.name + "활성화됨");
+                }
+                else
+                {
+                    pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+                    pathNodes[i].SetState(false, activeMaterial, defaultMaterial);
+                    if (nonTargetActiveMaterial != null)
+                        pathNodes[i].GetComponent<Renderer>().material = nonTargetActiveMaterial;
                 }
             }
             // 3. 아직 오지 않은 노드
@@ -352,7 +357,7 @@ public class PathManager : MonoBehaviour
 
         if (node.myIndex != currentIndex) return;
 
-        if (completedEmotion == DataManager.Instance.targetEmotion)
+        if (isTargetPath)
         {
             if (currentIndex == 0)
             {
@@ -387,7 +392,7 @@ public class PathManager : MonoBehaviour
 
         if (currentIndex >= pathNodes.Count)
         {
-            if (completedEmotion == DataManager.Instance.targetEmotion)
+            if (isTargetPath)
             {
                 if (finalNode != null)
                 {
@@ -410,7 +415,7 @@ public class PathManager : MonoBehaviour
         }
         else
         {
-            if (!useParticleMode && completedEmotion == DataManager.Instance.targetEmotion)
+            if (!useParticleMode && isTargetPath)
             {
                 lineRenderer.positionCount++;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, DataManager.Instance.playerLineTransform.position);
@@ -479,7 +484,7 @@ public class PathManager : MonoBehaviour
         // SwitchToMapCamera(); 
 
         // (기존 코드 흐름상 activeManager가 없으면 여기서 전환)
-        DataManager.Instance.StartCoroutine("GameOver");
+        DataManager.Instance.StartCoroutine(DataManager.Instance.GameOver());
     }
 
     /// <summary>

@@ -1,39 +1,6 @@
-using Unity.Cinemachine;
 using UnityEngine;
 
+// DataManager ì°¸ì¡° ì„¤ì •ì€ CharacterSelector.Awake()ì—ì„œ ì²˜ë¦¬í•©ë‹ˆë‹¤.
 public class PlayerIdentifier : MonoBehaviour
 {
-    [Header("¾À¿¡ ¹èÄ¡µÈ Ä³¸¯ÅÍ ¿ÀºêÁ§Æ® ¿¬°á")]
-    public GameObject charToUse;
-    public GameObject playerCamera;
-    public GameObject camToClearFail;
-
-    private void Start()
-    {
-        playerCamera = FindAnyObjectByType<MouseLook>().gameObject;
-        DataManager.Instance.brain = Camera.main.GetComponent<CinemachineBrain>();
-        if (camToClearFail != null )
-        {
-            DataManager.Instance.camToClearFail = camToClearFail.GetComponent<CinemachineCamera>();
-        }
-
-        // 4. Ä³¸¯ÅÍ À§Ä¡ ¼³Á¤ ¹× È°¼ºÈ­
-        if (charToUse != null)
-        {
-            // 4-3. DataManager¿¡ ÇöÀç ¼±ÅÃµÈ Ä³¸¯ÅÍ Á¤º¸ µî·Ï
-            DataManager.Instance.selectedCharacter = charToUse;
-
-            // 5. ÇÃ·¹ÀÌ¾î °ü·Ã ÄÄÆ÷³ÍÆ® Á¤º¸ DataManager¿¡ °»½Å
-            DataManager.Instance.playerTransform = charToUse.transform;
-            DataManager.Instance.playerMovementScript = charToUse.GetComponent<ZeroGravityMovement>();
-            DataManager.Instance.playerCam = playerCamera.GetComponentInChildren<CinemachineCamera>();
-            DataManager.Instance.mouseLook = playerCamera.GetComponent<MouseLook>();
-            DataManager.Instance.playerLineTransform = charToUse.transform.Find("LineTransform");
-            DataManager.Instance.playerAnimator = charToUse.GetComponentInChildren<Animator>();
-        }
-        else
-        {
-            Debug.LogError("PlayerSpawn ½ºÅ©¸³Æ®¿¡ Ä³¸¯ÅÍ ¿ÀºêÁ§Æ®°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
-        }
-    }
 }

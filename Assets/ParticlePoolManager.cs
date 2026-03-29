@@ -37,11 +37,9 @@ public class ParticlePoolManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        InitializePool();
     }
 
-    void InitializePool()
+    public void InitializePool()
     {
         for (int i = 0; i < initialPoolSize; i++)
         {
