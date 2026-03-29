@@ -69,6 +69,13 @@ public class PathManager : MonoBehaviour
 
     void Start()
     {
+        // 이 PathManager가 현재 타겟 감정과 다르면 비활성화
+        if (completedEmotion != DataManager.Instance.targetEmotion)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         lineRenderer = GetComponent<LineRenderer>();
 
         // 라인 렌더러 기본 설정
