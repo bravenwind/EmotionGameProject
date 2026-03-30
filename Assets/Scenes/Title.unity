@@ -3296,9 +3296,11 @@ MonoBehaviour:
   limitTime: 180
   targetTime: 120
   currentTime: 0
+  gameEnded: 0
   gameCleared: 0
+  resultStarsUI: {fileID: 0}
   maxEmotionScore: 150
-  currentEmotionScore: 0
+  _currentEmotionScore: 0
   playerOriginalScale: 3
   maxScaleLevel: 5
   playerScalePerLevel:
@@ -3312,10 +3314,6 @@ MonoBehaviour:
   currentEmotionCount: 0
   currentScaleLevel: 1
   scaleIncreaseDuration: 1.5
-  happyTextureOffset: {x: 14.88, y: 2, z: 0}
-  hopeTextureOffset: {x: -85, y: 196.4, z: -201.8}
-  angryTextureOffset: {x: -85, y: 196.4, z: -201.8}
-  sadTextureOffset: {x: -71.5, y: -3.13, z: 0}
   camToClearFail: {fileID: 0}
 --- !u!4 &810009578
 Transform:
@@ -3762,10 +3760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a3ffba81a5c5a64686778ce7da443ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HappyCharacterSceneName: HappyCharacterLevel
-  HopeCharacterSceneName: HopeCharacterLevel
-  AngryCharacterSceneName: AngryCharacterLevel
-  SadCharacterSceneName: SadCharacterLevel
+  gameSceneName: Game
   titleSceneName: Title
   fadeCanvasGroup: {fileID: 218701282}
   fadeDuration: 1

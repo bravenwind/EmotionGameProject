@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -66,7 +66,6 @@ public class PathManager : MonoBehaviour
     private bool isLineStarted = false;
     private bool isWaitingForFinal = false;
 
-    // ★ 추가됨: 현재 생성되어 있는 활성 프리팹들을 추적하기 위한 딕셔너리
     private Dictionary<PathNode, GameObject> activeNodeInstances = new Dictionary<PathNode, GameObject>();
 
     [Header("Animation Settings")]
@@ -76,8 +75,6 @@ public class PathManager : MonoBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
-
-        // 라인 렌더러 기본 설정
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 0;
@@ -90,11 +87,8 @@ public class PathManager : MonoBehaviour
 
         if (pathNodes.Count <= 0)
         {
-            PathNode[] pathNodesInChildren = GetComponentsInChildren<PathNode>();
-            foreach (PathNode node in pathNodesInChildren)
-            {
+            foreach (PathNode node in GetComponentsInChildren<PathNode>())
                 pathNodes.Add(node);
-            }
         }
 
         if (isTargetPath)
@@ -114,7 +108,7 @@ public class PathManager : MonoBehaviour
 
     IEnumerator FaceFirstNodeOnStart()
     {
-        yield return null; // 모든 Start()가 끝난 뒤 적용
+        yield return null;
 
         if (DataManager.Instance.mouseLook == null || pathNodes.Count == 0) yield break;
 
@@ -122,11 +116,9 @@ public class PathManager : MonoBehaviour
         Vector3 playerPos = DataManager.Instance.playerTransform.position;
         Vector3 pivotPos  = DataManager.Instance.mouseLook.transform.position;
 
-        // yaw: 캐릭터 루트 XZ 기준 수평 방향
         Vector3 horizontal = nodePos - playerPos;
         float yaw = Mathf.Atan2(horizontal.x, horizontal.z) * Mathf.Rad2Deg;
 
-        // pitch: CameraPivot 높이 기준 수직 방향, lookAngleOffset 보정
         Vector3 fromPivot = nodePos - pivotPos;
         float horizontalDist = new Vector2(fromPivot.x, fromPivot.z).magnitude;
         float pitch = -Mathf.Atan2(fromPivot.y, horizontalDist) * Mathf.Rad2Deg;
@@ -142,14 +134,12 @@ public class PathManager : MonoBehaviour
         isLineStarted = false;
         isWaitingForFinal = false;
 
-        // 초기화 시 기존에 남아있을 수 있는 프리팹 제거
         foreach (var kvp in activeNodeInstances)
         {
             if (kvp.Value != null) Destroy(kvp.Value);
         }
         activeNodeInstances.Clear();
 
-        // --- 모드별 초기화 ---
         if (useParticleMode)
         {
             lineRenderer.enabled = false;
@@ -173,18 +163,11 @@ public class PathManager : MonoBehaviour
         }
 
         // Final Node 중복 제거
-        if (finalNode != null && pathNodes.Count > 0)
-        {
-            if (pathNodes[pathNodes.Count - 1] == finalNode)
-            {
-                pathNodes.RemoveAt(pathNodes.Count - 1);
-            }
-        }
+        if (finalNode != null && pathNodes.Count > 0 && pathNodes[pathNodes.Count - 1] == finalNode)
+            pathNodes.RemoveAt(pathNodes.Count - 1);
 
         if (pathNodes.Count > 0)
-        {
             originalNodeScale = pathNodes[0].transform.localScale;
-        }
 
         for (int i = 0; i < pathNodes.Count; i++)
         {
@@ -192,13 +175,8 @@ public class PathManager : MonoBehaviour
             pathNodes[i].myIndex = i;
             pathNodes[i].emotion = completedEmotion;
 
-            if (i == 0 && originalNodeScale == Vector3.zero)
-                originalNodeScale = pathNodes[i].transform.localScale;
-
             pathNodes[i].transform.localScale = originalNodeScale * nonTargetNodeScaleMultiplier;
-
-            // 초기화 시 렌더러 켜두기
-            pathNodes[i].GetComponent<Renderer>().enabled = true;
+            pathNodes[i].NodeRenderer.enabled = true;
         }
 
         if (finalNode != null)
@@ -206,8 +184,8 @@ public class PathManager : MonoBehaviour
             finalNode.manager = this;
             finalNode.myIndex = 9999;
             finalPosition = finalNode.transform.position;
-            finalNode.gameObject.GetComponent<Renderer>().enabled = false;
-            finalNode.gameObject.GetComponent<Collider>().enabled = false;
+            finalNode.NodeRenderer.enabled = false;
+            finalNode.NodeCollider.enabled = false;
         }
 
         UpdateNodeStates();
@@ -224,32 +202,26 @@ public class PathManager : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.M) && !isFinished && isTargetPath)
-        {
             CheatCompletePath();
-        }
 
         if (!useParticleMode && isLineStarted && !isFinished && DataManager.Instance.playerLineTransform != null)
         {
             int lastIndex = lineRenderer.positionCount - 1;
             if (lastIndex >= 0)
-            {
                 lineRenderer.SetPosition(lastIndex, DataManager.Instance.playerLineTransform.position);
-            }
         }
     }
 
-    // ★ 수정된 핵심 함수: 프리팹 생성/교체 로직 적용
+    // 전체 노드 상태 초기화용 (InitializePath에서만 호출)
     void UpdateNodeStates()
     {
         for (int i = 0; i < pathNodes.Count; i++)
         {
-            // 1. 이미 지나온 노드 (완료 상태)
             if (i < currentIndex)
             {
-                pathNodes[i].GetComponent<Renderer>().material = completedMaterial;
+                pathNodes[i].NodeRenderer.material = completedMaterial;
                 pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
             }
-            // 2. 현재 타겟 노드 (활성 상태)
             else if (i == currentIndex && !isWaitingForFinal)
             {
                 if (isTargetPath)
@@ -257,91 +229,90 @@ public class PathManager : MonoBehaviour
                     ReplaceNodeWithPrefab(pathNodes[i]);
                     pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
                     pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
-                    Debug.Log(gameObject.name + "활성화됨");
+                    Debug.Log(gameObject.name + " 활성화됨");
                 }
                 else
                 {
                     pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
                     pathNodes[i].SetState(false, activeMaterial, defaultMaterial);
                     if (nonTargetActiveMaterial != null)
-                        pathNodes[i].GetComponent<Renderer>().material = nonTargetActiveMaterial;
+                        pathNodes[i].NodeRenderer.material = nonTargetActiveMaterial;
                 }
             }
-            // 3. 아직 오지 않은 노드
             else
             {
                 pathNodes[i].SetState(false, activeMaterial, defaultMaterial);
-                pathNodes[i].GetComponent<Collider>().isTrigger = false;
+                pathNodes[i].NodeCollider.isTrigger = false;
                 pathNodes[i].transform.localScale = originalNodeScale * nonTargetNodeScaleMultiplier;
             }
         }
 
-        // 마지막 노드(Final Node) 처리
-        if (isWaitingForFinal && finalNode != null)
-        {
-            finalNode.gameObject.SetActive(true);
-            finalNode.gameObject.GetComponent<Collider>().enabled = true;
-            finalNode.gameObject.GetComponent<Collider>().isTrigger = true;
-
-            // Final Node도 활성 상태면 프리팹 적용
-            ReplaceNodeWithPrefab(finalNode);
-            finalNode.transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
-            finalNode.SetState(true, activeMaterial, defaultMaterial);
-
-            if (activeNodeInstances.ContainsKey(finalNode))
-            {
-                PlayActiveAnimation(activeNodeInstances[finalNode]);
-            }
-        }
+        if (isWaitingForFinal)
+            ActivateFinalNode();
     }
 
-    // ★ 헬퍼 함수 1: 노드를 프리팹으로 대체
-    void ReplaceNodeWithPrefab(PathNode node)
+    // 단일 노드 활성화 (OnNodeCollected에서 호출)
+    private void ActivateNode(int index)
     {
-        if (activeNodePrefab == null) return;
+        if (index < 0 || index >= pathNodes.Count) return;
+        PathNode node = pathNodes[index];
 
-        // 이미 생성된 프리팹이 없다면 생성
-        if (!activeNodeInstances.ContainsKey(node))
+        if (isTargetPath)
         {
-            // 기존 렌더러 끄기 (숨기기)
-            var meshRenderer = node.GetComponent<Renderer>();
-            if (meshRenderer != null) meshRenderer.enabled = false;
-
-            // 프리팹 생성 (노드의 자식으로)
-            GameObject instance = Instantiate(activeNodePrefab, node.transform.position, node.transform.rotation, node.transform);
-            instance.GetComponentInChildren<Renderer>().material = activeMaterial;
-            instance.transform.Rotate(activeNodeRotation);
-
-            // 프리팹 크기 조정이 필요하다면 여기서 설정 (예: 1,1,1)
-            // instance.transform.localScale = Vector3.one; 
-
-            activeNodeInstances.Add(node, instance);
-        }
-    }
-
-    // ★ 헬퍼 함수 2: 프리팹을 지우고 원래 노드 모습으로 복구
-    void RestoreOriginalNode(PathNode node)
-    {
-        // 딕셔너리에 기록된 프리팹이 있다면
-        if (activeNodeInstances.ContainsKey(node))
-        {
-            GameObject instance = activeNodeInstances[node];
-            if (instance != null)
-            {
-                Destroy(instance); // 프리팹 파괴
-            }
-            activeNodeInstances.Remove(node); // 목록에서 제거
-
-            // 숨겼던 기존 렌더러 다시 켜기
-            var meshRenderer = node.GetComponent<Renderer>();
-            if (meshRenderer != null) meshRenderer.enabled = true;
+            ReplaceNodeWithPrefab(node);
+            node.transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+            node.SetState(true, activeMaterial, defaultMaterial);
         }
         else
         {
-            // 혹시 딕셔너리엔 없지만 렌더러가 꺼져있을 수 있으니 안전하게 켜줌
-            var meshRenderer = node.GetComponent<Renderer>();
-            if (meshRenderer != null && !meshRenderer.enabled) meshRenderer.enabled = true;
+            node.transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+            node.SetState(false, activeMaterial, defaultMaterial);
+            if (nonTargetActiveMaterial != null)
+                node.NodeRenderer.material = nonTargetActiveMaterial;
         }
+    }
+
+    private void ActivateFinalNode()
+    {
+        if (finalNode == null) return;
+
+        finalNode.gameObject.SetActive(true);
+        finalNode.NodeCollider.enabled = true;
+        finalNode.NodeCollider.isTrigger = true;
+        ReplaceNodeWithPrefab(finalNode);
+        finalNode.transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+        finalNode.SetState(true, activeMaterial, defaultMaterial);
+
+        if (activeNodeInstances.TryGetValue(finalNode, out GameObject instance))
+            PlayActiveAnimation(instance);
+    }
+
+    // 라인/파티클 업데이트 (OnNodeCollected에서만 호출)
+    private void UpdateLine(PathNode collectedNode)
+    {
+        if (useParticleMode)
+        {
+            if (!isLineStarted && drawingParticles != null)
+            {
+                var emission = drawingParticles.emission;
+                emission.enabled = true;
+                drawingParticles.Play();
+            }
+        }
+        else
+        {
+            if (!isLineStarted)
+            {
+                lineRenderer.positionCount = 1;
+                lineRenderer.SetPosition(0, collectedNode.transform.position);
+            }
+            else
+            {
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, collectedNode.transform.position);
+            }
+        }
+
+        isLineStarted = true;
     }
 
     public void OnNodeCollected(PathNode node)
@@ -349,68 +320,33 @@ public class PathManager : MonoBehaviour
         if (isWaitingForFinal)
         {
             if (node == finalNode)
-            {
                 FinishPath();
-            }
             return;
         }
 
         if (node.myIndex != currentIndex) return;
 
         if (isTargetPath)
-        {
-            if (currentIndex == 0)
-            {
-                isLineStarted = true;
-
-                if (useParticleMode)
-                {
-                    if (drawingParticles != null)
-                    {
-                        var emission = drawingParticles.emission;
-                        emission.enabled = true;
-                        drawingParticles.Play();
-                    }
-                }
-                else
-                {
-                    lineRenderer.positionCount = 1;
-                    lineRenderer.SetPosition(0, node.transform.position);
-                }
-            }
-            else
-            {
-                if (!useParticleMode)
-                {
-                    int lastIndex = lineRenderer.positionCount - 1;
-                    lineRenderer.SetPosition(lastIndex, node.transform.position);
-                }
-            }
-        }
+            UpdateLine(node);
 
         currentIndex++;
 
         if (currentIndex >= pathNodes.Count)
         {
-            if (isTargetPath)
+            if (isTargetPath && finalNode != null)
             {
-                if (finalNode != null)
+                isWaitingForFinal = true;
+                if (!useParticleMode)
                 {
-                    isWaitingForFinal = true;
-
-                    if (!useParticleMode)
-                    {
-                        lineRenderer.positionCount++;
-                        lineRenderer.SetPosition(lineRenderer.positionCount - 1, DataManager.Instance.playerLineTransform.position);
-                    }
-
-                    UpdateNodeStates();
-                    Debug.Log("모든 경유지 통과! 마지막 점을 연결하세요.");
+                    lineRenderer.positionCount++;
+                    lineRenderer.SetPosition(lineRenderer.positionCount - 1, DataManager.Instance.playerLineTransform.position);
                 }
-                else
-                {
-                    FinishPath();
-                }
+                ActivateFinalNode();
+                Debug.Log("모든 경유지 통과! 마지막 점을 연결하세요.");
+            }
+            else
+            {
+                FinishPath();
             }
         }
         else
@@ -420,16 +356,14 @@ public class PathManager : MonoBehaviour
                 lineRenderer.positionCount++;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, DataManager.Instance.playerLineTransform.position);
             }
-            UpdateNodeStates();
+            ActivateNode(currentIndex);
         }
     }
 
     public void FinishPath()
     {
-        // 1. 가장 먼저 종료 플래그를 세워 Update() 문이 더 이상 라인을 건드리지 못하게 합니다.
         isFinished = true;
 
-        // --- 종료 처리 (모드 분기) ---
         if (useParticleMode)
         {
             if (drawingParticles != null)
@@ -440,124 +374,94 @@ public class PathManager : MonoBehaviour
         }
         else
         {
-            // [라인 모드] 마지막 선 처리를 확실하게 수행
             if (lineRenderer.positionCount > 0)
-            {
-                int lastIndex = lineRenderer.positionCount - 1;
-                Vector3 targetPos;
-
-                targetPos = finalPosition;
-
-
-                // ★ 강제 위치 할당: 이 코드가 실행되면 라인 끝이 플레이어에서 목표점으로 '스냅'됩니다.
-                lineRenderer.SetPosition(lastIndex, targetPos);
-            }
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, finalPosition);
         }
-        // ---------------------------
 
         Debug.Log($"한붓그리기 완성! (모드: {(useParticleMode ? "파티클" : "라인")})");
 
         DataManager.Instance.gameEnded = true;
         DataManager.Instance.gameCleared = true;
 
-        // 완료 시 모든 노드 정리 (프리팹 제거 및 완료 메테리얼 적용)
         foreach (var node in pathNodes)
         {
             RestoreOriginalNode(node);
-            node.GetComponent<Renderer>().material = completedMaterial;
+            node.NodeRenderer.material = completedMaterial;
         }
 
         if (finalNode != null)
         {
             RestoreOriginalNode(finalNode);
-            // 만약 렌더러가 꺼져있다면 다시 켜줍니다.
-            if (finalNode.GetComponent<Renderer>() != null)
-                finalNode.GetComponent<Renderer>().enabled = true;
-
-            finalNode.GetComponent<Renderer>().material = completedMaterial;
+            finalNode.NodeRenderer.enabled = true;
+            finalNode.NodeRenderer.material = completedMaterial;
         }
 
-        
         ActivateThis();
-
-        // activeManager 유무와 상관없이 카메라 전환이 필요하다면 아래 주석을 해제하거나 activeManager 내부에서 처리해야 함
-        // SwitchToMapCamera(); 
-
-        // (기존 코드 흐름상 activeManager가 없으면 여기서 전환)
         DataManager.Instance.StartCoroutine(DataManager.Instance.GameOver());
     }
 
-    /// <summary>
-    /// 대상 오브젝트(또는 프리팹)의 Animator를 찾아 활성화 애니메이션 재생
-    /// </summary>
+    void ReplaceNodeWithPrefab(PathNode node)
+    {
+        if (activeNodePrefab == null || activeNodeInstances.ContainsKey(node)) return;
+
+        node.NodeRenderer.enabled = false;
+
+        GameObject instance = Instantiate(activeNodePrefab, node.transform.position, node.transform.rotation, node.transform);
+        instance.GetComponentInChildren<Renderer>().material = activeMaterial;
+        instance.transform.Rotate(activeNodeRotation);
+
+        activeNodeInstances.Add(node, instance);
+    }
+
+    void RestoreOriginalNode(PathNode node)
+    {
+        if (activeNodeInstances.TryGetValue(node, out GameObject instance))
+        {
+            if (instance != null) Destroy(instance);
+            activeNodeInstances.Remove(node);
+        }
+
+        if (node.NodeRenderer != null)
+            node.NodeRenderer.enabled = true;
+    }
+
     private void PlayActiveAnimation(GameObject targetObj)
     {
         if (targetObj == null) return;
 
-        // PathNode 자체일 수도 있고, 생성된 프리팹일 수도 있음
-        Animator anim = targetObj.GetComponent<Animator>();
-        if (anim == null)
-        {
-            anim = targetObj.GetComponentInChildren<Animator>();
-        }
-
-        if (anim != null)
-        {
-            anim.SetTrigger(activeAnimTrigger);
-        }
+        Animator anim = targetObj.GetComponent<Animator>()
+                     ?? targetObj.GetComponentInChildren<Animator>();
+        anim?.SetTrigger(activeAnimTrigger);
     }
-
-    // PathNode를 받는 오버로드 유지
-    private void PlayActiveAnimation(PathNode node)
-    {
-        PlayActiveAnimation(node.gameObject);
-    }
-
-    // ... (이전 코드들)
 
     void CheatCompletePath()
     {
         Debug.Log("치트 사용: 경로 순차 진행 시작");
         if (isFinished) return;
-
-        // 코루틴을 시작하여 순서대로 노드를 획득하는 과정을 시뮬레이션합니다.
         StartCoroutine(CheatSequenceRoutine());
     }
 
     IEnumerator CheatSequenceRoutine()
     {
-        // 1. 현재 인덱스부터 마지막 일반 노드까지 순서대로 처리
-        // (리스트를 복사하거나 인덱스로 접근하여 안전하게 순회)
         int startIdx = currentIndex;
         int count = pathNodes.Count;
 
         for (int i = startIdx; i < count; i++)
         {
-            PathNode node = pathNodes[i];
-
-            // 실제 플레이어가 먹은 것처럼 로직 실행
-            OnNodeCollected(node);
-            node.OnAbsorbed();
-
-            // 시각적으로 순서대로 켜지는 것을 보여주기 위해 약간의 딜레이 (0.1초)
-            // 너무 빠르면 물리 연산이나 상태 갱신이 씹힐 수 있으므로 최소한의 딜레이 권장
+            pathNodes[i].OnAbsorbed(); // OnAbsorbed 내부에서 OnNodeCollected 호출
             yield return new WaitForSeconds(0.1f);
         }
 
-        // 2. 마지막 Final Node 처리
-        // 위의 반복문이 끝나면 로직상 isWaitingForFinal 상태가 되어 있어야 함
         if (finalNode != null && isWaitingForFinal)
         {
             yield return new WaitForSeconds(0.1f);
-            OnNodeCollected(finalNode);
+            finalNode.OnAbsorbed();
         }
     }
 
     public void ActivateThis()
     {
         if (activeManager != null)
-        {
             activeManager.ActivateOnly(this);
-        }
     }
 }

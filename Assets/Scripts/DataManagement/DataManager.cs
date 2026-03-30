@@ -44,7 +44,20 @@ public class DataManager : MonoBehaviour
 
     [Header("감정 게이지")]
     public float maxEmotionScore;
-    public float currentEmotionScore = 0;
+
+    public event System.Action<float> OnEmotionScoreChanged;
+
+    [SerializeField]
+    private float _currentEmotionScore = 0;
+    public float currentEmotionScore
+    {
+        get => _currentEmotionScore;
+        set
+        {
+            _currentEmotionScore = value;
+            OnEmotionScoreChanged?.Invoke(_currentEmotionScore);
+        }
+    }
 
     [Header("커지는 캐릭터")]
     public float playerOriginalScale = 1;

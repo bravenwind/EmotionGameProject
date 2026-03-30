@@ -3,27 +3,46 @@ using UnityEngine.UI;
 
 public class ComicController : MonoBehaviour
 {
-    [Header("¸¸È­ ÄÆ ÀÌ¹ÌÁöµé (¼ø¼­´ë·Î ³ÖÀ¸¼¼¿ä)")]
-    public GameObject[] comicPanels; // ÄÆµéÀ» ´ãÀ» ¹è¿­
+    [System.Serializable]
+    public class EmotionComicSet
+    {
+        public EmotionState emotion;
+        public GameObject panel;      // ì»·ë“¤ì˜ ë¶€ëª¨ íŒ¨ë„
+        public GameObject[] cuts;     // ìˆœì„œëŒ€ë¡œ ë“±ë¡í•  ì»· ì´ë¯¸ì§€ë“¤
+    }
 
-    private int currentIndex = 0; // ÇöÀç ¸î ¹øÂ° ÄÆÀÎÁö È®ÀÎ
+    [Header("ê°ì •ë³„ ë§Œí™” íŒ¨ë„ ì„¸íŠ¸")]
+    public EmotionComicSet[] emotionComicSets;
 
-    // ¡Ú Ãß°¡: UI°¡ ÄÑÁú ¶§¸¶´Ù »óÅÂ¸¦ ÃÊ±âÈ­ÇØÁİ´Ï´Ù.
+    private GameObject[] comicCuts;
+    private int currentIndex = 0;
+
     private void OnEnable()
     {
         currentIndex = 0;
 
-        // ¾ÈÀü ÀåÄ¡: ÆĞ³ÎÀÌ ºñ¾îÀÖÁö ¾Ê´Ù¸é
-        if (comicPanels != null && comicPanels.Length > 0)
+        var set = System.Array.Find(emotionComicSets,
+            s => s.emotion == DataManager.Instance.targetEmotion);
+
+        // ëª¨ë“  íŒ¨ë„ ë¹„í™œì„±í™” í›„ í•´ë‹¹ íŒ¨ë„ë§Œ í™œì„±í™”
+        foreach (var e in emotionComicSets)
         {
-            // Ã¹ ¹øÂ° ÄÆ¸¸ ÄÑ°í ³ª¸ÓÁö´Â ´Ù ²ü´Ï´Ù.
-            for (int i = 0; i < comicPanels.Length; i++)
-            {
-                comicPanels[i].SetActive(i == 0);
-            }
+            if (e.panel != null)
+                e.panel.SetActive(false);
         }
 
-        // ´ÙÀ½ ÄÆÀ» °¡¸®Å°µµ·Ï ÀÎµ¦½º Áõ°¡ (Ã¹ ÄÆÀº ÀÌ¹Ì ÄÑÁ® ÀÖÀ¸¹Ç·Î)
+        if (set?.panel == null)
+        {
+            comicCuts = System.Array.Empty<GameObject>();
+            return;
+        }
+
+        set.panel.SetActive(true);
+        comicCuts = set.cuts ?? System.Array.Empty<GameObject>();
+
+        for (int i = 0; i < comicCuts.Length; i++)
+            comicCuts[i].SetActive(i == 0);
+
         currentIndex = 1;
     }
 
@@ -31,7 +50,6 @@ public class ComicController : MonoBehaviour
     {
         if (GameSceneUIManager.Instance.currentState != GameSceneUIState.Prologue) return;
 
-        // ¸¶¿ì½º ¿ŞÂÊ Å¬¸¯ ¶Ç´Â ½ºÆäÀÌ½º¹Ù
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             ShowNextPanel();
@@ -40,31 +58,29 @@ public class ComicController : MonoBehaviour
 
     void ShowNextPanel()
     {
-        // ¾ÆÁ÷ º¸¿©ÁÙ ÄÆÀÌ ³²¾ÆÀÖ´Ù¸é
-        if (currentIndex < comicPanels.Length)
+        if (currentIndex < comicCuts.Length)
         {
-            comicPanels[currentIndex].SetActive(true); // ÇØ´ç ¼ø¼­ÀÇ ÄÆ ÄÑ±â
-            currentIndex++; // ´ÙÀ½ ¼ø¼­·Î ³Ñ±è
+            comicCuts[currentIndex].SetActive(true);
+            currentIndex++;
         }
         else
         {
-            // ¸ğµç ÄÆÀ» ´Ù º¸¿©ÁØ »óÅÂ¿¡¼­ Å¬¸¯Çß´Ù¸é -> ÇÁ·Ñ·Î±× Á¾·á ¿äÃ»
             EndPrologue();
         }
     }
 
     void EndPrologue()
     {
-        Debug.Log("ÇÁ·Ñ·Î±× Á¾·á! ¸Å´ÏÀú¿¡°Ô ÀÎ°ÔÀÓ ÀüÈ¯ ¿äÃ»");
+        Debug.Log("ï¿½ï¿½ï¿½Ñ·Î±ï¿½ ï¿½ï¿½ï¿½ï¿½! ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½Ã»");
 
-        // ¡Ú ¼öÁ¤: ¸Å´ÏÀú¿¡°Ô ºÎµå·¯¿î ÀüÈ¯À» ¿äÃ»ÇÕ´Ï´Ù.
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·¯ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½Õ´Ï´ï¿½.
         if (GameSceneUIManager.Instance != null)
         {
             GameSceneUIManager.Instance.FinishPrologue();
         }
         else
         {
-            // ¸Å´ÏÀú°¡ ¾øÀ» °æ¿ì ºñ»ó¿ë ÄÚµå
+            // ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
             gameObject.SetActive(false);
         }
     }

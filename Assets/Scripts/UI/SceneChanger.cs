@@ -1,47 +1,39 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class SceneChanger : MonoBehaviour
 {
-    public string HappyCharacterSceneName = "HappyCharacterLevel";
-    public string HopeCharacterSceneName = "HopeCharacterLevel";
-    public string AngryCharacterSceneName = "AngryCharacterLevel";
-    public string SadCharacterSceneName = "SadCharacterLevel";
+    public string gameSceneName = "Game";
 
     public string titleSceneName = "Title";
 
-    [Header("UI ¼³Á¤")]
-    [Tooltip("È­¸éÀ» °¡¸± °ËÀº»ö ÀÌ¹ÌÁöÀÇ CanvasGroup ÄÄÆ÷³ÍÆ®")]
+    [Header("UI ì„¤ì •")]
+    [Tooltip("í™”ë©´ì„ ê°€ë¦´ ê²€ì€ìƒ‰ ì´ë¯¸ì§€ì˜ CanvasGroup ì»´í¬ë„ŒíŠ¸")]
     public CanvasGroup fadeCanvasGroup;
 
-    [Tooltip("ÆäÀÌµå ÀÎ µÇ´Â ½Ã°£ (ÃÊ)")]
+    [Tooltip("í˜ì´ë“œ ì¸ ë˜ëŠ” ì‹œê°„ (ì´ˆ)")]
     public float fadeDuration = 1.0f;
 
     public void ChangeToGameScene(EmotionStateComponent emotionStateComponent)
     {
         EmotionState emotionState = emotionStateComponent.emotionState;
-        string sceneName = "";
         switch (emotionState)
         {
             case EmotionState.Happy:
-                DataManager.Instance.targetEmotion = EmotionState.Happy;
-                sceneName = HappyCharacterSceneName;
+                DataManager.Instance.targetEmotion = EmotionState.Happy;               
                 break;
             case EmotionState.Hope:
                 DataManager.Instance.targetEmotion = EmotionState.Hope;
-                sceneName = HopeCharacterSceneName;
                 break;
             case EmotionState.Angry:
                 DataManager.Instance.targetEmotion = EmotionState.Angry;
-                sceneName = AngryCharacterSceneName;
                 break;
             case EmotionState.Sad:
                 DataManager.Instance.targetEmotion = EmotionState.Sad;
-                sceneName = SadCharacterSceneName;
                 break;
         }
-        StartCoroutine(SceneFade(FadeState.FadeOut, sceneName));
+        StartCoroutine(SceneFade(FadeState.FadeOut, gameSceneName));
         DataManager.Instance.ResetGameData();
     }
 
@@ -53,7 +45,7 @@ public class SceneChanger : MonoBehaviour
     public IEnumerator SceneFade(FadeState fadeInOut, string fadeOutSceneName = null)
     {
         if (fadeCanvasGroup == null) yield break;
-        fadeCanvasGroup.blocksRaycasts = true; // ÀÔ·Â Â÷´Ü ½ÃÀÛ
+        fadeCanvasGroup.blocksRaycasts = true; // ì…ë ¥ ì°¨ë‹¨ ì‹œì‘
 
         bool fadeIn = fadeInOut == FadeState.FadeIn;
         bool fadeOut = fadeInOut == FadeState.FadeOut;
@@ -77,7 +69,7 @@ public class SceneChanger : MonoBehaviour
         float timer = 0f;
         while (timer < fadeDuration)
         {
-            // Time.deltaTime ´ë½Å unscaledDeltaTime »ç¿ë (¾Æ·¡ 2¹ø ÀÌÀ¯ ÂüÁ¶)
+            // Time.deltaTime ëŒ€ì‹  unscaledDeltaTime ì‚¬ìš© (ì•„ë˜ 2ë²ˆ ì´ìœ  ì°¸ì¡°)
             timer += Time.unscaledDeltaTime;
 
             if (fadeInOut == FadeState.FadeIn)

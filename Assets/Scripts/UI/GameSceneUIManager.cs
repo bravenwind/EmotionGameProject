@@ -1,14 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 
-// 1. »óÅÂ¸¦ Á¤ÀÇÇÏ´Â Enum (ÇÊ¿ä¿¡ µû¶ó Ãß°¡/¼öÁ¤ÇÏ¼¼¿ä)
+// 1. ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Enum (ï¿½Ê¿ä¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½)
 public enum GameSceneUIState
 {
     Prologue = 0,
-    InGame = 1,     // °ÔÀÓ ÇÃ·¹ÀÌ Áß HUD
+    InGame = 1,     // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ HUD
     Settings = 2,
     GameOver = 3,
     None
@@ -24,35 +24,35 @@ public class GameSceneUIManager : MonoBehaviour
 {
     public static GameSceneUIManager Instance { get; private set; }
 
-    // 2. ÀÎ½ºÆåÅÍ¿¡¼­ Enum°ú ¿ÀºêÁ§Æ®¸¦ Â¦ÁöÀ» ¼ö ÀÖ°Ô ¸¸µç Å¬·¡½º
+    // 2. ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ Enumï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Â¦ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     [System.Serializable]
     public class UIStateMapping
     {
-        public GameSceneUIState state;       // ¾î¶² »óÅÂÀÏ ¶§?
-        public GameObject uiObject; // ¾î¶² UI¸¦ ÄÓ °ÍÀÎ°¡?
+        public GameSceneUIState state;       // ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½?
+        public GameObject uiObject; // ï¿½î¶² UIï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Î°ï¿½?
     }
 
-    [Header("UI µî·Ï ¼³Á¤")]
-    // ÀÌ ¸®½ºÆ®¿¡ UI ¿ÀºêÁ§Æ®µéÀ» µî·ÏÇÏ°í EnumÀ» ÁöÁ¤ÇÏ¼¼¿ä.
+    [Header("UI ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ Enumï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.
     public List<UIStateMapping> uiList = new List<UIStateMapping>();
 
-    [Header("ÃÊ±â »óÅÂ")]
+    [Header("ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public GameSceneUIState startState = GameSceneUIState.Prologue;
     public CanvasGroup prologuePanel;
     public GameObject manualPanel;
 
-    [Header("UI ¼³Á¤")]
-    [Tooltip("È­¸éÀ» °¡¸± °ËÀº»ö ÀÌ¹ÌÁöÀÇ CanvasGroup ÄÄÆ÷³ÍÆ®")]
+    [Header("UI ï¿½ï¿½ï¿½ï¿½")]
+    [Tooltip("È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ CanvasGroup ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®")]
     public CanvasGroup fadeCanvasGroup;
 
-    [Tooltip("ÆäÀÌµå ÀÎ µÇ´Â ½Ã°£ (ÃÊ)")]
+    [Tooltip("ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½)")]
 
     public float fadeDuration = 1.0f;
 
-    // ÇöÀç »óÅÂ¸¦ ÀúÀåÇÏ´Â º¯¼ö
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
     public GameSceneUIState currentState;
 
-    [Header("ÇÁ·Ñ·Î±×")]
+    [Header("ï¿½ï¿½ï¿½Ñ·Î±ï¿½")]
     [SerializeField] private Sprite prologue_Happy;
     [SerializeField] private Sprite prologue_Hope;
     [SerializeField] private Sprite prologue_Angry;
@@ -64,17 +64,16 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private float prologueScale_Sad;
     [SerializeField] private Image[] prologueBlackImages;
 
-    [Header("°¨Á¤ Á¡¼ö ÀÌ¹ÌÁö")]
-    [SerializeField] private Image emotionScoreFillImage;
+    // ê°ì • ê²Œì´ì§€ FillImageëŠ” FillImage.csì—ì„œ ì§ì ‘ ê´€ë¦¬
 
-    [Header("°ÔÀÓ ¿À¹ö")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private bool epilogueActived;
     [SerializeField] private bool epilogueEnded;
     [SerializeField] private CanvasGroup epilogueImage;
     [SerializeField] private ResultStarsUI resultStarsUI;
 
-    [Header("ÄÆÀÎ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private Image level1to2CutIn;
     [SerializeField] private Image level2to3CutIn;
     [SerializeField] private Image level3to4CutIn;
@@ -90,17 +89,13 @@ public class GameSceneUIManager : MonoBehaviour
     {
         DataManager.Instance.resultStarsUI = resultStarsUI;
 
-        // ½ÃÀÛÇÏÀÚ¸¶ÀÚ °ËÀº È­¸é(Alpha 1)À¸·Î ¼¼ÆÃÇÏ°í ½ÃÀÛÇØ¾ß ÀÚ¿¬½º·´½À´Ï´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½(Alpha 1)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
         if (fadeCanvasGroup != null)
         {
             fadeCanvasGroup.alpha = 1f;
             fadeCanvasGroup.gameObject.SetActive(true);
         }
 
-        if (emotionScoreFillImage != null)
-        {
-            emotionScoreFillImage.fillAmount = 0.0f;
-        }
         StartCoroutine(SceneFade(FadeState.FadeIn));
         SetState(startState);
     }
@@ -120,10 +115,10 @@ public class GameSceneUIManager : MonoBehaviour
 
     private IEnumerator ProcessPrologueEnd()
     {
-        // »óÅÂ º¯°æ (ÀÎ°ÔÀÓ)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Î°ï¿½ï¿½ï¿½)
         SetState(GameSceneUIState.InGame);
 
-        // ´Ù½Ã È­¸é ¹à¾ÆÁü (FadeIn = Alpha 1 -> 0)
+        // ï¿½Ù½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ (FadeIn = Alpha 1 -> 0)
         yield return StartCoroutine(Fade(prologuePanel, FadeState.FadeIn, fadeDuration));
         
         Cursor.lockState = CursorLockMode.None;
@@ -134,7 +129,7 @@ public class GameSceneUIManager : MonoBehaviour
 
     private IEnumerator ProcessEpilogueEnd()
     {
-        // ´Ù½Ã È­¸é ¹à¾ÆÁü (FadeIn = Alpha 1 -> 0)
+        // ï¿½Ù½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ (FadeIn = Alpha 1 -> 0)
         yield return StartCoroutine(Fade(epilogueImage, FadeState.FadeIn, fadeDuration));
 
         epilogueImage.gameObject.SetActive(false);
@@ -144,7 +139,7 @@ public class GameSceneUIManager : MonoBehaviour
 
     private void Update()
     {
-        // ¸Å ÇÁ·¹ÀÓ ÇöÀç »óÅÂ¿¡ µû¸¥ ·ÎÁ÷ ½ÇÇà
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         UpdateState();
 
         if (epilogueActived)
@@ -158,17 +153,17 @@ public class GameSceneUIManager : MonoBehaviour
     }
 
     // ==========================================
-    // ÇÙ½É ±â´É 1: »óÅÂ º¯°æ (SetState)
+    // ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ 1: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (SetState)
     // ==========================================
     public void SetState(GameSceneUIState newState)
     {
         currentState = newState;
-        Debug.Log($"»óÅÂ º¯°æ: {currentState}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {currentState}");
 
-        // µî·ÏµÈ ¸ðµç UI¸¦ ¼øÈ¸ÇÏ¸ç »óÅÂ¿¡ ¸Â´Â °Í¸¸ ÄÑ°í, ³ª¸ÓÁö´Â ²ü´Ï´Ù.
+        // ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½È¸ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½Â´ï¿½ ï¿½Í¸ï¿½ ï¿½Ñ°ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.
         SetOnlyState(newState);
 
-        // »óÅÂ ÁøÀÔ ½Ã 1È¸¼º ·ÎÁ÷ÀÌ ÇÊ¿äÇÏ´Ù¸é ¿©±â¿¡ ÀÛ¼º (¿¹: Á¡¼ö ÃÊ±âÈ­ µî)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 1È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½Ï´Ù¸ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½Û¼ï¿½ (ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½)
         OnEnterState(newState);
     }
 
@@ -178,7 +173,7 @@ public class GameSceneUIManager : MonoBehaviour
         {
             if (mapping.uiObject != null)
             {
-                // ÇöÀç »óÅÂ¿Í ¸ÅÇÎµÈ »óÅÂ°¡ °°À¸¸é true(ÄÑÁü), ¾Æ´Ï¸é false(²¨Áü)
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ true(ï¿½ï¿½ï¿½ï¿½), ï¿½Æ´Ï¸ï¿½ false(ï¿½ï¿½ï¿½ï¿½)
                 bool isActive = (mapping.state == newState);
                 mapping.uiObject.SetActive(isActive);
             }
@@ -196,7 +191,7 @@ public class GameSceneUIManager : MonoBehaviour
     }
 
     // ==========================================
-    // ÇÙ½É ±â´É 2: »óÅÂº° ÇÁ·¹ÀÓ ·ÎÁ÷ (UpdateState)
+    // ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ 2: ï¿½ï¿½ï¿½Âºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (UpdateState)
     // ==========================================
     private void UpdateState()
     {
@@ -267,7 +262,7 @@ public class GameSceneUIManager : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                // °øÅë ÇÔ¼ö »ç¿ë (¾ÆÀÌÄÜ ¼³Á¤)
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
                 //UpdateEmotionUI(iconImage, happyIcon, happyIconScale, hopeIcon, hopeIconScale, angryIcon, angryIconScale, sadIcon, sadIconScale);
                 GUI.enabled = true;
                 break;
@@ -282,7 +277,7 @@ public class GameSceneUIManager : MonoBehaviour
             case GameSceneUIState.Prologue:
                 Time.timeScale = 0f;
                 manualPanel.SetActive(true);
-                // °øÅë ÇÔ¼ö »ç¿ë (ÇÁ·Ñ·Î±× ÀÌ¹ÌÁö ¼³Á¤)
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Ñ·Î±ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
                 //UpdateEmotionUI(prologueImage, prologue_Happy, prologueScale_Happy, prologue_Hope, prologueScale_Hope, prologue_Angry, prologueScale_Angry, prologue_Sad, prologueScale_Sad);
                 break;
 
@@ -296,7 +291,7 @@ public class GameSceneUIManager : MonoBehaviour
     public IEnumerator SceneFade(FadeState fadeInOut)
     {
         if (fadeCanvasGroup == null) yield break;
-        fadeCanvasGroup.blocksRaycasts = true; // ÀÔ·Â Â÷´Ü ½ÃÀÛ
+        fadeCanvasGroup.blocksRaycasts = true; // ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         bool fadeIn = fadeInOut == FadeState.FadeIn;
         bool fadeOut = fadeInOut == FadeState.FadeOut;
@@ -305,8 +300,8 @@ public class GameSceneUIManager : MonoBehaviour
 
         if (fadeIn)
         {
-            fadeCanvasGroup.alpha = 0f; // È®½ÇÇÏ°Ô Åõ¸íÇÏ°Ô
-            fadeCanvasGroup.blocksRaycasts = false; // [Áß¿ä!] ÆäÀÌµåÀÎÀÌ ³¡³ª¸é ¹Ýµå½Ã ÀÔ·ÂÀ» ´Ù½Ã Çã¿ëÇØ¾ß ÇÕ´Ï´Ù.
+            fadeCanvasGroup.alpha = 0f; // È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
+            fadeCanvasGroup.blocksRaycasts = false; // [ï¿½ß¿ï¿½!] ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ýµï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Õ´Ï´ï¿½.
         }
         if (fadeOut)
         {
@@ -324,27 +319,27 @@ public class GameSceneUIManager : MonoBehaviour
     {
         fadeCanvasGroup.gameObject.SetActive(true);
 
-        // ½ÃÀÛ/¸ñÇ¥ ¾ËÆÄ°ª Á¤ÀÇ
+        // ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½ï¿½ï¿½
         float startAlpha = (fadeInOut == FadeState.FadeIn) ? 1f : 0f;
         float endAlpha = (fadeInOut == FadeState.FadeIn) ? 0f : 1f;
 
-        // ÃÊ±â°ª Àû¿ë
+        // ï¿½Ê±â°ª ï¿½ï¿½ï¿½ï¿½
         fadeCanvasGroup.alpha = startAlpha;
 
-        // 0.5ÃÊ ´ë±â (ÀÌ ½Ã°£ µ¿¾È ·ºÀÌ °É¸®µç ¸»µç »ó°ü¾øÀ½)
+        // 0.5ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
         yield return new WaitForSecondsRealtime(0.5f);
 
         if (fadeDuration > 0f)
         {
-            // [ÇØ°á ÇÙ½É] ´©Àû(+=) ¹æ½Ä ´ë½Å, ÇöÀç ½Ã°¢À» ±â·ÏÇÕ´Ï´Ù.
-            // 0.5ÃÊ ´ë±â°¡ ³¡³­ 'Áö±Ý'ÀÌ ¹Ù·Î ¾Ö´Ï¸ÞÀÌ¼Ç ½ÃÀÛ ½ÃÁ¡ÀÔ´Ï´Ù.
+            // [ï¿½Ø°ï¿½ ï¿½Ù½ï¿½] ï¿½ï¿½ï¿½ï¿½(+=) ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+            // 0.5ï¿½ï¿½ ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ 'ï¿½ï¿½ï¿½ï¿½'ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
             float startTime = Time.unscaledTime;
 
-            // °æ°ú ½Ã°£ÀÌ durationº¸´Ù ÀÛÀº µ¿¾È ¹Ýº¹
+            // ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ durationï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ýºï¿½
             while (Time.unscaledTime < startTime + fadeDuration)
             {
-                // [ÇØ°á ÇÙ½É] (ÇöÀç ½Ã°£ - ½ÃÀÛ ½Ã°£)À¸·Î ¼ø¼öÇÑ °æ°ú ½Ã°£À» ±¸ÇÕ´Ï´Ù.
-                // ÀÌ·¸°Ô ÇÏ¸é ÀÌÀü ÇÁ·¹ÀÓÀÇ µ¨Å¸Å¸ÀÓÀÌ ¾Æ¹«¸® Ä¿µµ ¿µÇâÀ» ¹ÞÁö ¾Ê½À´Ï´Ù.
+                // [ï¿½Ø°ï¿½ ï¿½Ù½ï¿½] (ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+                // ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Æ¹ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.
                 float timer = Time.unscaledTime - startTime;
 
                 float progress = timer / fadeDuration;
@@ -355,7 +350,7 @@ public class GameSceneUIManager : MonoBehaviour
             }
         }
 
-        // ÃÖÁ¾°ª È®Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         fadeCanvasGroup.alpha = endAlpha;
 
         if (fadeInOut == FadeState.FadeIn)
@@ -364,29 +359,25 @@ public class GameSceneUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateEmotionScoreImage()
-    {
-        emotionScoreFillImage.fillAmount = DataManager.Instance.currentEmotionScore / DataManager.Instance.maxEmotionScore;
-    }
-
     public IEnumerator WaitForEpilogue()
     {
         if (isEpilogueRoutineStarted)
         {
             yield break;
         }
-        // 1. Áßº¹ ½ÇÇà ¹æÁö ÇÃ·¡±× On
+        // 1. ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ On
         isEpilogueRoutineStarted = true;
 
-        // 2. 3ÃÊ ´ë±â
+        // 2. 3ï¿½ï¿½ ï¿½ï¿½ï¿½
         yield return new WaitForSecondsRealtime(1.0f);
 
-        // 3. ÆäÀÌµå È¿°ú ½ÇÇà (FadeOut = Alpha 0 -> 1 : ÀÌ¹ÌÁö ³ªÅ¸³²)
-        // yield returnÀ» ½á¼­ ÆäÀÌµå°¡ ³¡³¯ ¶§±îÁö ±â´Ù¸± ¼öµµ ÀÖ°í,
-        // ±×³É ½ÇÇà¸¸ ½ÃÅ³ ¼öµµ ÀÖ½À´Ï´Ù. ¿©±â¼± ½ÇÇà¸¸ ½ÃÄÑµµ ¹«¹æÇÕ´Ï´Ù.
+        // 3. ï¿½ï¿½ï¿½Ìµï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (FadeOut = Alpha 0 -> 1 : ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½)
+        // yield returnï¿½ï¿½ ï¿½á¼­ ï¿½ï¿½ï¿½Ìµå°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½,
+        // ï¿½×³ï¿½ ï¿½ï¿½ï¿½à¸¸ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½â¼± ï¿½ï¿½ï¿½à¸¸ ï¿½ï¿½ï¿½Ñµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
         yield return StartCoroutine(Fade(epilogueImage, FadeState.FadeOut, fadeDuration));
 
-        // 4. ÀÔ·Â Çã¿ë (Update¿¡¼­ Å¬¸¯ Ã¼Å© ½ÃÀÛ)
+        // 4. ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ (Updateï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ï¿½ï¿½)
         epilogueActived = true;
     }
+
 }
