@@ -28,6 +28,7 @@ public class DataManager : MonoBehaviour
     public Animator playerAnimator;
     public ZeroGravityMovement playerMovementScript;
     public CinemachineBrain brain;
+    public CharacterFocus characterFocus;
 
     [Header("맵")]
     public CinemachineCamera targetMapCam;
@@ -68,8 +69,16 @@ public class DataManager : MonoBehaviour
     public int currentScaleLevel = 1;
     public float scaleIncreaseDuration = 1.5f;
 
+    [Header("게임 시작 인트로 카메라")]
+    [Tooltip("첫번째 노드 앞에 설치한 씨네머신 카메라")]
+    public CinemachineCamera introCam;
+    [Tooltip("인트로 카메라에서 대기하는 시간(초)")]
+    public float introCameraWaitTime = 3f;
+
     [Header("게임 오버")]
     public CinemachineCamera camToClearFail;
+    [Tooltip("실패 시 맵 카메라에서 대기하는 시간(초)")]
+    public float failMapCameraWaitTime = 2f;
 
     private void Awake()
     {
@@ -85,6 +94,27 @@ public class DataManager : MonoBehaviour
         }
 
         ResetGameData();
+    }
+
+    public IEnumerator StartGameWithIntroCamera()
+    {
+        // Cinemachine 블렌딩이 동작하도록 시간 진행
+        Time.timeScale = 1f;
+        mouseLook.enabled = false;
+
+        if (introCam != null)
+        {
+            // 씬 시작부터 introCam이 활성화된 상태이므로 바로 n초 대기
+            yield return new WaitForSecondsRealtime(introCameraWaitTime);
+
+            // 플레이어 카메라로 전환
+            introCam.Priority = 0;
+            yield return StartCoroutine(WaitForBlendToFinish());
+            Debug.Log("플레이어 카메라로 전환 완료");
+        }
+
+        mouseLook.enabled = true;
+        GameSceneUIManager.Instance.SetState(GameSceneUIState.InGame);
     }
 
     public void SwitchToMapCamera()
@@ -110,13 +140,29 @@ public class DataManager : MonoBehaviour
 
     public IEnumerator GameOver()
     {
+        Collider[] characterCols = selectedCharacter.GetComponentsInChildren<Collider>();
+        foreach (Collider col in characterCols) 
+        {
+            col.enabled = false;
+        }
+
         DisableAllChild.Instance.DisableAll();
         GameSceneUIManager.Instance.SetAllDisable();
         SwitchToMapCamera();
         yield return StartCoroutine(WaitForBlendToFinish());
         Debug.Log("맵 카메라로 전환 완료");
 
-        yield return GameSceneUIManager.Instance.StartCoroutine(GameSceneUIManager.Instance.WaitForEpilogue());
+        if (gameCleared)
+        {
+            // 클리어 성공: 에필로그 표시 후 결과 화면
+            yield return GameSceneUIManager.Instance.StartCoroutine(GameSceneUIManager.Instance.WaitForEpilogue());
+        }
+        else
+        {
+            // 클리어 실패: n초 대기 후 바로 결과 화면
+            yield return new WaitForSecondsRealtime(failMapCameraWaitTime);
+            yield return StartCoroutine(AfterEpilogue());
+        }
     }
 
     IEnumerator WaitForBlendToFinish()
@@ -140,20 +186,20 @@ public class DataManager : MonoBehaviour
 
         // [5. 캐릭터 지정된 위치로 이동하면서 커짐]
         // 🚨 핵심 수정: 코루틴이 끝날 때까지 기다립니다!
-        yield return StartCoroutine(CharacterFocus.Instance.AnimateCharacter());
+        yield return StartCoroutine(characterFocus.AnimateCharacter());
         Debug.Log("캐릭터 키우기 완료");
 
         // [6. 결과 UI 내려옴 및 애니메이션 재생]
-        if (DataManager.Instance.gameCleared)
+        if (gameCleared)
         {
             resultStarsUI.SetStarIndex(3);
-            DataManager.Instance.playerAnimator.SetTrigger("GameClear");
+            playerAnimator.SetTrigger("GameClear");
             PlaySFXAudio.Instance.PlayMissionComplete();
         }
         else
         {
             resultStarsUI.SetStarIndex(0);
-            DataManager.Instance.playerAnimator.SetTrigger("GameFail");
+            playerAnimator.SetTrigger("GameFail");
             PlaySFXAudio.Instance.PlayFail();
         }
 
@@ -169,7 +215,7 @@ public class DataManager : MonoBehaviour
         if (GameSceneUIManager.Instance != null)
         {
             playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-            CharacterFocus.Instance.ApplyAnimationOnCharacter();
+            characterFocus.ApplyAnimationOnCharacter();
             GameSceneUIManager.Instance.SetState(GameSceneUIState.GameOver);
         }
     }

@@ -304,11 +304,11 @@ public class PathManager : MonoBehaviour
             if (!isLineStarted)
             {
                 lineRenderer.positionCount = 1;
-                lineRenderer.SetPosition(0, collectedNode.transform.position);
+                lineRenderer.SetPosition(0, collectedNode.originalPosition);
             }
             else
             {
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, collectedNode.transform.position);
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, collectedNode.originalPosition);
             }
         }
 

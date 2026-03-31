@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -23,6 +23,7 @@ public class CharacterSelector : MonoBehaviour
         public CinemachineCamera camToClearFail;
         public GameObject trailParticle;
         public Material emotionSkybox;
+        public CinemachineCamera introCam;
     }
 
     [Header("감정별 캐릭터 세트 (4개 등록)")]
@@ -35,6 +36,7 @@ public class CharacterSelector : MonoBehaviour
             bool isTarget = c.emotion == DataManager.Instance.targetEmotion;
             c.characterRoot.SetActive(isTarget);
             c.playerCam.gameObject.SetActive(isTarget);
+            c.introCam.gameObject.SetActive(isTarget);
 
             if (isTarget)
             {
@@ -46,12 +48,15 @@ public class CharacterSelector : MonoBehaviour
                 DataManager.Instance.mouseLook              = c.mouseLook;
                 DataManager.Instance.selectedCharacter      = c.characterRoot;
                 DataManager.Instance.camToClearFail         = c.camToClearFail;
+                DataManager.Instance.characterFocus         = c.characterRoot.GetComponent<CharacterFocus>();
+                DataManager.Instance.introCam               = c.introCam;
                 ParticlePoolManager.Instance.particlePrefab = c.trailParticle;
                 RenderSettings.skybox = c.emotionSkybox;
             }
         }
 
         DataManager.Instance.brain = Camera.main.GetComponent<CinemachineBrain>();
+        DataManager.Instance.introCam.Priority = 15;
         ParticlePoolManager.Instance.InitializePool();
     }
 }

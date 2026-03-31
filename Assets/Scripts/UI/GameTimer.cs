@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class GameTimer : MonoBehaviour
@@ -11,8 +11,18 @@ public class GameTimer : MonoBehaviour
     [SerializeField]
     private TMP_Text timerText;
 
+    private void Start()
+    {
+        UpdateTimerText((int)DataManager.Instance.limitTime);
+    }
+
     void Update()
     {
+        if (GameSceneUIManager.Instance.currentState != GameSceneUIState.InGame) 
+        {
+            return;
+        }
+
         // �� ������ ����Ǿ��ٸ� �� �̻� Ÿ�̸� �ڵ带 �������� ����
         if (isGameEnded) return;
 

@@ -3,8 +3,6 @@ using System.Collections;
 
 public class CharacterFocus : MonoBehaviour
 {
-    public static CharacterFocus Instance;
-
     [Header("설정 값")]
     public Transform targetPosition; // 이동할 목표 위치 (빈 오브젝트 등으로 위치 지정)
     public float targetScale = 90.0f; // 목표 크기 (예: 2배)
@@ -22,11 +20,6 @@ public class CharacterFocus : MonoBehaviour
 
     // 테스트용: 게임 시작 시 자동 실행하려면 주석 해제
     // void Start() { FocusCharacter(); }
-
-    public void Awake()
-    {
-        Instance = this;
-    }
 
     // IEnumerator를 public으로 변경합니다.
     public IEnumerator AnimateCharacter()

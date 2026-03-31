@@ -79,6 +79,7 @@ public class GameSceneUIManager : MonoBehaviour
     [SerializeField] private Image level3to4CutIn;
 
     private bool isEpilogueRoutineStarted = false;
+    private bool isPrologueFinished = false;
 
     private void Awake()
     {
@@ -102,7 +103,10 @@ public class GameSceneUIManager : MonoBehaviour
 
     public void FinishPrologue()
     {
-        if (prologueBlackImages != null) 
+        if (isPrologueFinished) return;
+        isPrologueFinished = true;
+
+        if (prologueBlackImages != null)
         {
             foreach (Image image in prologueBlackImages)
             {
@@ -115,16 +119,13 @@ public class GameSceneUIManager : MonoBehaviour
 
     private IEnumerator ProcessPrologueEnd()
     {
-        // ���� ���� (�ΰ���)
-        SetState(GameSceneUIState.InGame);
-
-        // �ٽ� ȭ�� ����� (FadeIn = Alpha 1 -> 0)
+        // 프롤로그 패널 페이드 아웃 (Alpha 1 → 0)
         yield return StartCoroutine(Fade(prologuePanel, FadeState.FadeIn, fadeDuration));
-        
+        prologuePanel.gameObject.SetActive(false);
+
+        // 커서 표시 (매뉴얼 조작용) - manualPanel은 OnEnterState(Prologue)에서 이미 활성화됨
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        
-        prologuePanel.gameObject.SetActive(false);
     }
 
     private IEnumerator ProcessEpilogueEnd()
@@ -276,7 +277,7 @@ public class GameSceneUIManager : MonoBehaviour
 
             case GameSceneUIState.Prologue:
                 Time.timeScale = 0f;
-                manualPanel.SetActive(true);
+                //
                 // ���� �Լ� ��� (���ѷα� �̹��� ����)
                 //UpdateEmotionUI(prologueImage, prologue_Happy, prologueScale_Happy, prologue_Hope, prologueScale_Hope, prologue_Angry, prologueScale_Angry, prologue_Sad, prologueScale_Sad);
                 break;
