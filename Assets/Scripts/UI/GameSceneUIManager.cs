@@ -263,6 +263,10 @@ public class GameSceneUIManager : MonoBehaviour
                 Time.timeScale = 1f;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+
+                // 커서를 다시 잠그는 프레임에 마우스 델타가 크게 튀는 것을 방지
+                if (DataManager.Instance != null && DataManager.Instance.mouseLook != null)
+                    DataManager.Instance.mouseLook.SuppressInput();
                 // ���� �Լ� ��� (������ ����)
                 //UpdateEmotionUI(iconImage, happyIcon, happyIconScale, hopeIcon, hopeIconScale, angryIcon, angryIconScale, sadIcon, sadIconScale);
                 GUI.enabled = true;

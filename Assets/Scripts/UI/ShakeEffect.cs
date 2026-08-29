@@ -1,48 +1,53 @@
-using UnityEngine;
-using System.Collections;
+ï»¿using UnityEngine;
+using System.Collections;
+
+public class ShakeEffect : MonoBehaviour
+{
+    public float shakeAmount = 0.1f;
 
-public class ShakeEffect : MonoBehaviour
-{
-    public float shakeAmount = 0.1f; // ¶³¸² °­µµ (ÇÈ¼¿ ´ÜÀ§ ¾Æ´Ô, ¿ùµå ÁÂÇ¥ ´ÜÀ§)
+    [Tooltip("í…ŒìŠ¤íŠ¸ìš© í”ë“¤ê¸° í‚¤. SëŠ” ì´ë™ ì…ë ¥ê³¼ ì¶©ëŒí•˜ë¯€ë¡œ ê¸°ë³¸ê°’ì€ None(ë¹„í™œì„±)ì´ë‹¤.")]
+    public KeyCode debugShakeKey = KeyCode.None; // ë–¨ë¦¼ ê°•ë„ (í”½ì…€ ë‹¨ìœ„ ì•„ë‹˜, ì›”ë“œ ì¢Œí‘œ ë‹¨ìœ„)
+
+    Coroutine currentCoroutine = null;
+
+    private void Update()
+    {
+        if (debugShakeKey == KeyCode.None || !CheatSettings.Enabled) return;
 
-    Coroutine currentCoroutine = null;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S)) 
-        { 
-            if (currentCoroutine == null)
-            {
-                StartShaking();
-            }
-        }    
-    }
-
-    public void StartShaking()
-    {
-        currentCoroutine = StartCoroutine(ShakeCoroutine());
-    }
-
-    IEnumerator ShakeCoroutine()
-    {
-        Vector3 originalPos = transform.localPosition; // ¿ø·¡ À§Ä¡ ÀúÀå
-        float duration = 0.5f; // 0.5ÃÊ µ¿¾È ¶³±â
-        float elapsed = 0.0f;
-
-        while (elapsed < duration)
-        {
-            // ·£´ıÇÑ ¿ø ¾ÈÀÇ ÁÂÇ¥¸¦ »ı¼ºÇÏ¿© À§Ä¡¿¡ ´õÇÔ
-            float x = Random.Range(-1f, 1f) * shakeAmount;
-            float y = Random.Range(-1f, 1f) * shakeAmount;
-
-            transform.localPosition = originalPos + new Vector3(x, y, 0);
-
-            elapsed += Time.deltaTime;
-            yield return null; // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ´ë±â
-        }
-
-        transform.localPosition = originalPos; // ³¡³ª¸é ¿ø·¡ À§Ä¡·Î º¹±Í
-
-        currentCoroutine = null;
-    }
+        if (Input.GetKeyDown(debugShakeKey)) 
+        { 
+            if (currentCoroutine == null)
+            {
+                StartShaking();
+            }
+        }    
+    }
+
+    public void StartShaking()
+    {
+        currentCoroutine = StartCoroutine(ShakeCoroutine());
+    }
+
+    IEnumerator ShakeCoroutine()
+    {
+        Vector3 originalPos = transform.localPosition; // ì›ë˜ ìœ„ì¹˜ ì €ì¥
+        float duration = 0.5f; // 0.5ì´ˆ ë™ì•ˆ ë–¨ê¸°
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            // ëœë¤í•œ ì› ì•ˆì˜ ì¢Œí‘œë¥¼ ìƒì„±í•˜ì—¬ ìœ„ì¹˜ì— ë”í•¨
+            float x = Random.Range(-1f, 1f) * shakeAmount;
+            float y = Random.Range(-1f, 1f) * shakeAmount;
+
+            transform.localPosition = originalPos + new Vector3(x, y, 0);
+
+            elapsed += Time.deltaTime;
+            yield return null; // ë‹¤ìŒ í”„ë ˆì„ê¹Œì§€ ëŒ€ê¸°
+        }
+
+        transform.localPosition = originalPos; // ëë‚˜ë©´ ì›ë˜ ìœ„ì¹˜ë¡œ ë³µê·€
+
+        currentCoroutine = null;
+    }
 }

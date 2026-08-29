@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -25,6 +25,14 @@ public class PathManager : MonoBehaviour
     [Header("Line Settings")]
     public float lineWidth = 0.1f;
 
+    [Tooltip("선이 꺾이는 지점의 둥글기. 값이 클수록 정점 수가 폭증하고, 끝점이 매 프레임 갱신되므로 메시 전체가 매 프레임 재생성된다. 2~4 권장.")]
+    [Range(0, 16)]
+    public int cornerVertices = 4;
+
+    [Tooltip("선 끝단의 둥글기. 2~4 권장.")]
+    [Range(0, 16)]
+    public int capVertices = 4;
+
     [Header("Node Settings")]
     public Vector3 originalNodeScale;
     public float targetNodeScaleMultiplier = 2.4f;
@@ -45,6 +53,11 @@ public class PathManager : MonoBehaviour
     public Material completedMaterial;
     public Material lineMaterial;
 
+    [Header("Node Reduction")]
+    [Tooltip("몇 칸마다 하나씩만 '실제로 닿아야 하는 노드'로 쓸지. 1=전부, 2=절반, 3=1/3. 건너뛴 노드는 숨겨지지만 선의 꼭짓점으로는 그대로 사용되어 완성 모양은 동일하게 유지됩니다.")]
+    [Min(1)]
+    public int nodeStep = 2;
+
     [Header("Path Nodes")]
     public List<PathNode> pathNodes = new List<PathNode>();
     public PathNode finalNode;
@@ -62,6 +75,13 @@ public class PathManager : MonoBehaviour
     private bool isTargetPath;
     private int currentIndex = 0;
     private LineRenderer lineRenderer;
+
+    // 실제로 플레이어가 닿아야 하는 노드(체크포인트)의 pathNodes 인덱스 목록
+    private readonly List<int> checkpointIndices = new List<int>();
+    private readonly HashSet<int> checkpointSet = new HashSet<int>();
+    private int checkpointCursor = 0;
+    // LineRenderer에 이미 확정 반영된 마지막 pathNodes 인덱스
+    private int lastCommittedIndex = -1;
     private bool isFinished = false;
     private bool isLineStarted = false;
     private bool isWaitingForFinal = false;
@@ -79,8 +99,8 @@ public class PathManager : MonoBehaviour
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 0;
         lineRenderer.material = lineMaterial;
-        lineRenderer.numCornerVertices = 50;
-        lineRenderer.numCapVertices = 50;
+        lineRenderer.numCornerVertices = cornerVertices;
+        lineRenderer.numCapVertices = capVertices;
 
         isTargetPath = completedEmotion == DataManager.Instance.targetEmotion;
         lineRenderer.enabled = isTargetPath && !useParticleMode;
@@ -94,7 +114,8 @@ public class PathManager : MonoBehaviour
         if (isTargetPath)
         {
             DataManager.Instance.targetMapCam = mapCam;
-            DataManager.Instance.maxEmotionScore = pathNodes.Count;
+            DataManager.Instance.targetPathManager = this;
+            // maxEmotionScore는 체크포인트 개수가 확정되는 InitializePath에서 설정
         }
 
         if (pathNodes.Count > 0)
@@ -103,6 +124,26 @@ public class PathManager : MonoBehaviour
 
             if (isTargetPath)
                 StartCoroutine(FaceFirstNodeOnStart());
+        }
+    }
+
+    /// <summary>
+    /// 지금 플레이어가 닿아야 하는 노드의 Transform. 없으면 null.
+    /// (UI 지시 화살표 등 외부에서 참조)
+    /// </summary>
+    public Transform CurrentTargetNode
+    {
+        get
+        {
+            if (isFinished) return null;
+
+            if (isWaitingForFinal)
+                return finalNode != null ? finalNode.transform : null;
+
+            if (currentIndex >= 0 && currentIndex < pathNodes.Count)
+                return pathNodes[currentIndex].transform;
+
+            return null;
         }
     }
 
@@ -130,6 +171,8 @@ public class PathManager : MonoBehaviour
     public void InitializePath()
     {
         currentIndex = 0;
+        checkpointCursor = 0;
+        lastCommittedIndex = -1;
         isFinished = false;
         isLineStarted = false;
         isWaitingForFinal = false;
@@ -169,15 +212,34 @@ public class PathManager : MonoBehaviour
         if (pathNodes.Count > 0)
             originalNodeScale = pathNodes[0].transform.localScale;
 
+        BuildCheckpoints();
+
         for (int i = 0; i < pathNodes.Count; i++)
         {
             pathNodes[i].manager = this;
             pathNodes[i].myIndex = i;
             pathNodes[i].emotion = completedEmotion;
 
+            if (!IsCheckpoint(i))
+            {
+                // 건너뛰는 노드: 선의 꼭짓점으로만 사용되고 화면에서는 완전히 숨김
+                pathNodes[i].gameObject.SetActive(false);
+                continue;
+            }
+
+            pathNodes[i].gameObject.SetActive(true);
             pathNodes[i].transform.localScale = originalNodeScale * nonTargetNodeScaleMultiplier;
             pathNodes[i].NodeRenderer.enabled = true;
+
+            // 현재 타겟이 된 노드만 UpdateNodeStates/ActivateNode에서 다시 켠다.
+            // 컴포넌트가 꺼져 있으면 Update/FixedUpdate/트리거 콜백이 모두 호출되지 않는다.
+            pathNodes[i].enabled = false;
         }
+
+        currentIndex = checkpointIndices.Count > 0 ? checkpointIndices[0] : 0;
+
+        if (isTargetPath)
+            DataManager.Instance.maxEmotionScore = Mathf.Max(1, checkpointIndices.Count);
 
         if (finalNode != null)
         {
@@ -186,6 +248,7 @@ public class PathManager : MonoBehaviour
             finalPosition = finalNode.transform.position;
             finalNode.NodeRenderer.enabled = false;
             finalNode.NodeCollider.enabled = false;
+            finalNode.enabled = false;
         }
 
         UpdateNodeStates();
@@ -201,7 +264,7 @@ public class PathManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M) && !isFinished && isTargetPath)
+        if (CheatSettings.Enabled && Input.GetKeyDown(KeyCode.M) && !isFinished && isTargetPath)
             CheatCompletePath();
 
         if (!useParticleMode && isLineStarted && !isFinished && DataManager.Instance.playerLineTransform != null)
@@ -217,6 +280,8 @@ public class PathManager : MonoBehaviour
     {
         for (int i = 0; i < pathNodes.Count; i++)
         {
+            if (!IsCheckpoint(i)) continue;
+
             if (i < currentIndex)
             {
                 pathNodes[i].NodeRenderer.material = completedMaterial;
@@ -228,8 +293,8 @@ public class PathManager : MonoBehaviour
                 {
                     ReplaceNodeWithPrefab(pathNodes[i]);
                     pathNodes[i].transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+                    pathNodes[i].enabled = true;
                     pathNodes[i].SetState(true, activeMaterial, defaultMaterial);
-                    Debug.Log(gameObject.name + " 활성화됨");
                 }
                 else
                 {
@@ -261,6 +326,7 @@ public class PathManager : MonoBehaviour
         {
             ReplaceNodeWithPrefab(node);
             node.transform.localScale = originalNodeScale * targetNodeScaleMultiplier;
+            node.enabled = true;
             node.SetState(true, activeMaterial, defaultMaterial);
         }
         else
@@ -277,6 +343,7 @@ public class PathManager : MonoBehaviour
         if (finalNode == null) return;
 
         finalNode.gameObject.SetActive(true);
+        finalNode.enabled = true;
         finalNode.NodeCollider.enabled = true;
         finalNode.NodeCollider.isTrigger = true;
         ReplaceNodeWithPrefab(finalNode);
@@ -287,9 +354,52 @@ public class PathManager : MonoBehaviour
             PlayActiveAnimation(instance);
     }
 
-    // 라인/파티클 업데이트 (OnNodeCollected에서만 호출)
-    private void UpdateLine(PathNode collectedNode)
+    // 체크포인트 구성: nodeStep 간격으로 '실제로 닿아야 하는 노드'를 고른다.
+    // 건너뛴 노드도 pathNodes에는 그대로 남아 선의 꼭짓점으로 쓰이므로 완성 모양은 변하지 않는다.
+    private void BuildCheckpoints()
     {
+        checkpointIndices.Clear();
+        checkpointSet.Clear();
+
+        if (pathNodes.Count == 0) return;
+
+        // 타겟 경로가 아니면(배경 장식용) 감축하지 않고 기존 그대로 유지
+        int step = isTargetPath ? Mathf.Max(1, nodeStep) : 1;
+
+        for (int i = 0; i < pathNodes.Count; i += step)
+        {
+            checkpointIndices.Add(i);
+            checkpointSet.Add(i);
+        }
+
+        Debug.Log($"[PathManager] {gameObject.name} 노드 {pathNodes.Count}개 중 {checkpointIndices.Count}개를 체크포인트로 사용 (step={step})");
+    }
+
+    private bool IsCheckpoint(int index)
+    {
+        return checkpointSet.Contains(index);
+    }
+
+    // 직전 확정 지점 다음부터 이번 체크포인트까지의 꼭짓점들을 모은다.
+    // 건너뛴 노드의 위치가 여기에 포함되기 때문에 선의 형태가 원본과 동일하게 유지된다.
+    private List<Vector3> BuildSegmentPoints(int checkpointIndex)
+    {
+        List<Vector3> points = new List<Vector3>();
+
+        for (int i = lastCommittedIndex + 1; i <= checkpointIndex && i < pathNodes.Count; i++)
+            points.Add(pathNodes[i].originalPosition);
+
+        if (checkpointIndex > lastCommittedIndex)
+            lastCommittedIndex = checkpointIndex;
+
+        return points;
+    }
+
+    // 라인/파티클 업데이트 (OnNodeCollected / FinishPath에서만 호출)
+    private void CommitLinePositions(List<Vector3> points)
+    {
+        if (points == null || points.Count == 0) return;
+
         if (useParticleMode)
         {
             if (!isLineStarted && drawingParticles != null)
@@ -298,18 +408,26 @@ public class PathManager : MonoBehaviour
                 emission.enabled = true;
                 drawingParticles.Play();
             }
+
+            isLineStarted = true;
+            return;
+        }
+
+        if (!isLineStarted)
+        {
+            lineRenderer.positionCount = 1;
+            lineRenderer.SetPosition(0, points[0]);
         }
         else
         {
-            if (!isLineStarted)
-            {
-                lineRenderer.positionCount = 1;
-                lineRenderer.SetPosition(0, collectedNode.originalPosition);
-            }
-            else
-            {
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, collectedNode.originalPosition);
-            }
+            // 플레이어를 따라다니던 마지막 점을 첫 꼭짓점으로 확정
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, points[0]);
+        }
+
+        for (int i = 1; i < points.Count; i++)
+        {
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, points[i]);
         }
 
         isLineStarted = true;
@@ -327,11 +445,11 @@ public class PathManager : MonoBehaviour
         if (node.myIndex != currentIndex) return;
 
         if (isTargetPath)
-            UpdateLine(node);
+            CommitLinePositions(BuildSegmentPoints(node.myIndex));
 
-        currentIndex++;
+        checkpointCursor++;
 
-        if (currentIndex >= pathNodes.Count)
+        if (checkpointCursor >= checkpointIndices.Count)
         {
             if (isTargetPath && finalNode != null)
             {
@@ -351,6 +469,8 @@ public class PathManager : MonoBehaviour
         }
         else
         {
+            currentIndex = checkpointIndices[checkpointCursor];
+
             if (!useParticleMode && isTargetPath)
             {
                 lineRenderer.positionCount++;
@@ -374,8 +494,10 @@ public class PathManager : MonoBehaviour
         }
         else
         {
-            if (lineRenderer.positionCount > 0)
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, finalPosition);
+            // 마지막 체크포인트 이후 남아있는 꼭짓점들을 모두 채운 뒤 최종점으로 마감
+            List<Vector3> tail = BuildSegmentPoints(pathNodes.Count - 1);
+            tail.Add(finalPosition);
+            CommitLinePositions(tail);
         }
 
         Debug.Log($"한붓그리기 완성! (모드: {(useParticleMode ? "파티클" : "라인")})");
@@ -443,12 +565,16 @@ public class PathManager : MonoBehaviour
 
     IEnumerator CheatSequenceRoutine()
     {
-        int startIdx = currentIndex;
-        int count = pathNodes.Count;
+        List<int> remaining = new List<int>();
+        for (int c = checkpointCursor; c < checkpointIndices.Count; c++)
+            remaining.Add(checkpointIndices[c]);
 
-        for (int i = startIdx; i < count; i++)
+        foreach (int idx in remaining)
         {
-            pathNodes[i].OnAbsorbed(); // OnAbsorbed 내부에서 OnNodeCollected 호출
+            if (isFinished) break;
+            if (idx < 0 || idx >= pathNodes.Count) continue;
+
+            pathNodes[idx].OnAbsorbed(); // OnAbsorbed 내부에서 OnNodeCollected 호출
             yield return new WaitForSeconds(0.1f);
         }
 

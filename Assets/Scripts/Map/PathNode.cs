@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PathNode : MonoBehaviour
 {
@@ -9,6 +9,11 @@ public class PathNode : MonoBehaviour
     public float absorbTimer = 0.0f;
     public float absorbMaxSpeed = 100f;
     [SerializeField] private float completelyAbsorbedTime = 0.3f;
+
+    [Header("최적화")]
+    [Tooltip("노드는 물리 시뮬레이션을 쓰지 않고 위치를 직접 옮긴다. 트리거 판정은 플레이어 쪽 Rigidbody로 성립하므로 " +
+             "노드의 Rigidbody는 실행 시 제거해도 된다. 씬의 Rigidbody 수백 개를 줄이는 목적. 문제가 생기면 체크 해제.")]
+    [SerializeField] private bool removeRigidbodyAtRuntime = true;
 
     private Rigidbody rb;
     public bool absorbing = false;
@@ -27,7 +32,19 @@ public class PathNode : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
+        if (rb != null)
+        {
+            if (removeRigidbodyAtRuntime)
+            {
+                Destroy(rb);
+                rb = null;
+            }
+            else
+            {
+                rb.isKinematic = true;
+            }
+        }
+
         myCollider = GetComponent<Collider>();
         myRenderer = GetComponent<Renderer>();
         originalPosition = transform.position;
@@ -78,8 +95,11 @@ public class PathNode : MonoBehaviour
     {
         if (absorbing) return;
 
-        rb.useGravity = false;
-        rb.isKinematic = true;
+        if (rb != null)
+        {
+            rb.useGravity = false;
+            rb.isKinematic = true;
+        }
 
         target = player;
         absorbing = true;

@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -48,7 +48,9 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1)) 
+        if (!CheatSettings.Enabled) return;
+
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             SetBGMVolume(0);
         }

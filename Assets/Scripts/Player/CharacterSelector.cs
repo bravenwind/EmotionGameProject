@@ -31,6 +31,9 @@ public class CharacterSelector : MonoBehaviour
 
     void Start()
     {
+        // 씬을 어떤 경로로 들어왔든(재도전 포함) 이전 판의 상태가 남지 않도록 보장한다.
+        DataManager.Instance.ResetGameData();
+
         foreach (var c in characters)
         {
             bool isTarget = c.emotion == DataManager.Instance.targetEmotion;

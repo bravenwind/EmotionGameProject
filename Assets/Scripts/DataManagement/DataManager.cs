@@ -32,6 +32,8 @@ public class DataManager : MonoBehaviour
 
     [Header("맵")]
     public CinemachineCamera targetMapCam;
+    [Tooltip("현재 플레이 중인 감정의 경로 (PathManager가 자동 등록)")]
+    public PathManager targetPathManager;
 
     [Header("제한시간")]
     public float limitTime = 300f;
@@ -100,7 +102,10 @@ public class DataManager : MonoBehaviour
     {
         // Cinemachine 블렌딩이 동작하도록 시간 진행
         Time.timeScale = 1f;
-        mouseLook.enabled = false;
+
+        // 컴포넌트를 끄면 카메라 추적까지 멈춰서 연출 후 시점이 튄다.
+        // 마우스 입력만 잠그고 카메라는 계속 캐릭터를 따라가게 둔다.
+        mouseLook.DisableInput();
 
         if (introCam != null)
         {
@@ -113,7 +118,8 @@ public class DataManager : MonoBehaviour
             Debug.Log("플레이어 카메라로 전환 완료");
         }
 
-        mouseLook.enabled = true;
+        // 연출 중 흘러간 시점을 시작 각도로 복구한 뒤 조작권을 넘긴다.
+        mouseLook.EnableInput();
         GameSceneUIManager.Instance.SetState(GameSceneUIState.InGame);
     }
 
@@ -131,6 +137,7 @@ public class DataManager : MonoBehaviour
     public void SwitchToPlayerCamera()
     {
         DataManager.Instance.mouseLook.enabled = true;
+        DataManager.Instance.mouseLook.SuppressInput();
         if (DataManager.Instance.playerCam != null && targetMapCam != null)
         {
             DataManager.Instance.playerCam.Priority = 10;
@@ -138,8 +145,14 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    private bool isGameOverRunning = false;
+
     public IEnumerator GameOver()
     {
+        // 클리어/실패 연출이 이미 돌고 있으면 중복 실행하지 않는다.
+        if (isGameOverRunning) yield break;
+        isGameOverRunning = true;
+
         Collider[] characterCols = selectedCharacter.GetComponentsInChildren<Collider>();
         foreach (Collider col in characterCols) 
         {
@@ -170,10 +183,7 @@ public class DataManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         while (brain.IsBlending)
         {
-
-            Debug.Log("블렌딩 중");
             yield return null;
-
         }
     }
 
@@ -220,11 +230,19 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 새 판을 시작할 때의 초기화. DataManager는 DontDestroyOnLoad라 이전 판의 상태가 남으므로
+    /// 종료 플래그까지 반드시 함께 되돌려야 한다.
+    /// </summary>
     public void ResetGameData()
     {
         currentEmotionScore = 0;
         currentTime = limitTime;
         currentEmotionCount = 0;
         currentScaleLevel = 1;
+
+        gameEnded = false;
+        gameCleared = false;
+        isGameOverRunning = false;
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro; // TextMeshPro �ʼ�
 
@@ -21,6 +21,10 @@ public class DebugMenuController : MonoBehaviour
     public InputField fovBoostSpeedInput;
     public Text pressESC;
     public Toggle infiniteStaminaToggle;
+
+    [Header("디버그 메뉴 토글 키")]
+    [Tooltip("ESC는 인게임 일시정지와 충돌하므로 다른 키를 쓴다.")]
+    public KeyCode toggleKey = KeyCode.F2;
 
     private bool isMenuOpen = false;
 
@@ -50,7 +54,9 @@ public class DebugMenuController : MonoBehaviour
     void Update()
     {
         // ESC Ű�� �޴� ���
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!CheatSettings.Enabled) return;
+
+        if (Input.GetKeyDown(toggleKey))
         {
             ToggleMenu();
         }

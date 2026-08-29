@@ -27,6 +27,5 @@ public class FillImage : MonoBehaviour
     {
         if (emotionScoreFillImage == null) return;
         emotionScoreFillImage.fillAmount = score / DataManager.Instance.maxEmotionScore;
-        Debug.Log($"[FillImage] : score {score}");
     }
 }

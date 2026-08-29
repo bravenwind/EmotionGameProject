@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
@@ -33,6 +33,13 @@ public class TitleSceneUIManager : MonoBehaviour
 
     [Header("�ʱ� ����")]
     public TitleSceneUIState startState = TitleSceneUIState.InGame;
+
+    [Header("씬 이름")]
+    [Tooltip("페이드 아웃이 끝난 뒤 이동할 씬. 비워두면 씬 전환을 하지 않는다.")]
+    public string fadeOutSceneName = "Game";
+
+    [Tooltip("GameSuccess 상태에서 R 키로 다시 시작할 씬. 비워두면 무시한다.")]
+    public string retrySceneName = "";
 
     [Header("UI ����")]
     [Tooltip("ȭ���� ���� ������ �̹����� CanvasGroup ������Ʈ")]
@@ -121,7 +128,7 @@ public class TitleSceneUIManager : MonoBehaviour
                 // ���� ���� ���� (��: RŰ�� �����)
                 if (Input.GetKeyDown(KeyCode.R))
                 {
-                    SceneManager.LoadScene("LevelDesign");
+                    LoadSceneSafe(retrySceneName);
                 }
                 break;
             case TitleSceneUIState.Pause:
@@ -154,6 +161,22 @@ public class TitleSceneUIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 빌드 세팅에 포함되지 않은 씬을 로드하면 예외가 발생하므로 항상 이 함수를 통해 로드한다.
+    /// </summary>
+    private void LoadSceneSafe(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName)) return;
+
+        if (!Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            Debug.LogWarning($"[TitleSceneUIManager] '{sceneName}' 씬이 빌드 세팅에 없습니다. 씬 전환을 건너뜁니다.");
+            return;
+        }
+
+        SceneManager.LoadScene(sceneName);
+    }
+
     public IEnumerator SceneFade(FadeState fadeInOut)
     {
         if (fadeCanvasGroup == null) yield break;
@@ -171,7 +194,7 @@ public class TitleSceneUIManager : MonoBehaviour
         }
         if (fadeOut)
         {
-            SceneManager.LoadScene("Main");
+            LoadSceneSafe(fadeOutSceneName);
         }
     }
 

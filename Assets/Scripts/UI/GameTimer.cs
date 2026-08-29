@@ -24,10 +24,17 @@ public class GameTimer : MonoBehaviour
         }
 
         // �� ������ ����Ǿ��ٸ� �� �̻� Ÿ�̸� �ڵ带 �������� ����
-        if (isGameEnded) return;
+        // [중요] GameOver 연출이 진행되는 동안에도 currentState는 InGame으로 남아있다.
+        // 이 가드가 없으면 매 프레임 GameOver() 코루틴이 새로 시작된다.
+        if (isGameEnded || DataManager.Instance.gameEnded)
+        {
+            isGameEnded = true;
+            return;
+        }
 
         if (DataManager.Instance.currentTime <= 0)
         {
+            isGameEnded = true;
             DataManager.Instance.targetMapCam.GetComponentInParent<PathManager>().ActivateThis();
             DataManager.Instance.gameEnded = true;
             DataManager.Instance.gameCleared = false;

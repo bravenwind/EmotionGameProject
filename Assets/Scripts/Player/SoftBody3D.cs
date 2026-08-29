@@ -28,6 +28,10 @@ public class SoftBody3D : MonoBehaviour
     [Range(0f, 5f)] public float worldVelocityScale = 0.3f;
     [Range(0f, 5f)] public float worldAccelerationScale = 0.3f;
 
+    [Tooltip("Cloth에 중력을 적용할지. 무중력 컨셉이면 꺼두는 것이 맞다. " +
+             "(이전에는 Update가 매 프레임 강제로 켜고 있었다)")]
+    public bool useGravity = false;
+
     private Cloth _cloth;
     private SkinnedMeshRenderer _skinnedMeshRenderer;
     private float _lastSoftness;
@@ -41,22 +45,52 @@ public class SoftBody3D : MonoBehaviour
         _lastSoftness = softness;
     }
 
+    // 값이 실제로 바뀌었는지 판단하기 위한 직전 값 캐시
+    private float _lastDamping, _lastStretching, _lastBending;
+    private float _lastWorldVelocity, _lastWorldAccel;
+    private bool _lastUseGravity;
+    private bool _settingsCached;
+
     private void Update()
     {
         if (_cloth == null) return;
 
-        _cloth.damping = damping;
-        _cloth.stretchingStiffness = stretchingStiffness;
-        _cloth.bendingStiffness = bendingStiffness;
-        _cloth.worldVelocityScale = worldVelocityScale;
-        _cloth.worldAccelerationScale = worldAccelerationScale;
-        _cloth.useGravity = true;
+        // 인스펙터에서 값을 바꿨을 때만 반영한다.
+        // (Cloth 프로퍼티 대입은 네이티브 호출이라 매 프레임 하면 낭비)
+        if (HasSettingsChanged())
+        {
+            ApplyClothSettings();
+            CacheSettings();
+        }
 
         if (!Mathf.Approximately(_lastSoftness, softness))
         {
             UpdateSoftness();
             _lastSoftness = softness;
         }
+    }
+
+    private bool HasSettingsChanged()
+    {
+        if (!_settingsCached) return true;
+
+        return !Mathf.Approximately(_lastDamping, damping)
+            || !Mathf.Approximately(_lastStretching, stretchingStiffness)
+            || !Mathf.Approximately(_lastBending, bendingStiffness)
+            || !Mathf.Approximately(_lastWorldVelocity, worldVelocityScale)
+            || !Mathf.Approximately(_lastWorldAccel, worldAccelerationScale)
+            || _lastUseGravity != useGravity;
+    }
+
+    private void CacheSettings()
+    {
+        _lastDamping = damping;
+        _lastStretching = stretchingStiffness;
+        _lastBending = bendingStiffness;
+        _lastWorldVelocity = worldVelocityScale;
+        _lastWorldAccel = worldAccelerationScale;
+        _lastUseGravity = useGravity;
+        _settingsCached = true;
     }
 
     void InitCloth()
@@ -84,7 +118,9 @@ public class SoftBody3D : MonoBehaviour
         _cloth.bendingStiffness = bendingStiffness;
         _cloth.worldVelocityScale = worldVelocityScale;
         _cloth.worldAccelerationScale = worldAccelerationScale;
-        _cloth.useGravity = false;
+        _cloth.useGravity = useGravity;
+
+        CacheSettings();
     }
 
     void UpdateSoftness()

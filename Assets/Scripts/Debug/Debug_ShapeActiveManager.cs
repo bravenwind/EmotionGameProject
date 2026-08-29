@@ -1,23 +1,25 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class Debug_ShapeActiveManager : MonoBehaviour
 {
-    // ÀÎ½ºÆåÅÍ¿¡¼­ º¸±â ÁÁ°Ô ¼³Á¤ÇÏ±â À§ÇÑ ±¸Á¶Ã¼
+    // ì¸ìŠ¤í™í„°ì—ì„œ ë³´ê¸° ì¢‹ê²Œ ì„¤ì •í•˜ê¸° ìœ„í•œ êµ¬ì¡°ì²´
     [System.Serializable]
     public struct ShapeDebugSet
     {
-        public string label;        // ¾Ë¾Æº¸±â ½¬¿î ÀÌ¸§ (¿¹: Heart)
-        public KeyCode key;         // ´©¸¦ Å° (¿¹: H)
-        public PathManager manager; // ¿¬°áÇÒ ½ºÅ©¸³Æ®
+        public string label;        // ì•Œì•„ë³´ê¸° ì‰¬ìš´ ì´ë¦„ (ì˜ˆ: Heart)
+        public KeyCode key;         // ëˆ„ë¥¼ í‚¤ (ì˜ˆ: H)
+        public PathManager manager; // ì—°ê²°í•  ìŠ¤í¬ë¦½íŠ¸
     }
 
-    [Header("¸ğ¾ç µğ¹ö±× ¼³Á¤")]
-    public List<ShapeDebugSet> shapeSets; // ¸®½ºÆ®·Î °ü¸®
+    [Header("ëª¨ì–‘ ë””ë²„ê·¸ ì„¤ì •")]
+    public List<ShapeDebugSet> shapeSets; // ë¦¬ìŠ¤íŠ¸ë¡œ ê´€ë¦¬
 
     void Update()
     {
-        // µî·ÏµÈ ¸ğµç ¼¼Æ®¸¦ ¼øÈ¸ÇÏ¸ç Å° ÀÔ·ÂÀ» Ã¼Å©
+        if (!CheatSettings.Enabled) return;
+
+        // ë“±ë¡ëœ ëª¨ë“  ì„¸íŠ¸ë¥¼ ìˆœíšŒí•˜ë©° í‚¤ ì…ë ¥ì„ ì²´í¬
         foreach (var set in shapeSets)
         {
             if (Input.GetKeyDown(set.key))
@@ -33,7 +35,7 @@ public class Debug_ShapeActiveManager : MonoBehaviour
         }
     }
 
-    // ¡Ú ÇÙ½É ·ÎÁ÷: ¼±ÅÃµÈ ³à¼®¸¸ ÄÑ°í, ³ª¸ÓÁö´Â ´Ù ²ö´Ù
+    // â˜… í•µì‹¬ ë¡œì§: ì„ íƒëœ ë…€ì„ë§Œ ì¼œê³ , ë‚˜ë¨¸ì§€ëŠ” ë‹¤ ëˆë‹¤
     public void ActivateOnly(PathManager targetManager)
     {
         bool foundTarget = false;
@@ -44,23 +46,23 @@ public class Debug_ShapeActiveManager : MonoBehaviour
 
             if (set.manager == targetManager)
             {
-                // Å¸°Ù ¹ß°ß!
+                // íƒ€ê²Ÿ ë°œê²¬!
                 set.manager.gameObject.SetActive(true);
-                DataManager.Instance.SwitchToMapCamera(); // Ä«¸Ş¶ó ÀüÈ¯
+                DataManager.Instance.SwitchToMapCamera(); // ì¹´ë©”ë¼ ì „í™˜
                 foundTarget = true;
             }
             else
             {
-                // Å¸°Ù ¾Æ´Ô: ²ô±â
+                // íƒ€ê²Ÿ ì•„ë‹˜: ë„ê¸°
                 set.manager.gameObject.SetActive(false);
-                // È¤½Ã ¸ğ¸£´Ï Ä«¸Ş¶ó ¿ì¼±¼øÀ§µµ È®½ÇÈ÷ ³·Ãã
+                // í˜¹ì‹œ ëª¨ë¥´ë‹ˆ ì¹´ë©”ë¼ ìš°ì„ ìˆœìœ„ë„ í™•ì‹¤íˆ ë‚®ì¶¤
                 if (set.manager.mapCam != null) set.manager.mapCam.Priority = 0;
             }
         }
 
         if (!foundTarget)
         {
-            Debug.LogError($"[¿À·ù] ¸®½ºÆ®¿¡ {targetManager.name}°¡ µî·ÏµÇ¾î ÀÖÁö ¾Ê½À´Ï´Ù!");
+            Debug.LogError($"[ì˜¤ë¥˜] ë¦¬ìŠ¤íŠ¸ì— {targetManager.name}ê°€ ë“±ë¡ë˜ì–´ ìˆì§€ ì•ŠìŠµë‹ˆë‹¤!");
         }
     }
 }
